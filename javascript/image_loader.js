@@ -1,9 +1,9 @@
 $(document).ready(function () {
   // Array of image URLs
   var imageUrls = [
-      '/assets/image1.jpg',
-      '/assets/image2.jpg',
-      '/assets/image3.jpg'
+      'assets/image1.jpg',
+      'assets/image2.jpg',
+      'assets/image3.jpg'
   ];
 
   // Reference to the image container
