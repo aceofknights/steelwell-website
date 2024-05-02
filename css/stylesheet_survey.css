@@ -1,0 +1,41 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: dimgray;
+}
+
+h1 {
+    background-color: #a9db9d;
+    margin: 0px;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit {
+    margin: 20px;
+}
+
+#submitBtn{
+    background-color: #a9db9d;
+    font-weight: bold;
+}
+
+.question {
+    margin: 20px;
+
+}
+
+.error {
+    color: #ff0000;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}

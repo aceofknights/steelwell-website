@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Survey</title>
+    <link rel="stylesheet" href="../../css/stylesheet_survey.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Feedback Survey</h1>
+        <form id="surveyForm">
+
+            <div class="question">
+                <label for="userName">Your Name:</label>
+                <input type="text" id="userName" name="userName" required>
+            </div>
+            <!-- Question 1: Multiple Choice -->
+            <div class="question">
+                <label for="q1">1. How would you rate your experience?</label>
+                <select id="q1" name="q1">
+                    <option value="">Select Rating</option>
+                    <option value="excellent">Excellent</option>
+                    <option value="good">Good</option>
+                    <option value="average">Average</option>
+                    <option value="poor">Poor</option>
+                </select>
+            </div>
+
+            <!-- Question 2: Text Field -->
+            <div class="question">
+                <label for="q2">2. What can be improve?</label>
+                <input type="text" id="q2" name="q2">
+            </div>
+
+            <!-- Question 3: Radio Buttons -->
+            <div class="question">
+                <label>3. How did you hear about us?</label>
+                <input type="radio" id="q3a" name="q3"> <label for="q3a">Social Media</label>
+                <input type="radio" id="q3b" name="q3"> <label for="q3b">Search Engine</label>
+                <input type="radio" id="q3c" name="q3"> <label for="q3c">Friend</label>
+            </div>
+
+            <!-- Question 4: Checkbox -->
+            <div class="question">
+                <label>4. Which features do you like? (Select all that apply)</label>
+                <input type="checkbox" id="q4a" name="q4[]"> <label for="q4a">Design</label>
+                <input type="checkbox" id="q4b" name="q4[]"> <label for="q4b">Speed</label>
+                <input type="checkbox" id="q4c" name="q4[]"> <label for="q4c">Content</label>
+            </div>
+
+            <!-- Question 5: Text Area (Optional) -->
+            <div class="question optional">
+                <label for="q5">5. Any additional feedback?</label>
+                <textarea id="q5" name="q5"></textarea>
+            </div>
+
+            <div class="submit">
+                <button type="button" id="submitBtn">Submit</button>
+            </div>
+        </form>
+
+        <!-- Error Message Container -->
+        <div id="errorMessage" class="error"></div>
+
+        <!-- Thank You Message Container -->
+        <div id="thankYouMessage" class="hidden">
+            <p>Thank you for your feedback, <span id="userName"></span>!</p>
+        </div>
+    </div>
+
+    <script src="../../javascript/script_survey.js"></script>
+</body>
+</html>
