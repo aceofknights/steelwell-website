@@ -1,0 +1,165 @@
+      /* Globals */
+      a,
+      a:focus,
+      a:hover {
+        color: #fff;
+      }
+
+      .btn-secondary,
+      .btn-secondary:hover,
+      .btn-secondary:focus {
+        color: #333;
+        text-shadow: none;
+        background-color: #fff;
+        border: 0.05rem solid #fff;
+      }
+
+      /* Base structure */
+      body {
+        background-color: #443e3e;
+        margin: 0;
+        font-family: "Roboto", sans-serif;
+        text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
+        display: flex;
+        display: -ms-flexbox;
+        color: #fff;
+        flex-direction: column;
+      }
+      
+      /* Set the body to cover the entire viewport */
+      html, body {
+        height: 100%;
+      }
+      
+      /* Move the box-shadow to the bottom of the body */
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
+        pointer-events: none; /* Ensure the shadow doesn't interfere with interactions */
+      }
+      
+      .pdf-container {
+        height: 1300px; /* Adjust the height as needed */
+        overflow-y: auto; /* Enable vertical scrolling */
+        margin-bottom: 10%;
+      }
+
+      .cover-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh; /* Ensure the container covers the full viewport height */
+      }
+
+      /* Add shadow to cover-container */
+      .cover-container::after {
+        content: "";
+        position: fixed;
+        top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
+        pointer-events: none; /* Ensure the shadow doesn't interfere with interactions */
+      }
+      .text-center {
+        text-align: center;
+        justify-content: center;
+
+      }
+
+      /* Header */
+      .masthead {
+        margin-bottom: 2rem;
+        padding-bottom: 2rem;
+      }
+
+      .masthead-brand {
+        margin-bottom: 0;
+        color: #9dd49d;
+        font-size: 35px;
+      }
+
+      .nav-masthead .nav-link {
+        padding: 0.25rem 0;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.5);
+        background-color: transparent;
+        border-bottom: 0.25rem solid transparent;
+      }
+
+      .nav-masthead .nav-link:hover,
+      .nav-masthead .nav-link:focus {
+        border-bottom-color: rgba(255, 255, 255, 0.25);
+      }
+
+      .nav-masthead .nav-link + .nav-link {
+        margin-left: 1rem;
+      }
+
+      .nav-masthead .active {
+        color: #9dd49d;
+        border-bottom-color: #9dd49d;
+      }
+
+      /* Main content */
+
+
+      .inner-cover {
+        margin-left: 20%;
+        margin-right: 20%;
+      }
+
+      /* Styles for the image block */
+      .image-block {
+        float: left; /* Float the block to the left */
+        margin-right: 3%; /* Add some space to the right of the block */
+      }
+
+      .profile-image {
+        max-width: 150px; /* Set maximum width for the image */
+        height: auto; /* Automatically adjust height */
+        border-radius: 50%; /* Make the image round */
+        border: 2px solid #9dd49d; /* Add a border around the image */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+      }
+
+      /* Styles for the about me text */
+      .about-me {
+        overflow: hidden; /* Clear any floating elements */
+        margin-top: 0;
+      }
+
+      .about-me h1,
+      .about-me p {
+        text-align: left; /* Align text to the left */
+      }
+
+      .about-me h1 {
+        font-size: 3rem; /* Set font size for the heading */
+        margin-bottom: 1rem; /* Add some space below the heading */
+      }
+
+      .about-me p {
+        font-size: 1.25rem; /* Set font size for the paragraph */
+      }
+
+      /* Styles for the about me text */
+      .lead {
+        display: inline-block; /* Make the text inline-block to be on the same line */
+        vertical-align: middle; /* Vertically align the text */
+        text-align: center; /* Center align the text */
+        margin: 0; /* Reset margin */
+        font-size: 1.25rem; /* Set font size for the lead text */
+        margin-bottom: 2%;
+      }
+
+      .cover-heading {
+        font-size: 3rem; /* Set font size for the heading */
+        margin-bottom: 1rem; /* Add some space below the heading */
+        text-align: center;
+      }

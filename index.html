@@ -9,34 +9,47 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Chris wells lab 3</title>
-    <link rel="stylesheet" type="text/css" href="css/stylesheet_resume.css" />
+    <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
+  />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
+    <!-- Link to your external CSS file -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="javascript/image_loader.js"></script>
   </head>
 
   <!--below this line is whats displayed on the actual web page-->
-  <body>
-    <ul class="nav_bar">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="webpages/about.html">About</a></li>
-      <li><a href="webpages/resume.html">Resume</a></li>
-      <li><a href="https://github.com/aceofknights">Github</a></li>
-      <li>
-        <a href="https://www.linkedin.com/in/chris-wells-901611141/"
-          >Linkedin</a
-        >
-      <li><a href="webpages/survey.html">Feedback</a></li>
+  <body class="text-center">
+    <!-- sets the top of the nav bar to have proper spacing -->
+    <div class="cover-container">
+      <header class="masthead">
+        <div class="inner">
+          <h3 class="masthead-brand">chriswellsdev.com</h3>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active" href="#">Home</a>
+            <a class="nav-link" href="webpages/about.html">About</a>
+            <a class="nav-link" href="webpages/resume.html">Resume</a>
+            <a class="nav-link" href="#">Blog</a>
+            <a class="nav-link" href="https://github.com/aceofknights"
+              >Github</a
+            >
+            <a
+              class="nav-link"
+              href="https://www.linkedin.com/in/chris-wells-901611141/"
+              >Linkedin</a
+            >
+            <a class="nav-link" href="webpages/survey.html">Feedback</a>
+          </nav>
+        </div>
+      </header>
 
-      </li>
-    </ul>
-
-    <div class="text_box">
-      <p id="lucy_text">This is my website i've built</p>
-
-      <a> <img class="image" src="assets/lucy.jpg" /></a>
-    </div>
-
-    <!-- div will to hold the images from the javascript-->
-    <div id="image-container"></div>
+    <main role="main" class="inner-cover">
+      <div class="image-block">
+        <img class="profile-image" src="assets/lucy.jpg" alt="me" />
+      </div>
+      <div class="about-me">
+        <h1 class="cover-heading">This is my website I've built</h1>
+        <div class="about-me">
   </body>
 </html>
