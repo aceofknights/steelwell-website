@@ -6,67 +6,81 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <meta name="description" content="" />
-    <meta
-      name="author"
-      content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
-    />
-    <meta name="generator" content="Jekyll v4.1.1" />
-    <title>About</title>
-
+    <title>Test</title>
     <link
-      rel="canonical"
-      href="https://getbootstrap.com/docs/4.5/examples/cover/"
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
     />
-
-    <!-- Bootstrap core CSS -->
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!--  -->
-    <!-- Custom styles for this template -->
-    <link href="../css/cover.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <!-- Link to external CSS file -->
   </head>
+
   <body class="text-center">
     <!-- sets the top of the nav bar to have proper spacing -->
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-      <header class="masthead mb-auto">
+    <div class="cover-container">
+      <header class="masthead">
         <div class="inner">
-          <h3 class="masthead-brand">Lab4</h3>
+          <h3 class="masthead-brand">chriswellsdev.com</h3>
           <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link active" href="#">About</a>
             <a class="nav-link" href="../index.html">Home</a>
+            <a class="nav-link active" href="#">About</a>
             <a class="nav-link" href="resume.html">Resume</a>
             <a class="nav-link" href="#">Blog</a>
+            <a class="nav-link" href="https://github.com/aceofknights"
+              >Github</a
+            >
+            <a
+              class="nav-link"
+              href="https://www.linkedin.com/in/chris-wells-901611141/"
+              >Linkedin</a
+            >
             <a class="nav-link" href="survey.html">Feedback</a>
           </nav>
         </div>
       </header>
 
-      <main role="main" class="inner cover">
+      <main role="main" class="inner-cover">
         <!-- setting the image to be smaller and if the website is scaled down the image will disapear -->
-        <div class="col-md-3 text-center d-none d-md-block">
+        <div class="image-block">
           <!-- fluid is so the image takes the scaling of the div and i made it rounded -->
-          <img class="img-fluid rounded-circle" src="/assets/me.jpg" alt="me" />
+          <img class="profile-image" src="/assets/me.jpg" alt="me" />
         </div>
-        <h1 class="cover-heading">About me.</h1>
-        <p class="lead">
-          My name is Chris Wells. I am currently a student at Pellissippi State
-          Technical Community College. I’m in my third semester obtaining a
-          degree in computer programming. I’m building this website as part of
-          my internet software class. This is for my bootstrap lab. I’m having
-          fun learning how to create websites.
-        </p>
+        <div class="about-me">
+          <h1 class="cover-heading">About me.</h1>
+          <div class="about-me">
+            <p class="lead">
+              Hi there! My name is Chris Wells, and I'm passionate about
+              software engineering. I currently reside in Knoxville, TN, where
+              I'm on an exciting journey to become a skilled software engineer.
+            </p>
+            <p class="lead">
+              I recently graduated with honors from Pellissippi State Technical
+              Community College, where I received recognition for my dedication
+              and excellence in computer science. My time at Pellissippi State
+              equipped me with valuable skills and knowledge that have prepared
+              me for the challenges and opportunities ahead.
+            </p>
+            <p class="lead">
+              Now, I'm gearing up to take the next step in my educational
+              journey by enrolling in Western Governors University (WGU) to
+              further expand my expertise and achieve new heights in the field
+              of technology.
+            </p>
+            <p class="lead">
+              One of my favorite things to do is to build and create. That's why
+              I'm thrilled to be working on this website, where I can showcase
+              various projects I'm passionate about. From web development to
+              mobile applications and everything in between, I'm eager to
+              explore different technologies and share my creations with the
+              world.
+            </p>
+            <p class="lead">
+              Join me on this exciting adventure as I continue to learn, grow,
+              and innovate in the ever-evolving world of software engineering!
+            </p>
+          </div>
+        </div>
       </main>
-
-      <footer class="mastfoot mt-auto">
-        <div class="inner">
-          <p>
-            Cover template for
-            <a href="https://getbootstrap.com/">Bootstrap</a>, by
-            <a href="https://twitter.com/mdo">@mdo</a>.
-          </p>
-        </div>
-      </footer>
     </div>
   </body>
 </html>
