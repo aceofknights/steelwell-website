@@ -67,16 +67,33 @@ function validateForm() {
 
     // Event listener for form submission
     submitBtn.addEventListener("click", function () {
-        clearErrorMessage(); // Clear any previous error messages
+        clearErrorMessage();
         if (validateForm()) {
-            // Form is valid, show thank you message
-            const userName = document.querySelector("input[name='userName']").value;
-            thankYouMessage.classList.remove("hidden");
-            thankYouMessage.querySelector("#userName").textContent = userName;
-            surveyForm.style.display = "none"; // Hide the form
+            const formData = new FormData(surveyForm);
+            // Make AJAX request
+            fetch("email.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Form is valid and email was sent successfully
+                    const userName = document.querySelector("input[name='userName']").value;
+                    thankYouMessage.classList.remove("hidden");
+                    thankYouMessage.querySelector("#userName").textContent = userName;
+                    surveyForm.style.display = "none";
+                } else {
+                    // Handle error
+                    console.error("Error sending email");
+                    errorMessage.textContent = "An error occurred in email. Please try again later.";
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                errorMessage.textContent = "An error occurred. Please try again later.";
+            });
         }
     });
 
-    // Event listener to clear error message when user interacts with the form
     surveyForm.addEventListener("input", clearErrorMessage);
 });
