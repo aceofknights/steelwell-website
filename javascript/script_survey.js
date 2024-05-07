@@ -60,7 +60,7 @@ function validateForm() {
 }
 
 
-    // Function to clear the error message
+    // Function to clear the error message!
     function clearErrorMessage() {
         errorMessage.textContent = "";
     }
