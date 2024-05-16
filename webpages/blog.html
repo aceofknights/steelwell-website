@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chris Wells DEV</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
+    />
+    <link rel="stylesheet" type="text/css" href="../css/styles.css" />
+    <!-- Link to your external CSS file -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="javascript/image_loader.js"></script>
+  </head>
+  <body class="text-center">
+    <div class="cover-container">
+      <header class="masthead">
+        <div class="inner">
+          <h3 class="masthead-brand">chriswellsdev.com</h3>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link" href="../index.html">Home</a>
+            <a class="nav-link" href="about.html">About</a>
+            <a class="nav-link" href="resume.html">Resume</a>
+            <a class="nav-link active" href="#">Blog</a>
+            <a class="nav-link" href="https://github.com/aceofknights"
+              >Github</a
+            >
+            <a
+              class="nav-link"
+              href="https://www.linkedin.com/in/chris-wells-901611141/"
+              >Linkedin</a
+            >
+            <a class="nav-link" href="webpages/survey.html">Feedback</a>
+          </nav>
+        </div>
+      </header>
+      <div class="blog-container">
+        <div class="blog-post">
+          <h4 class="blog-title">auto clicker</h4>
+          <p class="blog-text">
+            I spent some time learning more about python and that you can build
+            a gui with it. I wanted to do something pratical with it so i made a
+            auto clicker using python.
+          </p>
+          <div>
+            <img
+              class="blog-image"
+              src="../assets/auto_clicker_pic.png"
+              alt="auto_clicker_pic"
+            />
+          </div>
+          <p class="blog-text">
+            Creating this auto clicker involved utilizing the tkinter library
+            for the graphical user interface, pyautogui for simulating mouse
+            clicks, and keyboard for handling global hotkeys. The code is
+            designed to provide an easy-to-use interface where users can set the
+            click interval, choose the mouse button to click, and customize the
+            hotkey to start and stop the clicking process.
+          </p>
+          <p class="blog-text">
+            The auto clicker operates by continuously clicking the mouse at a
+            user-defined interval. The auto_click function is responsible for
+            this action, utilizing the pyautogui.click method to perform clicks.
+            To ensure rapid clicking, various delays and minimum intervals
+            within pyautogui are set to zero. The clicking process is managed
+            using a separate thread, allowing the GUI to remain responsive. This
+            thread runs until a stop event is triggered, which is handled by the
+            stop_clicker function. The start and stop of the auto clicker are
+            controlled by the start_clicker function, which checks if the
+            clicker is already running and either starts a new thread or stops
+            the current one based on the auto clicker's state.
+          </p>
+          <p class="blog-text">
+            The GUI built with tkinter allows users to enter the click interval
+            and select the mouse button via text entries and radio buttons. It
+            also includes functionality to update the hotkey dynamically using
+            the keyboard library. This is managed by the update_hotkey function,
+            which unbinds the previous hotkey and binds a new one based on user
+            input. The interface also provides feedback to the user through
+            message boxes for errors and information updates. The program
+            initializes with a default hotkey (F4) that users can press to start
+            or stop the auto clicker, ensuring a seamless and user-friendly
+            experience.
+          </p>
+          <a
+            class="nav-link"
+            href="https://github.com/aceofknights/auto_clicker"
+            >Download Auto Clicker
+          </a>
+        </div>
+        <div class="blog-post">
+          <h4>post</h4>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -163,3 +163,22 @@
         margin-bottom: 1rem; /* Add some space below the heading */
         text-align: center;
       }
+
+      .blog-container {
+        border-color: black;
+        border: 10px #9dd49d; /* Add a border around the image */
+        margin-left: 2%;
+        margin-right: 2%;
+        border-style: inset;
+
+      }
+
+      .blog-post {
+        padding-bottom: 10px;
+        border-bottom: 2px green; 
+        border-bottom-style:solid;
+      
+      }
+
+      
+
