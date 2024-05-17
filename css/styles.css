@@ -182,3 +182,50 @@
 
       
 
+    .game {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+    }
+    
+    .back-button {
+      text-align: center;
+      background-color: black;
+    }
+    .game-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .game-title {
+        color: #333;
+    }
+    
+    #cards-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    
+    .clicked {
+      background-color: #ccc;
+    }
+
+    .card-box {
+      border-width: 5px;
+      background-color: #333;
+      padding: 5%;
+      border-radius: 5px;
+      margin: 0px 5px;
+      cursor: pointer;
+
+    }
+
+    .card-box.clicked {
+      background-color: white;
+    }
