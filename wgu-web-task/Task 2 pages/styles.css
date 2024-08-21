@@ -23,18 +23,18 @@ main {
   display: flex;
   justify-content: center;
   margin: 0;
-  width: 100%; /* Ensure the container spans the full width */
-  overflow: hidden; /* Hide the overflowed parts of the image */
-  height: 500px; /* Adjust the height to control the vertical space */
+  width: 100%; 
+  overflow: hidden; 
+  height: 500px; 
   position: relative;
 
 }
 
 .city-image {
-  width: 100%; /* Make the image span the full width of the container */
-  height: 100%; /* Make the image span the full height of the container */
-  object-fit: cover; /* Ensure the image covers the container while maintaining aspect ratio */
-  object-position: center; /* Center the image within the container */
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  object-position: center; 
   display: block;
 
 }
@@ -61,19 +61,19 @@ main {
 }
 
 .city-list {
-  list-style-type: decimal; /* Ordered list style */
-  padding-left: 20px; /* Space from the left */
-  text-align: left; /* Align text to the left */
+  list-style-type: decimal; 
+  padding-left: 20px; 
+  text-align: left; 
 }
 
 .city-section {
   position: absolute;
-  top: 200px; /* Adjust as needed */
+  top: 200px;
   left: 50%;
   transform: translateX(-50%);
   background-color: #d6800f;
   color: white;
-  border: 5px solid black; /* Add black border */
+  border: 5px solid black;
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -143,11 +143,11 @@ main {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  grid-template-rows: repeat(2, auto); /* 2 rows */
-  gap: 20px; /* Space between grid items */
+  grid-template-columns: repeat(3, 1fr); 
+  grid-template-rows: repeat(2, auto); 
+  gap: 20px; 
   margin: 20px;
-  padding: 0 100px; /* Maintain spacing on left and right */
+  padding: 0 100px; 
 }
 
 .grid-item {
@@ -157,25 +157,39 @@ main {
   overflow: hidden;
   background-color: #fff;
   padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional for better visual separation */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .section-image {
   width: 100px;
   height: auto;
-  margin-right: 20px; /* Space between image and text */
+  margin-right: 20px; 
 }
 
 .text-content {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center text vertically within the item */
+  justify-content: center; 
 }
 
 .text-line {
   margin: 0;
   padding: 5px 0;
-  text-align: left; /* Ensure text alignment is consistent */
+  text-align: left; 
+}
+
+.text-line-positive {
+  color: green;
+  margin: 0;
+  padding: 5px 0;
+  text-align: left; 
+}
+
+.text-line-negitive {
+  color: rgb(223, 14, 14);
+  margin: 0;
+  padding: 5px 0;
+  text-align: left; 
 }
 
 
