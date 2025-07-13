@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seating Chart</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+    <!-- Link to external CSS file -->
+  </head>
+  <body>
+    <div class="SeatingChartHeader"><h1>Seating Chart</h1></div>
+
+    <input
+      type="text"
+      name="studentName"
+      id="studentName"
+      placeholder="Enter a student name"
+    />
+    <button id="addNameBtn">Add Name</button>
+    <button id="addTableBtn">Add New Table</button>
+
+    <div id="listAndChart">
+      <ul id="studentList">
+        <!-- Will be populated dynamically -->
+      </ul>
+      <div id="classroom"></div>
+    </div>
+
+    <script src="../javascript/Seating_Chart.js"></script>
+  </body>
+</html>

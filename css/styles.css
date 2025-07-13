@@ -5,6 +5,8 @@
         color: #fff;
       }
 
+      
+
       .btn-secondary,
       .btn-secondary:hover,
       .btn-secondary:focus {
@@ -13,6 +15,125 @@
         background-color: #fff;
         border: 0.05rem solid #fff;
       }
+
+      .SeatingChartHeader {
+        display: flex;
+        justify-content: center; /* horizontal centering */
+        align-items: center;     /* vertical centering (if needed) */
+      }
+
+    #listAndChart {
+      display: flex;
+      gap: 40px;
+    }
+    #studentList {
+      width: 200px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      list-style: none;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    #studentList li {
+      padding: 5px 0;
+    }
+    #classroom {
+      flex-grow: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: flex-start;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      min-height: 400px;
+      position: relative;
+    }
+    .table {
+      border: 2px solid #555;
+      padding: 10px;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      width: 140px;
+      position: absolute; /* For drag & drop */
+      cursor: grab;
+      user-select: none;
+    }
+    .table:active {
+      cursor: grabbing;
+    }
+    .seats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      width: 100%;
+    }
+    .seat {
+      width: 25px;
+      height: 25px;
+      background: gray;
+      border-radius: 4px;
+      border: 1px solid #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      color: white;
+      cursor: pointer;
+      position: relative;
+    }
+    .seat.selected {
+      outline: 3px solid #007bff;
+      z-index: 2;
+    }
+    .table-controls {
+      display: flex;
+      gap: 8px;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+    }
+    select {
+      flex-grow: 1;
+      font-size: 14px;
+    }
+    button.delete-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button.delete-btn:hover {
+      background: #c0392b;
+    }
+    .seat-tooltip {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: black;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 9px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+      z-index: 10;
+    }
+    .seat:hover .seat-tooltip {
+      opacity: 1;
+    }
+
 
       /* Base structure */
       body {
