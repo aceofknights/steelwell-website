@@ -4,8 +4,8 @@ const addNameBtn = document.getElementById('addNameBtn');
 const addTableBtn = document.getElementById('addTableBtn');
 const studentList = document.getElementById('studentList');
 const classroom = document.getElementById('classroom');
-
-const seatColors = ['gray', 'red', 'blue', 'green', 'orange', 'purple', 'teal'];
+// #ff06ff
+const seatColors = ['gray', 'pink', '#ff06ff', 'orange', 'blue', 'lightblue', 'yellow', 'green'];
 let dragData = null;
 
 // Store manually added student names here
@@ -62,44 +62,57 @@ function updateStudentList() {
     nameSpan.textContent = name;
     li.appendChild(nameSpan);
 
-    // Options button
     const optionsBtn = document.createElement('button');
     optionsBtn.classList.add('options-btn');
     optionsBtn.textContent = '⚙️';
     li.appendChild(optionsBtn);
 
-    // Options panel (hidden by default)
     const optionsPanel = document.createElement('div');
     optionsPanel.classList.add('options-panel');
     optionsPanel.style.display = 'none';
 
-    // Table assignment controls
+    // === Seat Assignment Toggle ===
+    const seatToggleLabel = document.createElement('label');
+    seatToggleLabel.textContent = 'Assign Seat? ';
+    seatToggleLabel.style.display = 'block';
+
+    const seatToggle = document.createElement('input');
+    seatToggle.type = 'checkbox';
+    seatToggle.checked = !!studentsData[name].lockedSeat;
+    seatToggleLabel.appendChild(seatToggle);
+    optionsPanel.appendChild(seatToggleLabel);
+
+    // === Table and Seat Assignment ===
     const tableAssignLabel = document.createElement('label');
     tableAssignLabel.textContent = 'Assign Table: ';
     const tableAssignSelect = document.createElement('select');
     tableAssignSelect.classList.add('assign-table');
+    tableAssignLabel.appendChild(tableAssignSelect);
 
-    // Seat assignment controls
     const seatAssignLabel = document.createElement('label');
     seatAssignLabel.textContent = 'Assign Seat: ';
     const seatAssignSelect = document.createElement('select');
     seatAssignSelect.classList.add('assign-seat');
-
-    tableAssignLabel.appendChild(tableAssignSelect);
     seatAssignLabel.appendChild(seatAssignSelect);
 
-    optionsPanel.appendChild(tableAssignLabel);
-    optionsPanel.appendChild(seatAssignLabel);
+    const seatAssignmentContainer = document.createElement('div');
+    seatAssignmentContainer.appendChild(tableAssignLabel);
+    seatAssignmentContainer.appendChild(seatAssignLabel);
+    seatAssignmentContainer.style.display = seatToggle.checked ? 'block' : 'none';
+    optionsPanel.appendChild(seatAssignmentContainer);
 
-    // Blacklist fieldset
+    seatToggle.addEventListener('change', () => {
+      seatAssignmentContainer.style.display = seatToggle.checked ? 'block' : 'none';
+    });
+
+    // === Blacklist Fieldset ===
     const blacklistFieldset = document.createElement('fieldset');
     const blacklistLegend = document.createElement('legend');
     blacklistLegend.textContent = 'Blacklist Students';
     blacklistFieldset.appendChild(blacklistLegend);
-
     optionsPanel.appendChild(blacklistFieldset);
 
-    // Save and Cancel buttons
+    // === Buttons ===
     const saveBtn = document.createElement('button');
     saveBtn.classList.add('save-options-btn');
     saveBtn.textContent = 'Save';
@@ -107,67 +120,29 @@ function updateStudentList() {
     const cancelBtn = document.createElement('button');
     cancelBtn.classList.add('cancel-options-btn');
     cancelBtn.textContent = 'Cancel';
-    
-    // Reset button
-const resetBtn = document.createElement('button');
-resetBtn.classList.add('reset-options-btn');
-resetBtn.textContent = 'Reset';
-resetBtn.style.marginRight = '8px'; // Optional spacing
 
-resetBtn.addEventListener('click', () => {
-  if (confirm(`Reset all settings for ${name}?`)) {
-    delete studentsData[name].lockedSeat;
-    delete studentsData[name].blacklist;
-    optionsPanel.style.display = 'none';
-    updateStudentList();  // Rebuilds UI with cleared data
-    saveTables();         // Save changes to localStorage (or backend)
-  }
-});
+    const resetBtn = document.createElement('button');
+    resetBtn.classList.add('reset-options-btn');
+    resetBtn.textContent = 'Reset';
+    resetBtn.style.marginRight = '8px';
 
-console.log('manualStudentNames type:', typeof manualStudentNames);
-console.log('manualStudentNames:', manualStudentNames);
-
-
-// Delete button
-const deleteBtn = document.createElement('button');
-deleteBtn.classList.add('delete-student-btn');
-deleteBtn.textContent = 'Delete';
-deleteBtn.style.marginLeft = '8px'; // Optional spacing
-
-deleteBtn.addEventListener('click', () => {
-  if (confirm(`Are you sure you want to delete ${name}? This cannot be undone.`)) {
-    // Remove from studentsData
-    delete studentsData[name];
-
-    // Remove from manualStudentNames (Set)
-    manualStudentNames.delete(name);
-
-    // Clear from all seat assignments
-    document.querySelectorAll('.seat').forEach(seat => {
-      if (seat.dataset.studentName === name) {
-        seat.dataset.studentName = '';
-        seat.textContent = '';
-        seat.title = 'Click to assign student';
+    resetBtn.addEventListener('click', () => {
+      if (confirm(`Reset all settings for ${name}?`)) {
+        delete studentsData[name].lockedSeat;
+        delete studentsData[name].blacklist;
+        optionsPanel.style.display = 'none';
+        updateStudentList();
+        saveTables();
       }
     });
-
-    updateStudentList();
-    saveTables();
-  }
-});
-
-
 
     optionsPanel.appendChild(resetBtn);
     optionsPanel.appendChild(saveBtn);
     optionsPanel.appendChild(cancelBtn);
-    optionsPanel.appendChild(deleteBtn);
-
-
     li.appendChild(optionsPanel);
     studentList.appendChild(li);
 
-    // Fill tableAssignSelect options with current tables
+    // === Dynamic Select Options ===
     function refreshTableOptions() {
       tableAssignSelect.innerHTML = '';
       const tables = classroom.querySelectorAll('.table');
@@ -181,25 +156,22 @@ deleteBtn.addEventListener('click', () => {
       });
     }
 
-    // Fill seatAssignSelect based on selected table and occupied seats
     function refreshSeatOptions() {
       seatAssignSelect.innerHTML = '';
       const tableId = tableAssignSelect.value;
-      if (!tableId) return;
-
       const tableDiv = classroom.querySelector(`.table[data-id="${tableId}"]`);
       if (!tableDiv) return;
 
       const seats = tableDiv.querySelectorAll('.seat');
       seats.forEach((seat, index) => {
-        // Seat is available if no one locked there or locked by this student
-        const lockedBySomeoneElse = Object.entries(studentsData).some(([stud, data]) => {
-          return stud !== name &&
+        const lockedByOther = Object.entries(studentsData).some(([otherName, data]) => {
+          return otherName !== name &&
             data.lockedSeat &&
             data.lockedSeat.tableId === tableId &&
             data.lockedSeat.seatIndex === index;
         });
-        if (!lockedBySomeoneElse) {
+
+        if (!lockedByOther) {
           const option = document.createElement('option');
           option.value = index;
           option.textContent = `Seat ${index + 1}`;
@@ -208,17 +180,15 @@ deleteBtn.addEventListener('click', () => {
       });
     }
 
-    // Fill blacklist checkboxes
     function refreshBlacklistOptions() {
       blacklistFieldset.innerHTML = '';
       blacklistFieldset.appendChild(blacklistLegend);
-
-      const otherStudents = Array.from(namesSet).filter(n => n !== name).sort();
-      otherStudents.forEach(other => {
+      const others = namesArray.filter(n => n !== name);
+      others.forEach(other => {
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.id = `blacklist-${name}-${other}`;
         checkbox.value = other;
+        checkbox.id = `blacklist-${name}-${other}`;
         checkbox.checked = studentsData[name]?.blacklist?.includes(other);
 
         const label = document.createElement('label');
@@ -231,44 +201,41 @@ deleteBtn.addEventListener('click', () => {
       });
     }
 
-    // Initialize selects and blacklist on open
     optionsBtn.addEventListener('click', () => {
-      // Toggle panel visibility
       if (optionsPanel.style.display === 'none') {
         refreshTableOptions();
-        // Set current table selection from lockedSeat
-        if (studentsData[name]?.lockedSeat) {
-          const locked = studentsData[name].lockedSeat;
+        refreshBlacklistOptions();
+
+        const locked = studentsData[name]?.lockedSeat;
+        if (locked) {
+          seatToggle.checked = true;
+          seatAssignmentContainer.style.display = 'block';
           tableAssignSelect.value = locked.tableId || '';
         } else {
-          tableAssignSelect.selectedIndex = 0;
+          seatToggle.checked = false;
+          seatAssignmentContainer.style.display = 'none';
         }
+
         refreshSeatOptions();
-        refreshBlacklistOptions();
         optionsPanel.style.display = 'block';
       } else {
         optionsPanel.style.display = 'none';
       }
     });
 
-    // When table changes, update seat options
-    tableAssignSelect.addEventListener('change', () => {
-      refreshSeatOptions();
-    });
+    tableAssignSelect.addEventListener('change', refreshSeatOptions);
 
-    // Save options
     saveBtn.addEventListener('click', () => {
-      // Save locked seat
-      const tableId = tableAssignSelect.value;
-      const seatIndex = seatAssignSelect.value !== '' ? parseInt(seatAssignSelect.value) : null;
-
-      if (tableId && seatIndex !== null) {
-        studentsData[name].lockedSeat = { tableId, seatIndex };
+      if (seatToggle.checked) {
+        const tableId = tableAssignSelect.value;
+        const seatIndex = parseInt(seatAssignSelect.value);
+        if (tableId && !isNaN(seatIndex)) {
+          studentsData[name].lockedSeat = { tableId, seatIndex };
+        }
       } else {
         studentsData[name].lockedSeat = null;
       }
 
-      // Save blacklist
       const checkedBoxes = blacklistFieldset.querySelectorAll('input[type=checkbox]:checked');
       studentsData[name].blacklist = Array.from(checkedBoxes).map(cb => cb.value);
 
@@ -278,15 +245,15 @@ deleteBtn.addEventListener('click', () => {
       saveTables();
     });
 
-    // Cancel options
     cancelBtn.addEventListener('click', () => {
       optionsPanel.style.display = 'none';
     });
   });
 }
 
+
 // --- Apply locked seat assignments to seats in UI ---
-function updateSeatsFromLocked() {
+function updateSeatsFromLocked(suppressVisual = false) {
   // Clear all seats first
   classroom.querySelectorAll('.seat').forEach(seat => {
     seat.dataset.studentName = '';
@@ -294,7 +261,7 @@ function updateSeatsFromLocked() {
     seat.title = 'Click to assign student';
   });
 
-  // Assign locked seats
+  // Assign locked seats in data only, optionally suppressing visual
   Object.entries(studentsData).forEach(([student, data]) => {
     if (data.lockedSeat) {
       const { tableId, seatIndex } = data.lockedSeat;
@@ -304,11 +271,18 @@ function updateSeatsFromLocked() {
       if (!seat) return;
 
       seat.dataset.studentName = student;
-      seat.textContent = student[0].toUpperCase();
-      seat.title = student;
+
+      if (!suppressVisual) {
+        seat.textContent = student;
+        seat.title = student;
+      } else {
+        seat.textContent = '';
+        seat.title = 'Click to assign student';
+      }
     }
   });
 }
+
 
 // --- Save current tables and manual names to localStorage ---
 function saveTables() {
@@ -356,7 +330,8 @@ function loadTables() {
     studentsData = savedStudentsData || {};
     tables.forEach(tableData => createTable(tableData));
     updateStudentList();
-    updateSeatsFromLocked();
+    updateSeatsFromLocked(true); // Suppress visual
+
   }
 }
 
@@ -413,7 +388,7 @@ function createTable(data = {}) {
 
   // Delete button
   const deleteBtn = document.createElement('button');
-  deleteBtn.textContent = 'Delete';
+  deleteBtn.textContent = 'X';
   deleteBtn.classList.add('delete-btn');
   controlsDiv.appendChild(deleteBtn);
 
@@ -503,7 +478,7 @@ function createTable(data = {}) {
 
         seat.dataset.studentName = trimmed;
         if (trimmed.length > 0) {
-          seat.textContent = trimmed[0].toUpperCase();
+          seat.textContent = trimmed;
           tooltip.textContent = trimmed;
           seat.title = trimmed;
           seat.appendChild(tooltip);
@@ -611,6 +586,16 @@ function randomizeSeating() {
   // Step 0: Gather all student names and table elements
   const allStudents = Array.from(manualStudentNames);
   const tables = Array.from(classroom.querySelectorAll('.table'));
+  // Step 0.5: Check total available seats
+  const totalSeats = tables.reduce((sum, table) => {
+    const count = parseInt(table.querySelector('.seat-count').value);
+    return sum + count;
+  }, 0);
+
+  if (totalSeats < allStudents.length) {
+    alert(`Not enough seats! You have ${allStudents.length} students but only ${totalSeats} seats.`);
+    return;
+  }
 
   // Step 1: Build a seat map representing each table's seats
   // Format: seatsMap = { tableId: [null, null, "StudentName", ...] }
@@ -692,7 +677,7 @@ function randomizeSeating() {
 
       // If no valid seat was found
       if (!assigned) {
-        alert(`Cannot seat student ${student} due to blacklist conflicts.`);
+        alert(`Random error try again.`);
       }
     }
   }
@@ -743,9 +728,18 @@ function resetStudentData(studentName) {
 // --- Initialize event listeners and load saved data ---
 function init() {
   addNameBtn.addEventListener('click', addStudent);
+
+  studentInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addStudent();
+    }
+  });
+
   addTableBtn.addEventListener('click', () => {
     createTable();
     saveTables();
+  
   });
 
   // Add "Randomize Seating" button below existing buttons
