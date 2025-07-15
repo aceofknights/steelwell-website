@@ -1,3 +1,11 @@
+<!-- Things to update:
+
+Multiple class sets or sections of names
+
+
+even make blacklist hideable for use in front of class
+-->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,6 +21,30 @@
   </head>
   <body>
     <div class="SeatingChartHeader"><h1>Seating Chart</h1></div>
+
+    <div id="bulk-add-container" style="margin-bottom: 16px">
+      <textarea
+        id="bulk-add-textarea"
+        rows="4"
+        placeholder="Paste student names here, one per line..."
+        style="width: 100%"
+      ></textarea>
+      <button id="bulk-add-btn" style="margin-top: 8px">Add Students</button>
+    </div>
+
+    <button id="addTableBtn">Add New Table</button>
+
+    <div id="listAndChart">
+      <button id="toggleStudentListBtn">☰</button>
+      <!-- Moved outside -->
+      <div id="studentListContainer">
+        <ul id="studentList">
+          <!-- Student list items -->
+        </ul>
+      </div>
+      <div id="classroom"></div>
+    </div>
+
     <div id="nameInputDiv">
       <input
         type="text"
@@ -21,14 +53,6 @@
         placeholder="Enter a student name"
       />
       <button id="addNameBtn">Add Name</button>
-    </div>
-    <button id="addTableBtn">Add New Table</button>
-
-    <div id="listAndChart">
-      <ul id="studentList">
-        <!-- Will be populated dynamically -->
-      </ul>
-      <div id="classroom"></div>
     </div>
 
     <script src="../javascript/Seating_Chart.js"></script>
