@@ -1195,7 +1195,7 @@ function init() {
 
   // Add "Randomize Seating" button below existing buttons
   const randomizeBtn = document.createElement('button');
-  randomizeBtn.textContent = 'Randomize Seating';
+  randomizeBtn.textContent = 'Random seats, or press R';
   randomizeBtn.id = 'randomizeSeatingBtn';
   addTableBtn.parentNode.insertBefore(randomizeBtn, addTableBtn.nextSibling);
   randomizeBtn.addEventListener('click', randomizeSeating);
