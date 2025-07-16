@@ -831,135 +831,322 @@ function shuffleArray(array) {
 // 2. Assign students with blacklists (respecting restrictions)
 // 3. Assign all remaining students randomly
 function randomizeSeating() {
-  // Step 0: Gather all student names and table elements
+    // Step 0: Gather all student names and table elements.
+    // Filter out students who are marked as not present.
     const allStudents = Array.from(manualStudentNames).filter(name => {
-        // A student is considered present if studentsData[name].present is true or undefined (default)
-        return studentsData[name]?.present !== false; 
+        return studentsData[name]?.present !== false;
     });
 
     const tables = Array.from(classroom.querySelectorAll('.table'));
-  // Step 0.5: Check total available seats
-  const totalSeats = tables.reduce((sum, table) => {
-    const count = parseInt(table.querySelector('.seat-count').value);
-    return sum + count;
-  }, 0);
+    const totalSeats = tables.reduce((sum, table) => {
+        const count = parseInt(table.querySelector('.seat-count').value);
+        return sum + count;
+    }, 0);
 
-  if (totalSeats < allStudents.length) {
-    alert(`Not enough seats! You have ${allStudents.length} students but only ${totalSeats} seats.`);
-    return;
-  }
-
-  // Step 1: Build a seat map representing each table's seats
-  // Format: seatsMap = { tableId: [null, null, "StudentName", ...] }
-  const seatsMap = {};
-  tables.forEach(table => {
-    const count = parseInt(table.querySelector('.seat-count').value);
-    seatsMap[table.dataset.id] = new Array(count).fill(null);
-  });
-
-  // Step 2: Assign locked students to their specific seat positions
-  Object.entries(studentsData).forEach(([student, data]) => {
-    if (data.lockedSeat) {
-      const { tableId, seatIndex } = data.lockedSeat;
-      if (seatsMap[tableId] && seatsMap[tableId][seatIndex] === null) {
-        seatsMap[tableId][seatIndex] = student;
-        const idx = allStudents.indexOf(student);
-        if (idx !== -1) allStudents.splice(idx, 1); // Remove from assignment pool
-      }
-    }
-  });
-
-  // Step 3: Categorize remaining students
-  const studentsWithBlacklist = allStudents.filter(
-    s => studentsData[s]?.blacklist?.length > 0
-  );
-  const studentsWithoutBlacklist = allStudents.filter(
-    s => !studentsData[s]?.blacklist?.length
-  );
-
-  // Shuffle both categories for randomness
-  shuffleArray(studentsWithBlacklist);
-  shuffleArray(studentsWithoutBlacklist);
-
-  // --- Helper function ---
-  // Checks if a student can sit at a specific seat of a table
-  function canSitAtSeat(student, tableId, seatIndex) {
-    const blacklist = studentsData[student]?.blacklist || [];
-    const currentTable = seatsMap[tableId];
-
-    // If seat already taken, skip
-    if (currentTable[seatIndex] !== null) return false;
-
-    for (let i = 0; i < currentTable.length; i++) {
-      const otherStudent = currentTable[i];
-      if (!otherStudent) continue;
-
-      // Mutual blacklist checks
-      if (blacklist.includes(otherStudent)) return false;
-      if ((studentsData[otherStudent]?.blacklist || []).includes(student)) return false;
+    // Basic capacity check.
+    if (totalSeats < allStudents.length) {
+        alert(`Not enough seats! You have ${allStudents.length} present students but only ${totalSeats} seats. Please add more tables/seats or adjust attendance.`);
+        return;
     }
 
-    return true;
-  }
+    // Step 1: Build a `seatsMap` to manage assignments in memory.
+    const seatsMap = {};
+    tables.forEach(table => {
+        const count = parseInt(table.querySelector('.seat-count').value);
+        seatsMap[table.dataset.id] = new Array(count).fill(null); // All seats start empty.
+    });
 
-  // --- Assignment function ---
-  // Tries to place a list of students into any available valid seat
-  function assignStudentsList(studentArr) {
-    for (const student of studentArr) {
-      let assigned = false;
+    // Step 2: Assign **locked students** first.
+    Object.entries(studentsData).forEach(([student, data]) => {
+        if (data.lockedSeat) {
+            const { tableId, seatIndex } = data.lockedSeat;
+            if (seatsMap[tableId] && seatsMap[tableId][seatIndex] === null) {
+                seatsMap[tableId][seatIndex] = student;
+                const idx = allStudents.indexOf(student);
+                if (idx !== -1) allStudents.splice(idx, 1); // Remove from general pool.
+            } else {
+                console.warn(`Locked seat for ${student} (Table ID: ${tableId}, Seat: ${seatIndex}) is invalid or already taken. This student will not be locked.`);
+            }
+        }
+    });
 
-      // Shuffle table and seat orders to prevent predictable patterns
-      const shuffledTableIds = Object.keys(seatsMap);
-      shuffleArray(shuffledTableIds);
+    // Step 3: Categorize and shuffle remaining students for initial assignment.
+    const studentsWithBlacklist = allStudents.filter(
+        s => studentsData[s]?.blacklist?.length > 0
+    );
+    const studentsWithoutBlacklist = allStudents.filter(
+        s => !studentsData[s]?.blacklist?.length
+    );
 
-      for (const tableId of shuffledTableIds) {
-        const seatIndices = seatsMap[tableId].map((_, i) => i);
-        shuffleArray(seatIndices);
+    shuffleArray(studentsWithBlacklist);
+    shuffleArray(studentsWithoutBlacklist);
 
-        for (const seatIndex of seatIndices) {
-          if (canSitAtSeat(student, tableId, seatIndex)) {
-            seatsMap[tableId][seatIndex] = student;
-            assigned = true;
-            break;
-          }
+    // --- Helper Function: `canSitAtSeat` ---
+    function canSitAtSeat(student, tableId, seatIndex, currentSeatsMap) {
+        const blacklist = studentsData[student]?.blacklist || [];
+        const currentTableSeats = currentSeatsMap[tableId];
+
+        if (!currentTableSeats || currentTableSeats[seatIndex] !== null) return false;
+
+        for (let i = 0; i < currentTableSeats.length; i++) {
+            const otherStudent = currentTableSeats[i];
+            if (!otherStudent) continue;
+
+            if (blacklist.includes(otherStudent)) return false;
+            if ((studentsData[otherStudent]?.blacklist || []).includes(student)) return false;
+        }
+        return true;
+    }
+
+    // --- Core Assignment Function: `assignStudentsList` ---
+    function assignStudentsList(studentArr) {
+        for (const student of studentArr) {
+            let assigned = false;
+            const shuffledTableIds = Object.keys(seatsMap);
+            shuffleArray(shuffledTableIds);
+
+            for (const tableId of shuffledTableIds) {
+                const seatIndices = seatsMap[tableId].map((_, i) => i);
+                shuffleArray(seatIndices);
+
+                for (const seatIndex of seatIndices) {
+                    if (canSitAtSeat(student, tableId, seatIndex, seatsMap)) {
+                        seatsMap[tableId][seatIndex] = student;
+                        assigned = true;
+                        break;
+                    }
+                }
+                if (assigned) break;
+            }
+
+            if (!assigned) {
+                console.warn(`Could not find a valid seat for ${student} during initial assignment. This student might remain unassigned.`);
+            }
+        }
+    }
+
+    // Step 4: Perform the initial random assignment.
+    assignStudentsList(studentsWithBlacklist);
+    assignStudentsList(studentsWithoutBlacklist);
+
+    let attempt = 0;
+    const maxAttempts = 150; // Increased attempts for more complex scenarios.
+
+    // Loop until no single-person tables are found in an entire pass.
+    while (attempt < maxAttempts) {
+        let singlePersonTables = [];
+        let flexibleStudents = []; // Students without blacklists or locked seats, from tables that can afford to lose them.
+
+        // 1. Identify all tables that currently have exactly one student.
+        for (const tableId in seatsMap) {
+            const studentsAtTable = seatsMap[tableId].filter(s => s !== null);
+            if (studentsAtTable.length === 1) {
+                singlePersonTables.push({
+                    tableId: tableId,
+                    student: studentsAtTable[0],
+                    seatIndex: seatsMap[tableId].indexOf(studentsAtTable[0])
+                });
+            }
         }
 
-        if (assigned) break;
-      }
+        // If no single-person tables exist, we're done.
+        if (singlePersonTables.length === 0) {
+            break;
+        }
 
-      // If no valid seat was found
-      if (!assigned) {
-        alert(`Random error try again.`);
-      }
+        let movedSomeoneInThisAttempt = false; // Flag to check if any move was made in this attempt.
+
+        // Prioritize resolving single-person tables by moving the single student out.
+        for (const singleTableInfo of singlePersonTables) {
+            const { tableId: sourceTableId, student: singleStudent, seatIndex: sourceSeatIndex } = singleTableInfo;
+
+            // Double check if this table is *still* a single-person table with this student.
+            // (It might have been resolved by a previous move within this same `while` loop iteration).
+            if (seatsMap[sourceTableId].filter(s => s !== null).length !== 1 || seatsMap[sourceTableId][sourceSeatIndex] !== singleStudent) {
+                continue; // This table is no longer an issue for this student.
+            }
+
+            // Temporarily remove the single student to find them a new home.
+            seatsMap[sourceTableId][sourceSeatIndex] = null;
+            let movedStudentOut = false;
+
+            // Strategy: Try to move the single student to a table that needs just one more to be multi-person.
+            // Priority 1: Move to a table with exactly one other student and an empty seat.
+            // This immediately solves two problems (source table becomes empty, target table becomes 2-person).
+            const shuffledTableIds = Object.keys(seatsMap);
+            shuffleArray(shuffledTableIds);
+
+            for (const targetTableId of shuffledTableIds) {
+                if (targetTableId === sourceTableId) continue; // Don't move to the same table.
+
+                const targetTableSeats = seatsMap[targetTableId];
+                const studentsAtTargetTable = targetTableSeats.filter(s => s !== null);
+                const emptySeatsAtTargetTable = targetTableSeats.filter(s => s === null).length;
+
+                // Target table must not be full, and must not be a 1-seat table that's currently empty.
+                if (emptySeatsAtTargetTable > 0 && !(studentsAtTargetTable.length === 0 && targetTableSeats.length === 1)) {
+                    // Scenario 1: Target table has exactly one student AND space for the new student.
+                    if (studentsAtTargetTable.length === 1) {
+                        const targetEmptySeatIndex = targetTableSeats.indexOf(null);
+                        if (canSitAtSeat(singleStudent, targetTableId, targetEmptySeatIndex, seatsMap)) {
+                            seatsMap[targetTableId][targetEmptySeatIndex] = singleStudent;
+                            movedStudentOut = true;
+                            movedSomeoneInThisAttempt = true;
+                            break; // Single student successfully moved.
+                        }
+                    }
+                }
+            }
+
+            // If not moved yet (Priority 1 failed), try moving to any table with >1 student and an empty seat.
+            if (!movedStudentOut) {
+                for (const targetTableId of shuffledTableIds) {
+                    if (targetTableId === sourceTableId) continue;
+
+                    const targetTableSeats = seatsMap[targetTableId];
+                    const studentsAtTargetTable = targetTableSeats.filter(s => s !== null);
+                    const emptySeatsAtTargetTable = targetTableSeats.filter(s => s === null).length;
+
+                    // Target table must not be full, must have more than one student, and not be a 1-seat empty table.
+                    if (emptySeatsAtTargetTable > 0 && studentsAtTargetTable.length > 1 && !(studentsAtTargetTable.length === 0 && targetTableSeats.length === 1)) {
+                        const targetEmptySeatIndex = targetTableSeats.indexOf(null);
+                        if (canSitAtSeat(singleStudent, targetTableId, targetEmptySeatIndex, seatsMap)) {
+                            seatsMap[targetTableId][targetEmptySeatIndex] = singleStudent;
+                            movedStudentOut = true;
+                            movedSomeoneInThisAttempt = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // If still not moved (Priority 2 failed), try moving to an *empty* table that has at least 2 seats.
+            if (!movedStudentOut) {
+                for (const targetTableId of shuffledTableIds) {
+                    if (targetTableId === sourceTableId) continue;
+
+                    const targetTableSeats = seatsMap[targetTableId];
+                    const studentsAtTargetTable = targetTableSeats.filter(s => s !== null);
+                    const emptySeatsAtTargetTable = targetTableSeats.filter(s => s === null).length;
+
+                    // Target table must be empty, and have at least 2 seats (so it won't be a permanent 1-person table).
+                    if (studentsAtTargetTable.length === 0 && targetTableSeats.length >= 2 && emptySeatsAtTargetTable >= 1) {
+                        const targetEmptySeatIndex = targetTableSeats.indexOf(null);
+                        if (canSitAtSeat(singleStudent, targetTableId, targetEmptySeatIndex, seatsMap)) {
+                            seatsMap[targetTableId][targetEmptySeatIndex] = singleStudent;
+                            movedStudentOut = true;
+                            movedSomeoneInThisAttempt = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // --- Fallback if the single student could not be moved out ---
+            if (!movedStudentOut) {
+                // If the single student couldn't be moved, put them back for now.
+                seatsMap[sourceTableId][sourceSeatIndex] = singleStudent;
+
+                // Now, try to find a flexible student to move *to* this single-person table.
+                // First, re-identify flexible students for this specific fallback attempt.
+                // This is less efficient but ensures current state.
+                flexibleStudents = [];
+                for (const tableId in seatsMap) {
+                    const currentTable = seatsMap[tableId];
+                    const studentsAtTable = currentTable.filter(s => s !== null);
+                    // Consider tables that are full OR have at least 2 students, and have more than 1 seat total.
+                    if (currentTable.length > 1 && studentsAtTable.length > 1) { 
+                        studentsAtTable.forEach((studentName) => {
+                            const studentData = studentsData[studentName];
+                            if (studentData && !studentData.lockedSeat && (!studentData.blacklist || studentData.blacklist.length === 0)) {
+                                flexibleStudents.push({
+                                    student: studentName,
+                                    originalTableId: tableId,
+                                    originalSeatIndex: currentTable.indexOf(studentName)
+                                });
+                            }
+                        });
+                    }
+                }
+                shuffleArray(flexibleStudents);
+
+                let movedFlexibleStudentIn = false;
+                for (let i = 0; i < flexibleStudents.length; i++) {
+                    const flexibleStudentInfo = flexibleStudents[i];
+                    const { student: flexibleStudent, originalTableId, originalSeatIndex } = flexibleStudentInfo;
+
+                    // Ensure the flexible student is still available and at their spot.
+                    if (seatsMap[originalTableId][originalSeatIndex] !== flexibleStudent) {
+                        continue;
+                    }
+
+                    // Temporarily remove flexible student from their original table to test the move.
+                    seatsMap[originalTableId][originalSeatIndex] = null;
+
+                    // The target table is the single-person table. Find an empty seat there.
+                    const singleTableSeats = seatsMap[sourceTableId]; // Use sourceTableId as target
+                    const targetEmptySeatIndex = singleTableSeats.indexOf(null);
+
+                    if (targetEmptySeatIndex !== -1 && canSitAtSeat(flexibleStudent, sourceTableId, targetEmptySeatIndex, seatsMap)) {
+                        // Crucial: Check if the original table would become a single-person table.
+                        const originalTableStudentsAfterMove = seatsMap[originalTableId].filter(s => s !== null).length;
+                        if (originalTableStudentsAfterMove === 1 && seatsMap[originalTableId].length > 1) {
+                            seatsMap[originalTableId][originalSeatIndex] = flexibleStudent; // Put back.
+                            continue;
+                        }
+
+                        seatsMap[sourceTableId][targetEmptySeatIndex] = flexibleStudent; // Move flexible student to the single-person table.
+                        movedFlexibleStudentIn = true;
+                        movedSomeoneInThisAttempt = true;
+                        // No need to splice flexibleStudents as it's a temp list for fallback.
+                        break;
+                    }
+                    // If check failed, put flexible student back.
+                    seatsMap[originalTableId][originalSeatIndex] = flexibleStudent;
+                }
+
+                if (!movedFlexibleStudentIn) {
+                    // If no move was possible (neither out nor a flexible student in), log a warning.
+                    console.warn(`⚠️ Could not resolve single-person table for ${singleStudent} at table ${sourceTableId}. No valid move found due to current configuration or blacklists.`);
+                }
+            }
+        } // End of loop through `singlePersonTables`.
+
+        // If no students were moved in this entire attempt, it means we're stuck, so break.
+        if (!movedSomeoneInThisAttempt) {
+            break;
+        }
+        attempt++;
     }
-  }
 
-  // Step 4: Assign all students
-  assignStudentsList(studentsWithBlacklist);      // Prioritize restrictions
-  assignStudentsList(studentsWithoutBlacklist);   // Fill in the rest
+    // Final warning if maximum attempts reached, indicating potential unsolvable state.
+    if (attempt === maxAttempts) {
+        console.warn('❗ Reached maximum attempts to resolve single-person tables. Some tables might still have one student. This usually indicates very tight constraints (student count vs. seats, or specific blacklist combinations).');
+    }
+    // --- END REVISED Post-Assignment Adjustment ---
 
-  // Step 5: Apply all assignments to the DOM seats visually
-  tables.forEach(table => {
-    const tableId = table.dataset.id;
-    const seatDivs = table.querySelectorAll('.seat');
+    // Step 5: Apply all assignments from the `seatsMap` to the DOM for visual display.
+    tables.forEach(table => {
+        const tableId = table.dataset.id;
+        const seatDivs = table.querySelectorAll('.seat');
 
-    seatsMap[tableId].forEach((studentName, i) => {
-      const seat = seatDivs[i];
-      seat.dataset.studentName = studentName || '';
+        seatsMap[tableId].forEach((studentName, i) => {
+            const seat = seatDivs[i];
+            seat.dataset.studentName = studentName || '';
 
-      if (studentName) {
-        seat.textContent = studentName;  // Optional: use full name instead
-        seat.title = studentName;
-      } else {
-        seat.textContent = '';
-        seat.title = 'Click to assign student';
-      }
+            if (studentName) {
+                seat.textContent = studentName;
+                seat.title = studentName;
+            } else {
+                seat.textContent = '';
+                seat.title = 'Click to assign student';
+            }
+        });
     });
-  });
 
-  // Final: Update student list and persist to local storage
-  updateStudentList();
-  saveTables();
+    // Final: Update the student list UI and save the current table configuration.
+    updateStudentList();
+    saveTables();
 }
 
 function resetStudentData(studentName) {
