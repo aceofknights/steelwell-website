@@ -1,12 +1,136 @@
 // Global references
-const studentInput = document.getElementById('studentName');
-const addNameBtn = document.getElementById('addNameBtn');
+// const studentInput = document.getElementById('studentName');
+// const addNameBtn = document.getElementById('addNameBtn');
 const addTableBtn = document.getElementById('addTableBtn');
 const studentList = document.getElementById('studentList');
 const classroom = document.getElementById('classroom');
-// #ff06ff
 const seatColors = ['gray', 'pink', '#ff06ff', 'orange', 'blue', 'lightblue', 'yellow', 'green'];
 let dragData = null;
+let currentClass = 'default'; // default starting class
+let classList = [];           // list of all classes (persisted)
+console.log('INITIAL loadClassList():', localStorage.getItem('classList'));
+
+// Each class’s data saved separately in localStorage, key = `seatingChartData_${className}`
+function getStorageKey(className) {
+  return `seatingChartData_${className}`;
+}
+
+function saveCurrentClassData() {
+  saveTables(); // ✅ This already saves tables, students, and names
+}
+
+
+function loadClassData(className) {
+  const saved = localStorage.getItem(getStorageKey(className));
+  if (!saved) {
+    manualStudentNames = new Set();
+    studentsData = {};
+    clearTables();
+    return;
+  }
+  const { tables = [], manualStudentNames: manualNames = [], studentsData: savedStudentsData = {} } = JSON.parse(saved);
+  manualStudentNames = new Set(manualNames);
+  studentsData = savedStudentsData;
+  clearTables();
+  tables.forEach(tableData => createTable(tableData));
+  updateStudentList();
+  updateSeatsFromLocked(true);
+}
+
+function saveClassList() {
+  localStorage.setItem('classList', JSON.stringify(classList));
+}
+
+function loadClassList() {
+  const saved = localStorage.getItem('classList');
+  classList = saved ? JSON.parse(saved) : ['default'];
+  if (!classList.includes('default')) classList.push('default');
+}
+
+const classSelector = document.getElementById('classSelector');
+const addClassBtn = document.getElementById('addClassBtn');
+const deleteClassBtn = document.getElementById('deleteClassBtn');
+
+deleteClassBtn.addEventListener('click', () => {
+  if (currentClass === 'default') {
+    alert("You cannot delete the default class.");
+    return;
+  }
+
+  if (!confirm(`Are you sure you want to delete the class "${currentClass}"? This action cannot be undone.`)) {
+    return;
+  }
+
+  // Remove class data from localStorage
+  localStorage.removeItem(getStorageKey(currentClass));
+
+  // Remove class from classList array
+  const index = classList.indexOf(currentClass);
+  if (index !== -1) {
+    classList.splice(index, 1);
+  }
+
+  // Save updated class list
+  saveClassList();
+
+  // Switch to default class (or first available)
+  currentClass = classList.includes('default') ? 'default' : (classList[0] || null);
+
+  if (currentClass) {
+    refreshClassSelector();
+    loadClassData(currentClass);
+  } else {
+    // No classes left - clear UI accordingly
+    classSelector.innerHTML = '';
+    clearTables();
+    manualStudentNames.clear();
+    studentsData = {};
+    updateStudentList();
+  }
+});
+
+
+function refreshClassSelector() {
+  classSelector.innerHTML = '';
+  classList.forEach(cls => {
+    const option = document.createElement('option');
+    option.value = cls;
+    option.textContent = cls;
+    classSelector.appendChild(option);
+  });
+  classSelector.value = currentClass;
+}
+
+classSelector.addEventListener('change', () => {
+  // Save current class data before switching
+  saveCurrentClassData();
+
+  currentClass = classSelector.value;
+  loadClassData(currentClass);
+});
+
+addClassBtn.addEventListener('click', () => {
+  const newClassName = prompt('Enter new class name:');
+  console.log('Adding class:', newClassName);
+
+  if (!newClassName) return;
+  if (classList.includes(newClassName)) {
+    alert('Class already exists!');
+    return;
+  }
+  // Save current class before switching
+  saveCurrentClassData();
+
+  classList.push(newClassName);
+  currentClass = newClassName;
+  saveClassList();
+  refreshClassSelector();
+  console.log('Refreshed class dropdown:', classList);
+
+  loadClassData(currentClass);
+});
+
+
 
 // Store manually added student names here
 let manualStudentNames = new Set();
@@ -16,7 +140,7 @@ let studentsData = {};
 
 // --- Add student from input box to the student list (manual add) ---
 function addStudent() {
-  const name = studentInput.value.trim();
+  // const name = studentInput.value.trim();
   if (name === '') {
     alert('Please enter a name.');
     return;
@@ -30,7 +154,7 @@ function addStudent() {
     studentsData[name] = { lockedSeat: null, blacklist: [] };
   }
   updateStudentList();
-  studentInput.value = '';
+  // studentInput.value = '';
   saveTables();
 }
 
@@ -63,12 +187,12 @@ function updateStudentList() {
   clearAllBtn.style.display = 'block';
   clearAllBtn.addEventListener('click', () => {
     if (confirm('Are you sure you want to remove ALL students? This cannot be undone.')) {
-      manualStudentNames.length = 0;
+      manualStudentNames.clear();
       for (const name in studentsData) {
         delete studentsData[name];
       }
       updateStudentList();
-      updateSeatsFromLocked();
+      updateSeatsFromLocked(true);
       saveTables();
     }
   });
@@ -116,12 +240,16 @@ function updateStudentList() {
     delete studentsData[name];
 
     // Remove from manual list
-    const index = manualStudentNames.indexOf(name);
-    if (index !== -1) manualStudentNames.splice(index, 1);
+    // const index = manualStudentNames.indexOf(name);
+    // if (index !== -1) manualStudentNames.splice(index, 1);
+
+    manualStudentNames.delete(name);
+
 
     // Clear from all seats
     classroom.querySelectorAll('.seat').forEach(seat => {
-      if (seat.dataset.studentName.trim() === name) {
+      if ((seat.dataset.studentName || '').trim() === name)
+ {
         seat.dataset.studentName = '';
         seat.textContent = '';
             seat.removeAttribute('data-student-name'); // ← ensure this removes ghost data
@@ -356,7 +484,13 @@ function updateSeatsFromLocked(suppressVisual = false) {
 
 
 // --- Save current tables and manual names to localStorage ---
+
 function saveTables() {
+  if (!currentClass) {
+    console.warn('No current class selected, skipping save.');
+    return;
+  }
+
   const tables = [];
   classroom.querySelectorAll('.table').forEach(tableDiv => {
     const id = tableDiv.dataset.id;
@@ -370,7 +504,6 @@ function saveTables() {
       seats.push(seat.dataset.studentName || '');
     });
 
-    // Save table name from input
     const tableNameInput = tableDiv.querySelector('.table-name-input');
     const tableName = tableNameInput ? tableNameInput.value.trim() : '';
 
@@ -384,28 +517,48 @@ function saveTables() {
       tableName,
     });
   });
+
   const saveObj = {
     tables,
     manualStudentNames: Array.from(manualStudentNames),
     studentsData,
   };
-  localStorage.setItem('seatingChartData', JSON.stringify(saveObj));
+
+  localStorage.setItem(getStorageKey(currentClass), JSON.stringify(saveObj));
 }
+
 
 // --- Load tables and manual students from localStorage ---
+
+
 function loadTables() {
-  const saved = localStorage.getItem('seatingChartData');
+  if (!currentClass) {
+    console.warn('No current class selected, skipping load.');
+    return;
+  }
+
+  const saved = localStorage.getItem(getStorageKey(currentClass));
   if (saved) {
     const { tables = [], manualStudentNames: manualNames = [], studentsData: savedStudentsData = {} } = JSON.parse(saved);
-    manualStudentNames = [...manualNames];
+    manualStudentNames = new Set(manualNames);
 
     studentsData = savedStudentsData || {};
+
+    // Clear existing tables before loading new ones
+    clearTables();
+
     tables.forEach(tableData => createTable(tableData));
     updateStudentList();
-    updateSeatsFromLocked(true); // Suppress visual
-
+    updateSeatsFromLocked(true); // Suppress visual update
   }
 }
+
+function clearTables() {
+  while (classroom.firstChild) {
+    classroom.removeChild(classroom.firstChild);
+  }
+}
+
 
 // --- Generate unique ID ---
 function generateId() {
@@ -505,7 +658,7 @@ function createTable(data = {}) {
         seat.title = lockedStudentHere;
       } else if (assignedNames[i]) {
         seat.dataset.studentName = assignedNames[i];
-        seat.textContent = assignedNames;
+        seat.textContent = assignedNames[i];
         seat.title = assignedNames[i];
       } else {
         seat.textContent = '';
@@ -807,19 +960,18 @@ toggleBtn.addEventListener('click', () => {
 
 // --- Initialize event listeners and load saved data ---
 function init() {
-  addNameBtn.addEventListener('click', addStudent);
+  // addNameBtn.addEventListener('click', addStudent);
 
-  studentInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addStudent();
-    }
-  });
+  // studentInput.addEventListener('keydown', (e) => {
+  //   if (e.key === 'Enter') {
+  //     e.preventDefault();
+  //     addStudent();
+  //   }
+  // });
 
   addTableBtn.addEventListener('click', () => {
     createTable();
     saveTables();
-  
   });
 
   // Add "Randomize Seating" button below existing buttons
@@ -832,25 +984,32 @@ function init() {
   loadTables();
 }
 
+// ✅ Correct usage: call `init()` after DOM is ready
+window.addEventListener('DOMContentLoaded', () => {
+  loadClassList();
+  refreshClassSelector();
+  loadClassData(currentClass);
+  init(); // only called once here!
+});
+
+
 document.getElementById('bulk-add-btn').addEventListener('click', () => {
   const textarea = document.getElementById('bulk-add-textarea');
   const rawText = textarea.value.trim();
   if (!rawText) return alert('Please paste some student names first.');
 
-  // Split by line breaks, trim, and filter out empty lines
   const newNames = rawText.split(/\r?\n/).map(name => name.trim()).filter(name => name.length > 0);
-
   let addedCount = 0;
 
   newNames.forEach(name => {
-    if (!manualStudentNames.includes(name)) {
-      manualStudentNames.push(name);
-      // Initialize studentsData entry if missing
-      if (!studentsData[name]) {
-        studentsData[name] = { lockedSeat: null, blacklist: [] };
-      }
-      addedCount++;
+    if (!manualStudentNames.has(name)) {
+      manualStudentNames.add(name);
     }
+
+    if (!studentsData[name]) {
+      studentsData[name] = { lockedSeat: null, blacklist: [] };
+    }
+    addedCount++;
   });
 
   if (addedCount > 0) {
@@ -861,9 +1020,8 @@ document.getElementById('bulk-add-btn').addEventListener('click', () => {
     alert('No new students to add.');
   }
 
-  // Clear textarea after adding
   textarea.value = '';
 });
 
 
-window.addEventListener('DOMContentLoaded', init);
+

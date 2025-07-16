@@ -22,6 +22,14 @@ even make blacklist hideable for use in front of class
   <body>
     <div class="SeatingChartHeader"><h1>Seating Chart</h1></div>
 
+    <div id="classSelectorContainer">
+      <label for="classSelector">Class:</label>
+      <select id="classSelector"></select>
+      <button id="addClassBtn">+ Add Class</button>
+      <button id="deleteClassBtn">🗑️ Delete Class</button>
+      <!-- New button -->
+    </div>
+
     <div id="bulk-add-container" style="margin-bottom: 16px">
       <textarea
         id="bulk-add-textarea"
@@ -45,7 +53,7 @@ even make blacklist hideable for use in front of class
       <div id="classroom"></div>
     </div>
 
-    <div id="nameInputDiv">
+    <!-- <div id="nameInputDiv">
       <input
         type="text"
         name="studentName"
@@ -53,7 +61,7 @@ even make blacklist hideable for use in front of class
         placeholder="Enter a student name"
       />
       <button id="addNameBtn">Add Name</button>
-    </div>
+    </div> -->
 
     <script src="../javascript/Seating_Chart.js"></script>
   </body>
