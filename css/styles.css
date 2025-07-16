@@ -84,7 +84,7 @@
 /* Student List Container slides */
 #studentListContainer {
   position: relative;
-  width: 300px;
+  width: 400px;
   transition: transform 0.4s ease, width 0.4s ease;
   display: flex;
   flex-direction: column;
@@ -129,7 +129,7 @@
 }
 
 #studentList {
-  width: 200px;  /* smaller than container width to allow padding */
+  width: 350px;  /* smaller than container width to allow padding */
   border: 1px solid #ccc;
   padding: 10px;
   list-style: none;

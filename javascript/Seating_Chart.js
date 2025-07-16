@@ -221,6 +221,29 @@ function updateStudentList() {
     buttonGroup.style.display = 'flex';
     buttonGroup.style.gap = '4px';
 
+
+    // Initialize checked state from studentsData (if it exists)
+    // If studentsData[name].present is undefined, it defaults to true (present)
+
+    // Add event listener to update studentsData when attendance changes
+
+
+    //attendence checker
+    const attendanceBtn = document.createElement('input');
+    attendanceBtn.type = 'checkbox';
+    attendanceBtn.checked = true;   
+    attendanceBtn.classList.add('attendance-btn');
+    buttonGroup.appendChild(attendanceBtn);
+    attendanceBtn.checked = studentsData[name]?.present !== false; 
+
+        attendanceBtn.addEventListener('change', () => {
+        if (!studentsData[name]) {
+            studentsData[name] = { lockedSeat: null, blacklist: [] };
+        }
+        studentsData[name].present = attendanceBtn.checked;
+        saveTables(); // Save the updated attendance status
+    });
+
     // === Options Button ===
     const optionsBtn = document.createElement('button');
     optionsBtn.classList.add('options-btn');
@@ -809,8 +832,12 @@ function shuffleArray(array) {
 // 3. Assign all remaining students randomly
 function randomizeSeating() {
   // Step 0: Gather all student names and table elements
-  const allStudents = Array.from(manualStudentNames);
-  const tables = Array.from(classroom.querySelectorAll('.table'));
+    const allStudents = Array.from(manualStudentNames).filter(name => {
+        // A student is considered present if studentsData[name].present is true or undefined (default)
+        return studentsData[name]?.present !== false; 
+    });
+
+    const tables = Array.from(classroom.querySelectorAll('.table'));
   // Step 0.5: Check total available seats
   const totalSeats = tables.reduce((sum, table) => {
     const count = parseInt(table.querySelector('.seat-count').value);
