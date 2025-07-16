@@ -4,7 +4,7 @@
 const addTableBtn = document.getElementById('addTableBtn');
 const studentList = document.getElementById('studentList');
 const classroom = document.getElementById('classroom');
-const seatColors = ['gray', 'pink', '#ff06ff', 'orange', 'blue', 'lightblue', 'yellow', 'green'];
+const seatColors = ['gray', 'pink', '#ff06ff', 'orange', 'blue', 'lightblue', 'yellow', 'green', 'purple', 'red'];
 let dragData = null;
 let currentClass = 'default'; // default starting class
 let classList = [];           // list of all classes (persisted)
@@ -953,6 +953,11 @@ function resetStudentData(studentName) {
 const studentListContainer = document.getElementById('studentListContainer');
 const toggleBtn = document.getElementById('toggleStudentListBtn');
 
+
+
+
+
+
 toggleBtn.addEventListener('click', () => {
   studentListContainer.classList.toggle('hidden');
 });
@@ -1023,5 +1028,52 @@ document.getElementById('bulk-add-btn').addEventListener('click', () => {
   textarea.value = '';
 });
 
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'r') {
+    randomizeSeating()
+    // Code to execute when the 'r' key is pressed
+    console.log('The "r" key was pressed!');
+    // Example: Trigger a function or change an element's style
+    // someFunction();
+    // document.getElementById('myElement').style.backgroundColor = 'red';
+  }
+});
 
+const fullscreenBtn = document.getElementById('fullscreenClassroomBtn');
+const classroomDiv = document.getElementById('classroom');
 
+fullscreenBtn.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    // Request full screen on the classroom div
+    if (classroomDiv.requestFullscreen) {
+      classroomDiv.requestFullscreen();
+    } else if (classroomDiv.webkitRequestFullscreen) { /* Safari */
+      classroomDiv.webkitRequestFullscreen();
+    } else if (classroomDiv.msRequestFullscreen) { /* IE11 */
+      classroomDiv.msRequestFullscreen();
+    }
+    // Add class to enlarge it
+    classroomDiv.classList.add('fullscreen-classroom');
+    fullscreenBtn.textContent = 'Exit Fullscreen';
+  } else {
+    // Exit fullscreen mode
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+    // Remove class to revert size
+    classroomDiv.classList.remove('fullscreen-classroom');
+    fullscreenBtn.textContent = 'Fullscreen Classroom';
+  }
+});
+
+// Also listen for fullscreen change to sync class toggle & button text (handles ESC key)
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) {
+    classroomDiv.classList.remove('fullscreen-classroom');
+    fullscreenBtn.textContent = 'Fullscreen Classroom';
+  }
+});
