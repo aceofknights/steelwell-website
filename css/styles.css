@@ -22,6 +22,23 @@
         align-items: center;     /* vertical centering (if needed) */
       }
 
+/* Container for table + seat selects */
+.seat-assignment {
+  display: flex !important;      /* Force flex layout */
+  flex-direction: column !important; /* Vertical */
+  gap: 8px;
+}
+
+/* Hidden state */
+.seat-assignment.hidden {
+  display: none !important;
+}
+
+
+
+
+
+
       #nameInputDiv{
         margin: 0 auto;
       }
