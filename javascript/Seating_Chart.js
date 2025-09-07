@@ -305,28 +305,43 @@ function updateStudentList() {
     seatToggleLabel.appendChild(seatToggle);
     optionsPanel.appendChild(seatToggleLabel);
 
-    // --- Table & Seat Assignment Selects ---
-    const tableAssignLabel = document.createElement('label');
-    tableAssignLabel.textContent = 'Assign Table: ';
-    const tableAssignSelect = document.createElement('select');
-    tableAssignSelect.classList.add('assign-table');
-    tableAssignLabel.appendChild(tableAssignSelect);
+    
 
-    const seatAssignLabel = document.createElement('label');
-    seatAssignLabel.textContent = 'Assign Seat: ';
-    const seatAssignSelect = document.createElement('select');
-    seatAssignSelect.classList.add('assign-seat');
-    seatAssignLabel.appendChild(seatAssignSelect);
+// Create container
+const seatAssignmentContainer = document.createElement('div');
+seatAssignmentContainer.classList.add('seat-assignment');
 
-    const seatAssignmentContainer = document.createElement('div');
-    seatAssignmentContainer.appendChild(tableAssignLabel);
-    seatAssignmentContainer.appendChild(seatAssignLabel);
-    seatAssignmentContainer.style.display = seatToggle.checked ? 'block' : 'none';
-    optionsPanel.appendChild(seatAssignmentContainer);
+// Table select
+const tableAssignLabel = document.createElement('label');
+tableAssignLabel.textContent = 'Assign Table: ';
+const tableAssignSelect = document.createElement('select');
+tableAssignSelect.classList.add('assign-table');
+tableAssignLabel.appendChild(tableAssignSelect);
+seatAssignmentContainer.appendChild(tableAssignLabel);
 
-    seatToggle.addEventListener('change', () => {
-      seatAssignmentContainer.style.display = seatToggle.checked ? 'block' : 'none';
-    });
+// Seat select
+const seatAssignLabel = document.createElement('label');
+seatAssignLabel.textContent = 'Assign Seat: ';
+const seatAssignSelect = document.createElement('select');
+seatAssignSelect.classList.add('assign-seat');
+seatAssignLabel.appendChild(seatAssignSelect);
+seatAssignmentContainer.appendChild(seatAssignLabel);
+
+// Append once
+optionsPanel.appendChild(seatAssignmentContainer);
+
+function updateSeatAssignmentVisibility() {
+  seatAssignmentContainer.classList.toggle('hidden', !seatToggle.checked);
+}
+
+// Run when checkbox changes
+seatToggle.addEventListener('change', updateSeatAssignmentVisibility);
+
+// Also run immediately when options menu opens
+updateSeatAssignmentVisibility();
+
+
+    
 
     // --- Blacklist Section ---
     const blacklistFieldset = document.createElement('fieldset');
