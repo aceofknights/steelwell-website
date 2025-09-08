@@ -892,8 +892,8 @@ function shuffleArray(array) {
 // 2. Assign students with blacklists (respecting restrictions)
 // 3. Assign all remaining students randomly
 function randomizeSeating() {
-  // Step 0: present students only
-  const allStudents = Array.from(manualStudentNames).filter(
+  // ---------- Step 0: gather present students ----------
+  const pool = Array.from(manualStudentNames).filter(
     name => studentsData[name]?.present !== false
   );
 
@@ -903,8 +903,8 @@ function randomizeSeating() {
     return sum + count;
   }, 0);
 
-  if (totalSeats < allStudents.length) {
-    alert(`Not enough seats! You have ${allStudents.length} present students but only ${totalSeats} seats.`);
+  if (totalSeats < pool.length) {
+    alert(`Not enough seats! You have ${pool.length} present students but only ${totalSeats} seats.`);
     return;
   }
 
@@ -915,22 +915,33 @@ function randomizeSeating() {
     seatsMap[table.dataset.id] = new Array(count).fill(null);
   });
 
+  // ---------- helpers ----------
   function removeFromPool(student) {
-    const idx = allStudents.indexOf(student);
-    if (idx !== -1) allStudents.splice(idx, 1);
+    const idx = pool.indexOf(student);
+    if (idx !== -1) pool.splice(idx, 1);
   }
 
-  // --- helper: blacklist + locks check for a seat
+  function findStudentLocation(map, student) {
+    for (const tId in map) {
+      const idx = map[tId].indexOf(student);
+      if (idx !== -1) return { tableId: tId, seatIndex: idx };
+    }
+    return null;
+  }
+
+  function isStudentSeated(student) {
+    return !!findStudentLocation(seatsMap, student);
+  }
+
+  // check with seat truly empty
   function canSitAtSeat(student, tableId, seatIndex, currentSeatsMap) {
     const data = studentsData[student] || {};
     const blacklist = data.blacklist || [];
     const row = currentSeatsMap[tableId];
     if (!row || row[seatIndex] !== null) return false;
 
-    // enforce table-only lock
     if (data.lockedTable && tableId !== data.lockedTable) return false;
 
-    // enforce exact-seat lock (safety net)
     if (data.lockedSeat) {
       if (data.lockedSeat.tableId !== tableId || data.lockedSeat.seatIndex !== seatIndex) return false;
     }
@@ -945,12 +956,44 @@ function randomizeSeating() {
     return true;
   }
 
-  // --- STEP 1: exact seat locks first
+  // like canSitAtSeat, but allows taking an OCCUPIED seat as long as the occupant will move
+  function canSitIgnoringOccupant(student, tableId, seatIndex, currentSeatsMap) {
+    const data = studentsData[student] || {};
+    const row = currentSeatsMap[tableId];
+    if (!row) return false;
+
+    if (data.lockedTable && tableId !== data.lockedTable) return false;
+    if (data.lockedSeat) {
+      if (data.lockedSeat.tableId !== tableId || data.lockedSeat.seatIndex !== seatIndex) return false;
+    }
+
+    for (let i = 0; i < row.length; i++) {
+      if (i === seatIndex) continue; // pretend this seat is empty (occupant will move)
+      const other = row[i];
+      if (!other) continue;
+      const blacklist = data.blacklist || [];
+      if (blacklist.includes(other)) return false;
+      if ((studentsData[other]?.blacklist || []).includes(student)) return false;
+    }
+    return true;
+  }
+
+  // heuristic score: exact seat > table lock > many blacklists
+  function constraintScore(name) {
+    const d = studentsData[name] || {};
+    let s = 0;
+    if (d.lockedSeat) s += 1000;
+    else if (d.lockedTable) s += 200;
+    s += (d.blacklist?.length || 0);
+    return -s; // more negative = harder
+  }
+
+  // ---------- STEP 1: place exact-seat locks first ----------
   Object.entries(studentsData).forEach(([student, data]) => {
-    if (!data || !data.lockedSeat) return;
-    if (!allStudents.includes(student)) return; // skip absent students
+    if (!data?.lockedSeat) return;
+    if (!pool.includes(student)) return; // absent
     const { tableId, seatIndex } = data.lockedSeat;
-    if (seatsMap[tableId] && seatsMap[tableId][seatIndex] === null) {
+    if (seatsMap[tableId] && seatIndex >= 0 && seatIndex < seatsMap[tableId].length && seatsMap[tableId][seatIndex] === null) {
       seatsMap[tableId][seatIndex] = student;
       removeFromPool(student);
     } else {
@@ -958,11 +1001,14 @@ function randomizeSeating() {
     }
   });
 
-  // --- STEP 2: table-only locks (any valid free seat on that table)
-  const tableLocked = allStudents.filter(s => {
+  // ---------- STEP 2: greedy place table-locks (any valid free seat at that table) ----------
+  const tableLocked = pool.filter(s => {
     const d = studentsData[s];
     return d?.lockedTable && !d?.lockedSeat;
   });
+
+  // randomize a bit for variety
+  shuffleArray(tableLocked);
 
   tableLocked.forEach(student => {
     const tableId = studentsData[student].lockedTable;
@@ -971,35 +1017,28 @@ function randomizeSeating() {
       console.warn(`Locked table for ${student} does not exist: ${tableId}`);
       return;
     }
-    // try every empty seat on that table, shuffled, with blacklist check
     const empties = row.map((v, i) => (v === null ? i : -1)).filter(i => i !== -1);
     shuffleArray(empties);
-    let placed = false;
     for (const seatIndex of empties) {
       if (canSitAtSeat(student, tableId, seatIndex, seatsMap)) {
         row[seatIndex] = student;
-        placed = true;
-        break;
+        removeFromPool(student);
+        return;
       }
     }
-    if (placed) {
-      removeFromPool(student);
-    } else {
-      console.warn(`No valid seat found on locked table for ${student} (${tableId}); will try during main placement.`);
-    }
+    console.warn(`No valid seat found on locked table for ${student} (${tableId}); will try later.`);
   });
 
-  // --- STEP 3: assign remaining (respecting locks via canSitAtSeat)
-  const studentsWithBlacklist = allStudents.filter(s => (studentsData[s]?.blacklist || []).length > 0);
-  const studentsWithoutBlacklist = allStudents.filter(s => !(studentsData[s]?.blacklist || []).length);
+  // ---------- STEP 3: greedy place the rest (respecting locks via canSitAtSeat) ----------
+  const withBlacklist = pool.filter(s => (studentsData[s]?.blacklist || []).length > 0);
+  const withoutBlacklist = pool.filter(s => !(studentsData[s]?.blacklist || []).length);
 
-  shuffleArray(studentsWithBlacklist);
-  shuffleArray(studentsWithoutBlacklist);
+  shuffleArray(withBlacklist);
+  shuffleArray(withoutBlacklist);
 
   function assignStudentsList(studentArr) {
-    for (const student of studentArr) {
+    for (const student of [...studentArr]) {
       let assigned = false;
-      // restrict to locked table if present
       const lockedTableId = studentsData[student]?.lockedTable || null;
       const candidateTableIds = lockedTableId ? [lockedTableId] : Object.keys(seatsMap);
       const shuffledTableIds = [...candidateTableIds];
@@ -1011,6 +1050,7 @@ function randomizeSeating() {
         for (const seatIndex of seatIndices) {
           if (canSitAtSeat(student, tableId, seatIndex, seatsMap)) {
             seatsMap[tableId][seatIndex] = student;
+            removeFromPool(student);     // IMPORTANT: keep pool = unseated only
             assigned = true;
             break;
           }
@@ -1018,15 +1058,130 @@ function randomizeSeating() {
         if (assigned) break;
       }
       if (!assigned) {
-        console.warn(`Could not place ${student} during initial assignment; will try to resolve later.`);
+        // leave in pool for swap-based placement
+        // console.debug(`Greedy could not place ${student}; will try swaps.`);
       }
     }
   }
 
-  assignStudentsList(studentsWithBlacklist);
-  assignStudentsList(studentsWithoutBlacklist);
+  assignStudentsList(withBlacklist);
+  assignStudentsList(withoutBlacklist);
 
-  // --- STEP 4: your existing single-person table balancing (unchanged) ---
+  // ---------- STEP 3.5: safety de-duplication (just in case) ----------
+  // If any student accidentally appears twice (shouldn't now), remove extras and push back to pool.
+  (function dedupeSeats() {
+    const seen = new Set();
+    for (const tId in seatsMap) {
+      const row = seatsMap[tId];
+      for (let i = 0; i < row.length; i++) {
+        const name = row[i];
+        if (!name) continue;
+        if (seen.has(name)) {
+          row[i] = null;
+          if (!pool.includes(name)) pool.push(name);
+        } else {
+          seen.add(name);
+        }
+      }
+    }
+    // ensure pool = present - seen
+    const present = Array.from(manualStudentNames).filter(n => studentsData[n]?.present !== false);
+    const seated = seen;
+    const correctedPool = present.filter(n => !seated.has(n));
+    pool.length = 0;
+    pool.push(...correctedPool);
+  })();
+
+  // ---------- STEP 4: swap-capable placement for leftovers ----------
+  function tryPlace(student, visited = new Set()) {
+    if (isStudentSeated(student)) return true;         // already seated
+    if (visited.has(student)) return false;            // avoid cycles
+    visited.add(student);
+
+    const d = studentsData[student] || {};
+    const tableIds = d.lockedSeat
+      ? [d.lockedSeat.tableId]
+      : d.lockedTable
+      ? [d.lockedTable]
+      : Object.keys(seatsMap);
+
+    const emptyOptions = [];
+    const swapOptions = [];
+
+    for (const tableId of tableIds) {
+      const row = seatsMap[tableId];
+      if (!row) continue;
+
+      for (let seatIndex = 0; seatIndex < row.length; seatIndex++) {
+        const occupant = row[seatIndex];
+
+        if (occupant === null) {
+          if (canSitAtSeat(student, tableId, seatIndex, seatsMap)) {
+            emptyOptions.push({ tableId, seatIndex });
+          }
+        } else {
+          // consider a swap/chain only if occupant is movable
+          const oData = studentsData[occupant] || {};
+          const occupantSwappable =
+            !oData.lockedSeat &&
+            (!oData.lockedTable || oData.lockedTable === tableId); // can move (maybe within same table)
+
+          if (
+            occupantSwappable &&
+            canSitIgnoringOccupant(student, tableId, seatIndex, seatsMap)
+          ) {
+            swapOptions.push({ tableId, seatIndex, occupant });
+          }
+        }
+      }
+    }
+
+    // randomness for variety
+    shuffleArray(emptyOptions);
+    shuffleArray(swapOptions);
+
+    // Try easy: empty seats first
+    for (const { tableId, seatIndex } of emptyOptions) {
+      seatsMap[tableId][seatIndex] = student;
+      // success
+      removeFromPool(student);
+      return true;
+    }
+
+    // Try swaps/chains
+    for (const { tableId, seatIndex, occupant } of swapOptions) {
+      // Move student in, free the occupant
+      const prevLoc = findStudentLocation(seatsMap, student); // should be null
+      const old = occupant;
+      seatsMap[tableId][seatIndex] = student;
+
+      // Temporarily unseat the occupant
+      // (We know exactly where they were: same table+seatIndex)
+      // Now try to place the displaced student somewhere else
+      if (tryPlace(old, visited)) {
+        removeFromPool(student);
+        return true;
+      }
+
+      // Revert
+      seatsMap[tableId][seatIndex] = old;
+      if (prevLoc) seatsMap[prevLoc.tableId][prevLoc.seatIndex] = student; // (prevLoc shouldn't exist here)
+    }
+
+    return false;
+  }
+
+  if (pool.length) {
+    // Order leftovers by difficulty (hardest first)
+    pool.sort((a, b) => constraintScore(a) - constraintScore(b));
+    for (const s of [...pool]) {
+      if (!tryPlace(s)) {
+        console.warn(`Could not place ${s} — constraints may be impossible.`);
+      }
+    }
+  }
+
+  // ---------- STEP 5: (optional) your single-person table balancing (unchanged) ----------
   let attempt = 0;
   const maxAttempts = 150;
   while (attempt < maxAttempts) {
@@ -1048,7 +1203,6 @@ function randomizeSeating() {
     for (const info of singlePersonTables) {
       const { tableId: sourceTableId, student: singleStudent, seatIndex: sourceSeatIndex } = info;
 
-      // do not move students locked to this table or exact seat
       if (studentsData[singleStudent]?.lockedSeat) continue;
       if (studentsData[singleStudent]?.lockedTable === sourceTableId) continue;
 
@@ -1110,9 +1264,9 @@ function randomizeSeating() {
         }
       }
 
-      // Fallback: move a flexible student in (no locks, no blacklists)
+      // Fallback: bring in a flexible student
       if (!movedOut) {
-        seatsMap[sourceTableId][sourceSeatIndex] = singleStudent; // put back for now
+        seatsMap[sourceTableId][sourceSeatIndex] = singleStudent; // put back
 
         const flexible = [];
         for (const tId in seatsMap) {
@@ -1126,7 +1280,6 @@ function randomizeSeating() {
         }
         shuffleArray(flexible);
 
-        let movedFlexIn = false;
         for (const candidate of flexible) {
           const { student: flexStudent, fromTableId, fromIdx } = candidate;
           if (seatsMap[fromTableId][fromIdx] !== flexStudent) continue;
@@ -1137,16 +1290,11 @@ function randomizeSeating() {
             const afterCount = seatsMap[fromTableId].filter(s => s !== null).length;
             if (!(afterCount === 1 && seatsMap[fromTableId].length > 1)) {
               seatsMap[sourceTableId][targetEmptyIdx] = flexStudent;
-              movedFlexIn = true;
               movedSomeone = true;
               break;
             }
           }
           seatsMap[fromTableId][fromIdx] = flexStudent;
-        }
-
-        if (!movedFlexIn) {
-          console.warn(`Could not resolve single-person table for ${singleStudent} at ${sourceTableId}`);
         }
       }
     }
@@ -1159,7 +1307,7 @@ function randomizeSeating() {
     console.warn('Reached max attempts resolving single-person tables.');
   }
 
-  // Write assignments back to DOM
+  // ---------- Write assignments back to DOM ----------
   tables.forEach(table => {
     const tableId = table.dataset.id;
     const seatDivs = table.querySelectorAll('.seat');
@@ -1176,13 +1324,16 @@ function randomizeSeating() {
     });
   });
 
-  if (allStudents.length) {
-    console.warn('Unplaced students after randomization:', allStudents);
+  // Final sanity check & log
+  if (pool.length) {
+    console.warn('Unplaced students after randomization (constraints too tight?):', pool);
   }
 
   updateStudentList();
   saveTables();
 }
+
+
 
 
 
