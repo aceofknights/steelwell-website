@@ -1,6 +1,4 @@
-// Global references
-// const studentInput = document.getElementById('studentName');
-// const addNameBtn = document.getElementById('addNameBtn');
+
 const addTableBtn = document.getElementById('addTableBtn');
 const studentList = document.getElementById('studentList');
 const classroom = document.getElementById('classroom');
@@ -16,7 +14,7 @@ function getStorageKey(className) {
 }
 
 function saveCurrentClassData() {
-  saveTables(); // ✅ This already saves tables, students, and names
+  saveTables(); 
 }
 
 
@@ -173,7 +171,7 @@ function updateStudentList() {
   // --- Ensure studentsData has all names ---
   namesSet.forEach(name => {
     if (!studentsData[name]) {
-      studentsData[name] = { lockedSeat: null, blacklist: [] };
+      studentsData[name] = { lockedSeat: null, lockedTable: null, blacklist: [] };
     }
   });
 
@@ -200,296 +198,318 @@ function updateStudentList() {
 
   // --- Render Sorted Student Names ---
   const namesArray = Array.from(namesSet).sort((a, b) => a.localeCompare(b));
+  
+  
   namesArray.forEach(name => {
-    const li = document.createElement('li');
-    li.dataset.student = name;
-    li.style.display = 'flex';
-    li.style.alignItems = 'center';
-    li.style.justifyContent = 'space-between';
-    li.style.gap = '8px';
+  const li = document.createElement('li');
+  li.dataset.student = name;
+  li.style.display = 'flex';
+  li.style.alignItems = 'center';
+  li.style.justifyContent = 'space-between';
+  li.style.gap = '8px';
 
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = name;
-    nameSpan.style.flex = '1';
-    nameSpan.style.whiteSpace = 'nowrap';
-    nameSpan.style.overflow = 'hidden';
-    nameSpan.style.textOverflow = 'ellipsis';
-    li.appendChild(nameSpan);
+  const nameSpan = document.createElement('span');
+  nameSpan.textContent = name;
+  nameSpan.style.flex = '1';
+  nameSpan.style.whiteSpace = 'nowrap';
+  nameSpan.style.overflow = 'hidden';
+  nameSpan.style.textOverflow = 'ellipsis';
+  li.appendChild(nameSpan);
 
-    const buttonGroup = document.createElement('div');
-    buttonGroup.style.flexShrink = '0';
-    buttonGroup.style.display = 'flex';
-    buttonGroup.style.gap = '4px';
+  const buttonGroup = document.createElement('div');
+  buttonGroup.style.flexShrink = '0';
+  buttonGroup.style.display = 'flex';
+  buttonGroup.style.gap = '4px';
 
+  // === Attendance Checkbox ===
+  const attendanceBtn = document.createElement('input');
+  attendanceBtn.type = 'checkbox';
+  attendanceBtn.checked = studentsData[name]?.present !== false;
+  attendanceBtn.classList.add('attendance-btn');
+  buttonGroup.appendChild(attendanceBtn);
 
-    // Initialize checked state from studentsData (if it exists)
-    // If studentsData[name].present is undefined, it defaults to true (present)
-
-    // Add event listener to update studentsData when attendance changes
-
-
-    //attendence checker
-    const attendanceBtn = document.createElement('input');
-    attendanceBtn.type = 'checkbox';
-    attendanceBtn.checked = true;   
-    attendanceBtn.classList.add('attendance-btn');
-    buttonGroup.appendChild(attendanceBtn);
-    attendanceBtn.checked = studentsData[name]?.present !== false; 
-
-        attendanceBtn.addEventListener('change', () => {
-        if (!studentsData[name]) {
-            studentsData[name] = { lockedSeat: null, blacklist: [] };
-        }
-        studentsData[name].present = attendanceBtn.checked;
-        saveTables(); // Save the updated attendance status
-    });
-
-    // === Options Button ===
-    const optionsBtn = document.createElement('button');
-    optionsBtn.classList.add('options-btn');
-    optionsBtn.textContent = '⚙️';
-    buttonGroup.appendChild(optionsBtn);
-
-    // === Remove Button ===
-    const removeBtn = document.createElement('button');
-    removeBtn.classList.add('remove-student-btn');
-    removeBtn.textContent = '🗑️';
-    removeBtn.title = 'Remove student';
-
-
-    removeBtn.addEventListener('click', () => {
-  if (confirm(`Remove ${name} from the student list?`)) {
-    // Remove from studentsData
-    delete studentsData[name];
-
-    // Remove from manual list
-    // const index = manualStudentNames.indexOf(name);
-    // if (index !== -1) manualStudentNames.splice(index, 1);
-
-    manualStudentNames.delete(name);
-
-
-    // Clear from all seats
-    classroom.querySelectorAll('.seat').forEach(seat => {
-      if ((seat.dataset.studentName || '').trim() === name)
- {
-        seat.dataset.studentName = '';
-        seat.textContent = '';
-            seat.removeAttribute('data-student-name'); // ← ensure this removes ghost data
-
-      }
-    });
-
-    updateStudentList();
-    updateSeatsFromLocked();  // optional if you want to re-render visual changes
+  attendanceBtn.addEventListener('change', () => {
+    if (!studentsData[name]) {
+      studentsData[name] = { lockedSeat: null, lockedTable: null, blacklist: [], present: true };
+    }
+    studentsData[name].present = attendanceBtn.checked;
     saveTables();
-  }
-});
+  });
 
-    buttonGroup.appendChild(removeBtn);
-    li.appendChild(buttonGroup);
+  // === Options Button ===
+  const optionsBtn = document.createElement('button');
+  optionsBtn.classList.add('options-btn');
+  optionsBtn.textContent = '⚙️';
+  buttonGroup.appendChild(optionsBtn);
 
-    // === Options Panel ===
-    const optionsPanel = document.createElement('div');
-    optionsPanel.classList.add('options-panel');
-    optionsPanel.style.display = 'none';
+  // === Remove Button ===
+  const removeBtn = document.createElement('button');
+  removeBtn.classList.add('remove-student-btn');
+  removeBtn.textContent = '🗑️';
+  removeBtn.title = 'Remove student';
 
-    // --- Seat Assignment Toggle ---
-    const seatToggleLabel = document.createElement('label');
-    seatToggleLabel.textContent = 'Assign Seat? ';
-    seatToggleLabel.style.display = 'block';
+  removeBtn.addEventListener('click', () => {
+    if (confirm(`Remove ${name} from the student list?`)) {
+      delete studentsData[name];
+      manualStudentNames.delete(name);
 
-    const seatToggle = document.createElement('input');
-    seatToggle.type = 'checkbox';
-    seatToggle.checked = !!studentsData[name].lockedSeat;
-    seatToggleLabel.appendChild(seatToggle);
-    optionsPanel.appendChild(seatToggleLabel);
-
-    
-
-// Create container
-const seatAssignmentContainer = document.createElement('div');
-seatAssignmentContainer.classList.add('seat-assignment');
-
-// Table select
-const tableAssignLabel = document.createElement('label');
-tableAssignLabel.textContent = 'Assign Table: ';
-const tableAssignSelect = document.createElement('select');
-tableAssignSelect.classList.add('assign-table');
-tableAssignLabel.appendChild(tableAssignSelect);
-seatAssignmentContainer.appendChild(tableAssignLabel);
-
-// Seat select
-const seatAssignLabel = document.createElement('label');
-seatAssignLabel.textContent = 'Assign Seat: ';
-const seatAssignSelect = document.createElement('select');
-seatAssignSelect.classList.add('assign-seat');
-seatAssignLabel.appendChild(seatAssignSelect);
-seatAssignmentContainer.appendChild(seatAssignLabel);
-
-// Append once
-optionsPanel.appendChild(seatAssignmentContainer);
-
-function updateSeatAssignmentVisibility() {
-  seatAssignmentContainer.classList.toggle('hidden', !seatToggle.checked);
-}
-
-// Run when checkbox changes
-seatToggle.addEventListener('change', updateSeatAssignmentVisibility);
-
-// Also run immediately when options menu opens
-updateSeatAssignmentVisibility();
-
-
-    
-
-    // --- Blacklist Section ---
-    const blacklistFieldset = document.createElement('fieldset');
-    const blacklistLegend = document.createElement('legend');
-    blacklistLegend.textContent = 'Blacklist Students';
-    blacklistFieldset.appendChild(blacklistLegend);
-    optionsPanel.appendChild(blacklistFieldset);
-
-    // --- Action Buttons ---
-    const resetBtn = document.createElement('button');
-    resetBtn.classList.add('reset-options-btn');
-    resetBtn.textContent = 'Reset';
-    resetBtn.style.marginRight = '8px';
-    resetBtn.addEventListener('click', () => {
-      if (confirm(`Reset all settings for ${name}?`)) {
-        delete studentsData[name].lockedSeat;
-        delete studentsData[name].blacklist;
-        optionsPanel.style.display = 'none';
-        updateStudentList();
-        saveTables();
-      }
-    });
-
-    const saveBtn = document.createElement('button');
-    saveBtn.classList.add('save-options-btn');
-    saveBtn.textContent = 'Save';
-
-    const cancelBtn = document.createElement('button');
-    cancelBtn.classList.add('cancel-options-btn');
-    cancelBtn.textContent = 'Cancel';
-
-    optionsPanel.appendChild(resetBtn);
-    optionsPanel.appendChild(saveBtn);
-    optionsPanel.appendChild(cancelBtn);
-    li.appendChild(optionsPanel);
-    studentList.appendChild(li);
-
-    // === Helpers ===
-    function refreshTableOptions() {
-      tableAssignSelect.innerHTML = '';
-      const tables = classroom.querySelectorAll('.table');
-      tables.forEach(table => {
-        const inputName = table.querySelector('.table-name-input');
-        const tableName = inputName ? inputName.value.trim() : 'Unnamed Table';
-        const option = document.createElement('option');
-        option.value = table.dataset.id;
-        option.textContent = tableName || 'Unnamed Table';
-        tableAssignSelect.appendChild(option);
-      });
-    }
-
-    function refreshSeatOptions() {
-      seatAssignSelect.innerHTML = '';
-      const tableId = tableAssignSelect.value;
-      const tableDiv = classroom.querySelector(`.table[data-id="${tableId}"]`);
-      if (!tableDiv) return;
-      const seats = tableDiv.querySelectorAll('.seat');
-
-      seats.forEach((seat, index) => {
-        const lockedByOther = Object.entries(studentsData).some(([otherName, data]) => {
-          return otherName !== name &&
-            data.lockedSeat &&
-            data.lockedSeat.tableId === tableId &&
-            data.lockedSeat.seatIndex === index;
-        });
-
-        if (!lockedByOther) {
-          const option = document.createElement('option');
-          option.value = index;
-          option.textContent = `Seat ${index + 1}`;
-          seatAssignSelect.appendChild(option);
+      // Clear this student from all seats
+      classroom.querySelectorAll('.seat').forEach(seat => {
+        if ((seat.dataset.studentName || '').trim() === name) {
+          seat.dataset.studentName = '';
+          seat.textContent = '';
+          seat.removeAttribute('data-student-name');
         }
       });
-    }
 
-    function refreshBlacklistOptions() {
-      blacklistFieldset.innerHTML = '';
-      blacklistFieldset.appendChild(blacklistLegend);
-      const others = namesArray.filter(n => n !== name);
-      others.forEach(other => {
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.value = other;
-        checkbox.id = `blacklist-${name}-${other}`;
-        checkbox.checked = studentsData[name]?.blacklist?.includes(other);
-
-        const label = document.createElement('label');
-        label.htmlFor = checkbox.id;
-        label.textContent = other;
-
-        blacklistFieldset.appendChild(checkbox);
-        blacklistFieldset.appendChild(label);
-        blacklistFieldset.appendChild(document.createElement('br'));
-      });
-    }
-
-    // === Events ===
-    optionsBtn.addEventListener('click', () => {
-      if (optionsPanel.style.display === 'none') {
-        refreshTableOptions();
-        refreshBlacklistOptions();
-        const locked = studentsData[name]?.lockedSeat;
-        if (locked) {
-          seatToggle.checked = true;
-          seatAssignmentContainer.style.display = 'block';
-          tableAssignSelect.value = locked.tableId || '';
-        } else {
-          seatToggle.checked = false;
-          seatAssignmentContainer.style.display = 'none';
-        }
-        refreshSeatOptions();
-        optionsPanel.style.display = 'block';
-      } else {
-        optionsPanel.style.display = 'none';
-      }
-    });
-
-    tableAssignSelect.addEventListener('change', refreshSeatOptions);
-
-    saveBtn.addEventListener('click', () => {
-      if (seatToggle.checked) {
-        const tableId = tableAssignSelect.value;
-        const seatIndex = parseInt(seatAssignSelect.value);
-        if (tableId && !isNaN(seatIndex)) {
-          studentsData[name].lockedSeat = { tableId, seatIndex };
-        }
-      } else {
-        studentsData[name].lockedSeat = null;
-      }
-
-      const checkedBoxes = blacklistFieldset.querySelectorAll('input[type=checkbox]:checked');
-      studentsData[name].blacklist = Array.from(checkedBoxes).map(cb => cb.value);
-
-      optionsPanel.style.display = 'none';
+      updateStudentList();
       updateSeatsFromLocked();
+      saveTables();
+    }
+  });
+
+  buttonGroup.appendChild(removeBtn);
+  li.appendChild(buttonGroup);
+
+  // === Options Panel ===
+  const optionsPanel = document.createElement('div');
+  optionsPanel.classList.add('options-panel');
+  optionsPanel.style.display = 'none';
+
+  // --- Lock type radios ---
+  const lockTypeWrapper = document.createElement('div');
+  lockTypeWrapper.classList.add('lock-type-wrapper');
+
+  function mkRadio(value, labelText) {
+    const id = `lock-${value}-${name}`;
+    const r = document.createElement('input');
+    r.type = 'radio';
+    r.name = `lockType-${name}`;
+    r.value = value;
+    r.id = id;
+
+    const lab = document.createElement('label');
+    lab.htmlFor = id;
+    lab.style.marginRight = '8px';
+    lab.appendChild(r);
+    lab.append(` ${labelText}`);
+    return { r, lab };
+  }
+  
+
+  const noneRadio = mkRadio('none', 'No lock');
+  const tableRadio = mkRadio('table', 'Lock to Table');
+  const seatRadio  = mkRadio('seat',  'Lock to Seat');
+
+  lockTypeWrapper.appendChild(noneRadio.lab);
+  lockTypeWrapper.appendChild(tableRadio.lab);
+  lockTypeWrapper.appendChild(seatRadio.lab);
+  optionsPanel.appendChild(lockTypeWrapper);
+
+  // --- Table & Seat selects ---
+  const seatAssignmentContainer = document.createElement('div');
+  seatAssignmentContainer.classList.add('seat-assignment');
+
+  const tableAssignLabel = document.createElement('label');
+  tableAssignLabel.textContent = 'Assign Table: ';
+  const tableAssignSelect = document.createElement('select');
+  tableAssignSelect.classList.add('assign-table');
+  tableAssignLabel.appendChild(tableAssignSelect);
+
+  const seatAssignLabel = document.createElement('label');
+  seatAssignLabel.textContent = 'Assign Seat: ';
+  const seatAssignSelect = document.createElement('select');
+  seatAssignSelect.classList.add('assign-seat');
+  seatAssignLabel.appendChild(seatAssignSelect);
+
+  seatAssignmentContainer.appendChild(tableAssignLabel);
+  seatAssignmentContainer.appendChild(seatAssignLabel);
+  optionsPanel.appendChild(seatAssignmentContainer);
+
+  function updateLockUI() {
+    const selected = optionsPanel.querySelector(`input[name=lockType-${name}]:checked`);
+    const val = selected ? selected.value : 'none';
+    tableAssignLabel.style.display = (val === 'none') ? 'none' : 'block';
+    seatAssignLabel.style.display = (val === 'seat') ? 'block' : 'none';
+  }
+
+  // --- Blacklist Section ---
+  const blacklistFieldset = document.createElement('fieldset');
+  const blacklistLegend = document.createElement('legend');
+  blacklistLegend.textContent = 'Blacklist Students';
+  blacklistFieldset.appendChild(blacklistLegend);
+  optionsPanel.appendChild(blacklistFieldset);
+
+  // --- Action Buttons ---
+  const resetBtn = document.createElement('button');
+  resetBtn.classList.add('reset-options-btn');
+  resetBtn.textContent = 'Reset';
+  resetBtn.style.marginRight = '8px';
+
+  const saveBtn = document.createElement('button');
+  saveBtn.classList.add('save-options-btn');
+  saveBtn.textContent = 'Save';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.classList.add('cancel-options-btn');
+  cancelBtn.textContent = 'Cancel';
+
+  optionsPanel.appendChild(resetBtn);
+  optionsPanel.appendChild(saveBtn);
+  optionsPanel.appendChild(cancelBtn);
+  li.appendChild(optionsPanel);
+  studentList.appendChild(li);
+
+  // === Helpers ===
+  function refreshTableOptions() {
+    tableAssignSelect.innerHTML = '';
+    const tables = classroom.querySelectorAll('.table');
+    tables.forEach(table => {
+      const inputName = table.querySelector('.table-name-input');
+      const tableName = inputName ? inputName.value.trim() : 'Unnamed Table';
+      const option = document.createElement('option');
+      option.value = table.dataset.id;
+      option.textContent = tableName || 'Unnamed Table';
+      tableAssignSelect.appendChild(option);
+    });
+  }
+
+  function refreshSeatOptions() {
+    seatAssignSelect.innerHTML = '';
+    const tableId = tableAssignSelect.value;
+    const tableDiv = classroom.querySelector(`.table[data-id="${tableId}"]`);
+    if (!tableDiv) return;
+    const seats = tableDiv.querySelectorAll('.seat');
+    seats.forEach((seat, index) => {
+      const lockedByOther = Object.entries(studentsData).some(([otherName, data]) => {
+        return otherName !== name &&
+               data.lockedSeat &&
+               data.lockedSeat.tableId === tableId &&
+               data.lockedSeat.seatIndex === index;
+      });
+      if (!lockedByOther) {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `Seat ${index + 1}`;
+        seatAssignSelect.appendChild(option);
+      }
+    });
+  }
+
+  function refreshBlacklistOptions() {
+    blacklistFieldset.innerHTML = '';
+    blacklistFieldset.appendChild(blacklistLegend);
+    const others = namesArray.filter(n => n !== name);
+    others.forEach(other => {
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.value = other;
+      checkbox.id = `blacklist-${name}-${other}`;
+      checkbox.checked = studentsData[name]?.blacklist?.includes(other);
+
+      const label = document.createElement('label');
+      label.htmlFor = checkbox.id;
+      label.textContent = other;
+
+      blacklistFieldset.appendChild(checkbox);
+      blacklistFieldset.appendChild(label);
+      blacklistFieldset.appendChild(document.createElement('br'));
+    });
+  }
+
+  // === Events ===
+  optionsBtn.addEventListener('click', () => {
+    if (optionsPanel.style.display === 'none') {
+      refreshTableOptions();
+      refreshBlacklistOptions();
+
+      const sData = studentsData[name] || {};
+      if (sData.lockedSeat) {
+        seatRadio.r.checked = true;
+        tableAssignSelect.value = sData.lockedSeat.tableId || '';
+        refreshSeatOptions();
+        seatAssignSelect.value = String(sData.lockedSeat.seatIndex);
+      } else if (sData.lockedTable) {
+        tableRadio.r.checked = true;
+        tableAssignSelect.value = sData.lockedTable;
+        refreshSeatOptions();
+      } else {
+        noneRadio.r.checked = true;
+      }
+
+      updateLockUI();
+      optionsPanel.style.display = 'block';
+    } else {
+      optionsPanel.style.display = 'none';
+    }
+  });
+
+  lockTypeWrapper.addEventListener('change', updateLockUI);
+  tableAssignSelect.addEventListener('change', refreshSeatOptions);
+
+  resetBtn.addEventListener('click', () => {
+    if (confirm(`Reset all settings for ${name}?`)) {
+      if (studentsData[name]) {
+        studentsData[name].lockedSeat = null;
+        studentsData[name].lockedTable = null;
+        studentsData[name].blacklist = [];
+      }
+      optionsPanel.style.display = 'none';
       updateStudentList();
       saveTables();
-    });
-
-    cancelBtn.addEventListener('click', () => {
-      optionsPanel.style.display = 'none';
-    });
+    }
   });
+
+  saveBtn.addEventListener('click', () => {
+    const selected = optionsPanel.querySelector(`input[name=lockType-${name}]:checked`);
+    const lockVal = selected ? selected.value : 'none';
+
+    if ((lockVal === 'table' || lockVal === 'seat') && !tableAssignSelect.value) {
+      alert('Please select a table.');
+      return;
+    }
+    if (lockVal === 'seat' && !seatAssignSelect.value) {
+      alert('Please select a seat.');
+      return;
+    }
+
+    if (!studentsData[name]) {
+      studentsData[name] = { lockedSeat: null, lockedTable: null, blacklist: [], present: true };
+    }
+
+    if (lockVal === 'seat') {
+      studentsData[name].lockedSeat = {
+        tableId: tableAssignSelect.value,
+        seatIndex: parseInt(seatAssignSelect.value, 10)
+      };
+      studentsData[name].lockedTable = null;
+    } else if (lockVal === 'table') {
+      studentsData[name].lockedTable = tableAssignSelect.value;
+      studentsData[name].lockedSeat = null;
+    } else {
+      studentsData[name].lockedSeat = null;
+      studentsData[name].lockedTable = null;
+    }
+
+    const checkedBoxes = blacklistFieldset.querySelectorAll('input[type=checkbox]:checked');
+    studentsData[name].blacklist = Array.from(checkedBoxes).map(cb => cb.value);
+
+    optionsPanel.style.display = 'none';
+    updateSeatsFromLocked();
+    updateStudentList();
+    saveTables();
+  });
+
+  cancelBtn.addEventListener('click', () => {
+    optionsPanel.style.display = 'none';
+  });
+});
+
 }
 
 
 
-// --- Apply locked seat assignments to seats in UI ---
+// --- Apply locked seat & table assignments to seats in UI ---
 function updateSeatsFromLocked(suppressVisual = false) {
   // Clear all seats first
   classroom.querySelectorAll('.seat').forEach(seat => {
@@ -498,7 +518,7 @@ function updateSeatsFromLocked(suppressVisual = false) {
     seat.title = 'Click to assign student';
   });
 
-  // Assign locked seats in data only, optionally suppressing visual
+  // --- STEP 1: Exact seat locks ---
   Object.entries(studentsData).forEach(([student, data]) => {
     if (data.lockedSeat) {
       const { tableId, seatIndex } = data.lockedSeat;
@@ -518,7 +538,33 @@ function updateSeatsFromLocked(suppressVisual = false) {
       }
     }
   });
+
+  // --- STEP 2: Table-only locks ---
+  Object.entries(studentsData).forEach(([student, data]) => {
+    if (data.lockedTable && !data.lockedSeat) {
+      const table = classroom.querySelector(`.table[data-id="${data.lockedTable}"]`);
+      if (!table) return;
+
+      // Find the first free seat in this table
+      const freeSeat = Array.from(table.querySelectorAll('.seat'))
+        .find(seat => !seat.dataset.studentName);
+
+      if (freeSeat) {
+        freeSeat.dataset.studentName = student;
+
+        if (!suppressVisual) {
+          freeSeat.textContent = student;
+          freeSeat.title = student;
+        } else {
+          freeSeat.textContent = '';
+          freeSeat.title = 'Click to assign student';
+        }
+      }
+    }
+  });
 }
+
+
 
 
 // --- Save current tables and manual names to localStorage ---
@@ -846,323 +892,300 @@ function shuffleArray(array) {
 // 2. Assign students with blacklists (respecting restrictions)
 // 3. Assign all remaining students randomly
 function randomizeSeating() {
-    // Step 0: Gather all student names and table elements.
-    // Filter out students who are marked as not present.
-    const allStudents = Array.from(manualStudentNames).filter(name => {
-        return studentsData[name]?.present !== false;
-    });
+  // Step 0: present students only
+  const allStudents = Array.from(manualStudentNames).filter(
+    name => studentsData[name]?.present !== false
+  );
 
-    const tables = Array.from(classroom.querySelectorAll('.table'));
-    const totalSeats = tables.reduce((sum, table) => {
-        const count = parseInt(table.querySelector('.seat-count').value);
-        return sum + count;
-    }, 0);
+  const tables = Array.from(classroom.querySelectorAll('.table'));
+  const totalSeats = tables.reduce((sum, table) => {
+    const count = parseInt(table.querySelector('.seat-count').value, 10) || 0;
+    return sum + count;
+  }, 0);
 
-    // Basic capacity check.
-    if (totalSeats < allStudents.length) {
-        alert(`Not enough seats! You have ${allStudents.length} present students but only ${totalSeats} seats. Please add more tables/seats or adjust attendance.`);
-        return;
+  if (totalSeats < allStudents.length) {
+    alert(`Not enough seats! You have ${allStudents.length} present students but only ${totalSeats} seats.`);
+    return;
+  }
+
+  // seatsMap: { tableId: [null, null, ...] }
+  const seatsMap = {};
+  tables.forEach(table => {
+    const count = parseInt(table.querySelector('.seat-count').value, 10) || 0;
+    seatsMap[table.dataset.id] = new Array(count).fill(null);
+  });
+
+  function removeFromPool(student) {
+    const idx = allStudents.indexOf(student);
+    if (idx !== -1) allStudents.splice(idx, 1);
+  }
+
+  // --- helper: blacklist + locks check for a seat
+  function canSitAtSeat(student, tableId, seatIndex, currentSeatsMap) {
+    const data = studentsData[student] || {};
+    const blacklist = data.blacklist || [];
+    const row = currentSeatsMap[tableId];
+    if (!row || row[seatIndex] !== null) return false;
+
+    // enforce table-only lock
+    if (data.lockedTable && tableId !== data.lockedTable) return false;
+
+    // enforce exact-seat lock (safety net)
+    if (data.lockedSeat) {
+      if (data.lockedSeat.tableId !== tableId || data.lockedSeat.seatIndex !== seatIndex) return false;
     }
 
-    // Step 1: Build a `seatsMap` to manage assignments in memory.
-    const seatsMap = {};
-    tables.forEach(table => {
-        const count = parseInt(table.querySelector('.seat-count').value);
-        seatsMap[table.dataset.id] = new Array(count).fill(null); // All seats start empty.
-    });
-
-    // Step 2: Assign **locked students** first.
-    Object.entries(studentsData).forEach(([student, data]) => {
-        if (data.lockedSeat) {
-            const { tableId, seatIndex } = data.lockedSeat;
-            if (seatsMap[tableId] && seatsMap[tableId][seatIndex] === null) {
-                seatsMap[tableId][seatIndex] = student;
-                const idx = allStudents.indexOf(student);
-                if (idx !== -1) allStudents.splice(idx, 1); // Remove from general pool.
-            } else {
-                console.warn(`Locked seat for ${student} (Table ID: ${tableId}, Seat: ${seatIndex}) is invalid or already taken. This student will not be locked.`);
-            }
-        }
-    });
-
-    // Step 3: Categorize and shuffle remaining students for initial assignment.
-    const studentsWithBlacklist = allStudents.filter(
-        s => studentsData[s]?.blacklist?.length > 0
-    );
-    const studentsWithoutBlacklist = allStudents.filter(
-        s => !studentsData[s]?.blacklist?.length
-    );
-
-    shuffleArray(studentsWithBlacklist);
-    shuffleArray(studentsWithoutBlacklist);
-
-    // --- Helper Function: `canSitAtSeat` ---
-    function canSitAtSeat(student, tableId, seatIndex, currentSeatsMap) {
-        const blacklist = studentsData[student]?.blacklist || [];
-        const currentTableSeats = currentSeatsMap[tableId];
-
-        if (!currentTableSeats || currentTableSeats[seatIndex] !== null) return false;
-
-        for (let i = 0; i < currentTableSeats.length; i++) {
-            const otherStudent = currentTableSeats[i];
-            if (!otherStudent) continue;
-
-            if (blacklist.includes(otherStudent)) return false;
-            if ((studentsData[otherStudent]?.blacklist || []).includes(student)) return false;
-        }
-        return true;
+    // mutual blacklist check within the same table
+    for (let i = 0; i < row.length; i++) {
+      const other = row[i];
+      if (!other) continue;
+      if (blacklist.includes(other)) return false;
+      if ((studentsData[other]?.blacklist || []).includes(student)) return false;
     }
+    return true;
+  }
 
-    // --- Core Assignment Function: `assignStudentsList` ---
-    function assignStudentsList(studentArr) {
-        for (const student of studentArr) {
-            let assigned = false;
-            const shuffledTableIds = Object.keys(seatsMap);
-            shuffleArray(shuffledTableIds);
-
-            for (const tableId of shuffledTableIds) {
-                const seatIndices = seatsMap[tableId].map((_, i) => i);
-                shuffleArray(seatIndices);
-
-                for (const seatIndex of seatIndices) {
-                    if (canSitAtSeat(student, tableId, seatIndex, seatsMap)) {
-                        seatsMap[tableId][seatIndex] = student;
-                        assigned = true;
-                        break;
-                    }
-                }
-                if (assigned) break;
-            }
-
-            if (!assigned) {
-                console.warn(`Could not find a valid seat for ${student} during initial assignment. This student might remain unassigned.`);
-            }
-        }
+  // --- STEP 1: exact seat locks first
+  Object.entries(studentsData).forEach(([student, data]) => {
+    if (!data || !data.lockedSeat) return;
+    if (!allStudents.includes(student)) return; // skip absent students
+    const { tableId, seatIndex } = data.lockedSeat;
+    if (seatsMap[tableId] && seatsMap[tableId][seatIndex] === null) {
+      seatsMap[tableId][seatIndex] = student;
+      removeFromPool(student);
+    } else {
+      console.warn(`Locked seat invalid/taken for ${student} (table=${tableId}, seat=${seatIndex}).`);
     }
+  });
 
-    // Step 4: Perform the initial random assignment.
-    assignStudentsList(studentsWithBlacklist);
-    assignStudentsList(studentsWithoutBlacklist);
+  // --- STEP 2: table-only locks (any valid free seat on that table)
+  const tableLocked = allStudents.filter(s => {
+    const d = studentsData[s];
+    return d?.lockedTable && !d?.lockedSeat;
+  });
 
-    let attempt = 0;
-    const maxAttempts = 150; // Increased attempts for more complex scenarios.
+  tableLocked.forEach(student => {
+    const tableId = studentsData[student].lockedTable;
+    const row = seatsMap[tableId];
+    if (!row) {
+      console.warn(`Locked table for ${student} does not exist: ${tableId}`);
+      return;
+    }
+    // try every empty seat on that table, shuffled, with blacklist check
+    const empties = row.map((v, i) => (v === null ? i : -1)).filter(i => i !== -1);
+    shuffleArray(empties);
+    let placed = false;
+    for (const seatIndex of empties) {
+      if (canSitAtSeat(student, tableId, seatIndex, seatsMap)) {
+        row[seatIndex] = student;
+        placed = true;
+        break;
+      }
+    }
+    if (placed) {
+      removeFromPool(student);
+    } else {
+      console.warn(`No valid seat found on locked table for ${student} (${tableId}); will try during main placement.`);
+    }
+  });
 
-    // Loop until no single-person tables are found in an entire pass.
-    while (attempt < maxAttempts) {
-        let singlePersonTables = [];
-        let flexibleStudents = []; // Students without blacklists or locked seats, from tables that can afford to lose them.
+  // --- STEP 3: assign remaining (respecting locks via canSitAtSeat)
+  const studentsWithBlacklist = allStudents.filter(s => (studentsData[s]?.blacklist || []).length > 0);
+  const studentsWithoutBlacklist = allStudents.filter(s => !(studentsData[s]?.blacklist || []).length);
 
-        // 1. Identify all tables that currently have exactly one student.
-        for (const tableId in seatsMap) {
-            const studentsAtTable = seatsMap[tableId].filter(s => s !== null);
-            if (studentsAtTable.length === 1) {
-                singlePersonTables.push({
-                    tableId: tableId,
-                    student: studentsAtTable[0],
-                    seatIndex: seatsMap[tableId].indexOf(studentsAtTable[0])
-                });
-            }
-        }
+  shuffleArray(studentsWithBlacklist);
+  shuffleArray(studentsWithoutBlacklist);
 
-        // If no single-person tables exist, we're done.
-        if (singlePersonTables.length === 0) {
+  function assignStudentsList(studentArr) {
+    for (const student of studentArr) {
+      let assigned = false;
+      // restrict to locked table if present
+      const lockedTableId = studentsData[student]?.lockedTable || null;
+      const candidateTableIds = lockedTableId ? [lockedTableId] : Object.keys(seatsMap);
+      const shuffledTableIds = [...candidateTableIds];
+      shuffleArray(shuffledTableIds);
+
+      for (const tableId of shuffledTableIds) {
+        const seatIndices = seatsMap[tableId].map((_, i) => i);
+        shuffleArray(seatIndices);
+        for (const seatIndex of seatIndices) {
+          if (canSitAtSeat(student, tableId, seatIndex, seatsMap)) {
+            seatsMap[tableId][seatIndex] = student;
+            assigned = true;
             break;
+          }
         }
-
-        let movedSomeoneInThisAttempt = false; // Flag to check if any move was made in this attempt.
-
-        // Prioritize resolving single-person tables by moving the single student out.
-        for (const singleTableInfo of singlePersonTables) {
-            const { tableId: sourceTableId, student: singleStudent, seatIndex: sourceSeatIndex } = singleTableInfo;
-
-            // Double check if this table is *still* a single-person table with this student.
-            // (It might have been resolved by a previous move within this same `while` loop iteration).
-            if (seatsMap[sourceTableId].filter(s => s !== null).length !== 1 || seatsMap[sourceTableId][sourceSeatIndex] !== singleStudent) {
-                continue; // This table is no longer an issue for this student.
-            }
-
-            // Temporarily remove the single student to find them a new home.
-            seatsMap[sourceTableId][sourceSeatIndex] = null;
-            let movedStudentOut = false;
-
-            // Strategy: Try to move the single student to a table that needs just one more to be multi-person.
-            // Priority 1: Move to a table with exactly one other student and an empty seat.
-            // This immediately solves two problems (source table becomes empty, target table becomes 2-person).
-            const shuffledTableIds = Object.keys(seatsMap);
-            shuffleArray(shuffledTableIds);
-
-            for (const targetTableId of shuffledTableIds) {
-                if (targetTableId === sourceTableId) continue; // Don't move to the same table.
-
-                const targetTableSeats = seatsMap[targetTableId];
-                const studentsAtTargetTable = targetTableSeats.filter(s => s !== null);
-                const emptySeatsAtTargetTable = targetTableSeats.filter(s => s === null).length;
-
-                // Target table must not be full, and must not be a 1-seat table that's currently empty.
-                if (emptySeatsAtTargetTable > 0 && !(studentsAtTargetTable.length === 0 && targetTableSeats.length === 1)) {
-                    // Scenario 1: Target table has exactly one student AND space for the new student.
-                    if (studentsAtTargetTable.length === 1) {
-                        const targetEmptySeatIndex = targetTableSeats.indexOf(null);
-                        if (canSitAtSeat(singleStudent, targetTableId, targetEmptySeatIndex, seatsMap)) {
-                            seatsMap[targetTableId][targetEmptySeatIndex] = singleStudent;
-                            movedStudentOut = true;
-                            movedSomeoneInThisAttempt = true;
-                            break; // Single student successfully moved.
-                        }
-                    }
-                }
-            }
-
-            // If not moved yet (Priority 1 failed), try moving to any table with >1 student and an empty seat.
-            if (!movedStudentOut) {
-                for (const targetTableId of shuffledTableIds) {
-                    if (targetTableId === sourceTableId) continue;
-
-                    const targetTableSeats = seatsMap[targetTableId];
-                    const studentsAtTargetTable = targetTableSeats.filter(s => s !== null);
-                    const emptySeatsAtTargetTable = targetTableSeats.filter(s => s === null).length;
-
-                    // Target table must not be full, must have more than one student, and not be a 1-seat empty table.
-                    if (emptySeatsAtTargetTable > 0 && studentsAtTargetTable.length > 1 && !(studentsAtTargetTable.length === 0 && targetTableSeats.length === 1)) {
-                        const targetEmptySeatIndex = targetTableSeats.indexOf(null);
-                        if (canSitAtSeat(singleStudent, targetTableId, targetEmptySeatIndex, seatsMap)) {
-                            seatsMap[targetTableId][targetEmptySeatIndex] = singleStudent;
-                            movedStudentOut = true;
-                            movedSomeoneInThisAttempt = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            // If still not moved (Priority 2 failed), try moving to an *empty* table that has at least 2 seats.
-            if (!movedStudentOut) {
-                for (const targetTableId of shuffledTableIds) {
-                    if (targetTableId === sourceTableId) continue;
-
-                    const targetTableSeats = seatsMap[targetTableId];
-                    const studentsAtTargetTable = targetTableSeats.filter(s => s !== null);
-                    const emptySeatsAtTargetTable = targetTableSeats.filter(s => s === null).length;
-
-                    // Target table must be empty, and have at least 2 seats (so it won't be a permanent 1-person table).
-                    if (studentsAtTargetTable.length === 0 && targetTableSeats.length >= 2 && emptySeatsAtTargetTable >= 1) {
-                        const targetEmptySeatIndex = targetTableSeats.indexOf(null);
-                        if (canSitAtSeat(singleStudent, targetTableId, targetEmptySeatIndex, seatsMap)) {
-                            seatsMap[targetTableId][targetEmptySeatIndex] = singleStudent;
-                            movedStudentOut = true;
-                            movedSomeoneInThisAttempt = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            
-            // --- Fallback if the single student could not be moved out ---
-            if (!movedStudentOut) {
-                // If the single student couldn't be moved, put them back for now.
-                seatsMap[sourceTableId][sourceSeatIndex] = singleStudent;
-
-                // Now, try to find a flexible student to move *to* this single-person table.
-                // First, re-identify flexible students for this specific fallback attempt.
-                // This is less efficient but ensures current state.
-                flexibleStudents = [];
-                for (const tableId in seatsMap) {
-                    const currentTable = seatsMap[tableId];
-                    const studentsAtTable = currentTable.filter(s => s !== null);
-                    // Consider tables that are full OR have at least 2 students, and have more than 1 seat total.
-                    if (currentTable.length > 1 && studentsAtTable.length > 1) { 
-                        studentsAtTable.forEach((studentName) => {
-                            const studentData = studentsData[studentName];
-                            if (studentData && !studentData.lockedSeat && (!studentData.blacklist || studentData.blacklist.length === 0)) {
-                                flexibleStudents.push({
-                                    student: studentName,
-                                    originalTableId: tableId,
-                                    originalSeatIndex: currentTable.indexOf(studentName)
-                                });
-                            }
-                        });
-                    }
-                }
-                shuffleArray(flexibleStudents);
-
-                let movedFlexibleStudentIn = false;
-                for (let i = 0; i < flexibleStudents.length; i++) {
-                    const flexibleStudentInfo = flexibleStudents[i];
-                    const { student: flexibleStudent, originalTableId, originalSeatIndex } = flexibleStudentInfo;
-
-                    // Ensure the flexible student is still available and at their spot.
-                    if (seatsMap[originalTableId][originalSeatIndex] !== flexibleStudent) {
-                        continue;
-                    }
-
-                    // Temporarily remove flexible student from their original table to test the move.
-                    seatsMap[originalTableId][originalSeatIndex] = null;
-
-                    // The target table is the single-person table. Find an empty seat there.
-                    const singleTableSeats = seatsMap[sourceTableId]; // Use sourceTableId as target
-                    const targetEmptySeatIndex = singleTableSeats.indexOf(null);
-
-                    if (targetEmptySeatIndex !== -1 && canSitAtSeat(flexibleStudent, sourceTableId, targetEmptySeatIndex, seatsMap)) {
-                        // Crucial: Check if the original table would become a single-person table.
-                        const originalTableStudentsAfterMove = seatsMap[originalTableId].filter(s => s !== null).length;
-                        if (originalTableStudentsAfterMove === 1 && seatsMap[originalTableId].length > 1) {
-                            seatsMap[originalTableId][originalSeatIndex] = flexibleStudent; // Put back.
-                            continue;
-                        }
-
-                        seatsMap[sourceTableId][targetEmptySeatIndex] = flexibleStudent; // Move flexible student to the single-person table.
-                        movedFlexibleStudentIn = true;
-                        movedSomeoneInThisAttempt = true;
-                        // No need to splice flexibleStudents as it's a temp list for fallback.
-                        break;
-                    }
-                    // If check failed, put flexible student back.
-                    seatsMap[originalTableId][originalSeatIndex] = flexibleStudent;
-                }
-
-                if (!movedFlexibleStudentIn) {
-                    // If no move was possible (neither out nor a flexible student in), log a warning.
-                    console.warn(`⚠️ Could not resolve single-person table for ${singleStudent} at table ${sourceTableId}. No valid move found due to current configuration or blacklists.`);
-                }
-            }
-        } // End of loop through `singlePersonTables`.
-
-        // If no students were moved in this entire attempt, it means we're stuck, so break.
-        if (!movedSomeoneInThisAttempt) {
-            break;
-        }
-        attempt++;
+        if (assigned) break;
+      }
+      if (!assigned) {
+        console.warn(`Could not place ${student} during initial assignment; will try to resolve later.`);
+      }
     }
+  }
 
-    // Final warning if maximum attempts reached, indicating potential unsolvable state.
-    if (attempt === maxAttempts) {
-        console.warn('❗ Reached maximum attempts to resolve single-person tables. Some tables might still have one student. This usually indicates very tight constraints (student count vs. seats, or specific blacklist combinations).');
-    }
-    // --- END REVISED Post-Assignment Adjustment ---
+  assignStudentsList(studentsWithBlacklist);
+  assignStudentsList(studentsWithoutBlacklist);
 
-    // Step 5: Apply all assignments from the `seatsMap` to the DOM for visual display.
-    tables.forEach(table => {
-        const tableId = table.dataset.id;
-        const seatDivs = table.querySelectorAll('.seat');
-
-        seatsMap[tableId].forEach((studentName, i) => {
-            const seat = seatDivs[i];
-            seat.dataset.studentName = studentName || '';
-
-            if (studentName) {
-                seat.textContent = studentName;
-                seat.title = studentName;
-            } else {
-                seat.textContent = '';
-                seat.title = 'Click to assign student';
-            }
+  // --- STEP 4: your existing single-person table balancing (unchanged) ---
+  let attempt = 0;
+  const maxAttempts = 150;
+  while (attempt < maxAttempts) {
+    const singlePersonTables = [];
+    for (const tableId in seatsMap) {
+      const studentsAtTable = seatsMap[tableId].filter(s => s !== null);
+      if (studentsAtTable.length === 1) {
+        singlePersonTables.push({
+          tableId,
+          student: studentsAtTable[0],
+          seatIndex: seatsMap[tableId].indexOf(studentsAtTable[0])
         });
-    });
+      }
+    }
+    if (singlePersonTables.length === 0) break;
 
-    // Final: Update the student list UI and save the current table configuration.
-    updateStudentList();
-    saveTables();
+    let movedSomeone = false;
+
+    for (const info of singlePersonTables) {
+      const { tableId: sourceTableId, student: singleStudent, seatIndex: sourceSeatIndex } = info;
+
+      // do not move students locked to this table or exact seat
+      if (studentsData[singleStudent]?.lockedSeat) continue;
+      if (studentsData[singleStudent]?.lockedTable === sourceTableId) continue;
+
+      // temporarily remove
+      seatsMap[sourceTableId][sourceSeatIndex] = null;
+
+      let movedOut = false;
+      const shuffledTableIds = Object.keys(seatsMap);
+      shuffleArray(shuffledTableIds);
+
+      // Priority 1: move to a table with exactly 1 student and space
+      for (const targetTableId of shuffledTableIds) {
+        if (targetTableId === sourceTableId) continue;
+        const studentsAtTarget = seatsMap[targetTableId].filter(s => s !== null);
+        const emptySeats = seatsMap[targetTableId].filter(s => s === null).length;
+        if (emptySeats > 0 && studentsAtTarget.length === 1) {
+          const targetIdx = seatsMap[targetTableId].indexOf(null);
+          if (canSitAtSeat(singleStudent, targetTableId, targetIdx, seatsMap)) {
+            seatsMap[targetTableId][targetIdx] = singleStudent;
+            movedOut = true;
+            movedSomeone = true;
+            break;
+          }
+        }
+      }
+
+      // Priority 2: any table with >1 student and an empty seat
+      if (!movedOut) {
+        for (const targetTableId of shuffledTableIds) {
+          if (targetTableId === sourceTableId) continue;
+          const studentsAtTarget = seatsMap[targetTableId].filter(s => s !== null);
+          const emptySeats = seatsMap[targetTableId].filter(s => s === null).length;
+          if (emptySeats > 0 && studentsAtTarget.length > 1) {
+            const targetIdx = seatsMap[targetTableId].indexOf(null);
+            if (canSitAtSeat(singleStudent, targetTableId, targetIdx, seatsMap)) {
+              seatsMap[targetTableId][targetIdx] = singleStudent;
+              movedOut = true;
+              movedSomeone = true;
+              break;
+            }
+          }
+        }
+      }
+
+      // Priority 3: empty table with at least 2 seats
+      if (!movedOut) {
+        for (const targetTableId of shuffledTableIds) {
+          if (targetTableId === sourceTableId) continue;
+          const studentsAtTarget = seatsMap[targetTableId].filter(s => s !== null);
+          if (studentsAtTarget.length === 0 && seatsMap[targetTableId].length >= 2) {
+            const targetIdx = seatsMap[targetTableId].indexOf(null);
+            if (canSitAtSeat(singleStudent, targetTableId, targetIdx, seatsMap)) {
+              seatsMap[targetTableId][targetIdx] = singleStudent;
+              movedOut = true;
+              movedSomeone = true;
+              break;
+            }
+          }
+        }
+      }
+
+      // Fallback: move a flexible student in (no locks, no blacklists)
+      if (!movedOut) {
+        seatsMap[sourceTableId][sourceSeatIndex] = singleStudent; // put back for now
+
+        const flexible = [];
+        for (const tId in seatsMap) {
+          seatsMap[tId].forEach((sName, idx) => {
+            if (!sName) return;
+            const sData = studentsData[sName] || {};
+            if (!sData.lockedSeat && !sData.lockedTable && (!sData.blacklist || sData.blacklist.length === 0)) {
+              flexible.push({ student: sName, fromTableId: tId, fromIdx: idx });
+            }
+          });
+        }
+        shuffleArray(flexible);
+
+        let movedFlexIn = false;
+        for (const candidate of flexible) {
+          const { student: flexStudent, fromTableId, fromIdx } = candidate;
+          if (seatsMap[fromTableId][fromIdx] !== flexStudent) continue;
+
+          seatsMap[fromTableId][fromIdx] = null;
+          const targetEmptyIdx = seatsMap[sourceTableId].indexOf(null);
+          if (targetEmptyIdx !== -1 && canSitAtSeat(flexStudent, sourceTableId, targetEmptyIdx, seatsMap)) {
+            const afterCount = seatsMap[fromTableId].filter(s => s !== null).length;
+            if (!(afterCount === 1 && seatsMap[fromTableId].length > 1)) {
+              seatsMap[sourceTableId][targetEmptyIdx] = flexStudent;
+              movedFlexIn = true;
+              movedSomeone = true;
+              break;
+            }
+          }
+          seatsMap[fromTableId][fromIdx] = flexStudent;
+        }
+
+        if (!movedFlexIn) {
+          console.warn(`Could not resolve single-person table for ${singleStudent} at ${sourceTableId}`);
+        }
+      }
+    }
+
+    if (!movedSomeone) break;
+    attempt++;
+  }
+
+  if (attempt === maxAttempts) {
+    console.warn('Reached max attempts resolving single-person tables.');
+  }
+
+  // Write assignments back to DOM
+  tables.forEach(table => {
+    const tableId = table.dataset.id;
+    const seatDivs = table.querySelectorAll('.seat');
+    seatsMap[tableId].forEach((studentName, i) => {
+      const seat = seatDivs[i];
+      seat.dataset.studentName = studentName || '';
+      if (studentName) {
+        seat.textContent = studentName;
+        seat.title = studentName;
+      } else {
+        seat.textContent = '';
+        seat.title = 'Click to assign student';
+      }
+    });
+  });
+
+  if (allStudents.length) {
+    console.warn('Unplaced students after randomization:', allStudents);
+  }
+
+  updateStudentList();
+  saveTables();
 }
+
+
+
 
 function resetStudentData(studentName) {
   if (!studentsData[studentName]) return;
@@ -1183,10 +1206,6 @@ const studentListContainer = document.getElementById('studentListContainer');
 const toggleBtn = document.getElementById('toggleStudentListBtn');
 
 
-
-
-
-
 toggleBtn.addEventListener('click', () => {
   studentListContainer.classList.toggle('hidden');
 });
@@ -1194,14 +1213,6 @@ toggleBtn.addEventListener('click', () => {
 
 // --- Initialize event listeners and load saved data ---
 function init() {
-  // addNameBtn.addEventListener('click', addStudent);
-
-  // studentInput.addEventListener('keydown', (e) => {
-  //   if (e.key === 'Enter') {
-  //     e.preventDefault();
-  //     addStudent();
-  //   }
-  // });
 
   addTableBtn.addEventListener('click', () => {
     createTable();
