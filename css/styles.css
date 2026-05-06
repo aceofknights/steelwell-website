@@ -74,6 +74,29 @@
 
       }
 
+      #classSelectorContainer,
+      #layoutSelectorContainer,
+      #chartModeContainer,
+      #gridControls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px auto;
+      }
+
+      #layoutSelectorContainer button,
+      #layoutSelectorContainer select,
+      #chartModeContainer select,
+      #gridControls input {
+        height: 28px;
+      }
+
+      #gridControls input {
+        width: 64px;
+      }
+
       .fullscreen-classroom {
   position: fixed !important;
   top: 0 !important;
@@ -371,6 +394,190 @@ button.options-btn {
   background-color: #2a5d8f;
 }
 
+#bulk-group-row {
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+#bulkGroupSelect,
+.student-group-select {
+  min-width: 90px;
+}
+
+.student-group-controls {
+  background: #2f2c2c;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  margin: 10px;
+  padding: 10px;
+}
+
+.student-panel-heading {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.student-group-actions,
+.student-group-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.student-group-actions button,
+.student-group-chip {
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 9px;
+  background: #4a90e2;
+  color: white;
+  cursor: pointer;
+}
+
+.student-group-chip {
+  background: #5f6c72;
+  margin-top: 8px;
+}
+
+.student-group-delete-btn,
+.student-sublist-delete-btn {
+  border: 0;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  background: #c0392b;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 22px;
+  padding: 0;
+}
+
+.student-group-delete-btn {
+  margin-top: 8px;
+}
+
+.group-toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+}
+
+.student-list-item {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+.student-sublist-section {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.student-sublist-details {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.student-sublist-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 10px;
+  cursor: pointer;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.student-sublist-summary span:first-child {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-sublist-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  border-radius: 999px;
+  background: #4a90e2;
+  color: #fff;
+  font-size: 12px;
+}
+
+.student-sublist-items {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+}
+
+.student-sublist-items .student-list-item:last-child {
+  margin-bottom: 0;
+}
+
+.student-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.student-button-group {
+  display: flex;
+  gap: 4px;
+}
+
+.options-panel {
+  grid-column: 1 / -1;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.blacklist-details {
+  margin: 8px 0;
+}
+
+.blacklist-details summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.blacklist-details fieldset {
+  border: 0;
+  padding: 8px 0 0;
+  display: grid;
+  gap: 6px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.blacklist-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
 .seat-assignment { display: flex; flex-direction: column; gap: 6px; }
 .lock-type-wrapper {
   display: flex;
@@ -389,16 +596,19 @@ button.options-btn {
 
     .table {
       border: 2px solid #000000;
-      padding: 5px;
+      padding: calc(5px * var(--table-scale, 1));
       border-radius: 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: calc(10px * var(--table-scale, 1));
       background-color: #443e3e;
         box-shadow: inset 0 0 5rem rgba(0, 0, 0, 0.5);
       width: 360px;
       height: 400px;
+      min-width: 220px;
+      min-height: 220px;
+      box-sizing: border-box;
       position: absolute; /* For drag & drop */
       cursor: grab;
       user-select: none;
@@ -407,30 +617,44 @@ button.options-btn {
       cursor: grabbing;
     }
     .table-name-input{
-      width: 154px;
+      width: calc(154px * var(--table-scale, 1));
+      min-width: 80px;
+    }
+    .column-count {
+      width: calc(56px * var(--table-scale, 1));
+      min-width: 42px;
     }
     .seats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(var(--seat-columns, 1), minmax(0, 1fr));
+      grid-auto-rows: minmax(0, 1fr);
+      gap: calc(8px * var(--table-scale, 1));
       width: 100%;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .seat {
-      width: 340px;
-      height: 100px;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
       background: gray;
       border-radius: 4px;
       border: 1px solid #333;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 80px;
+      box-sizing: border-box;
+      font-size: var(--seat-font-size, clamp(12px, calc(32px * var(--table-scale, 1)), 80px));
       font-weight: bolder;
       color: white;
       cursor: pointer;
       position: relative;
       text-shadow: rgb(0, 0, 0) 1px 0 10px;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+      text-align: center;
+      line-height: 1;
     }
     .seat.selected {
       outline: 3px solid #007bff;
@@ -438,7 +662,7 @@ button.options-btn {
     }
     .table-controls {
       display: flex;
-      gap: 8px;
+      gap: calc(8px * var(--table-scale, 1));
       width: 100%;
       justify-content: space-between;
       align-items: center;
@@ -446,7 +670,99 @@ button.options-btn {
     }
     select {
       flex-grow: 1;
-      font-size: 14px;
+      font-size: clamp(10px, calc(14px * var(--table-scale, 1)), 18px);
+    }
+    .table-controls input,
+    .table-controls button {
+      font-size: clamp(10px, calc(14px * var(--table-scale, 1)), 18px);
+    }
+
+    .table-resize-handle {
+      position: absolute;
+      right: 2px;
+      bottom: 2px;
+      width: 18px;
+      height: 18px;
+      cursor: nwse-resize;
+      z-index: 12;
+      touch-action: none;
+    }
+
+    .table-resize-handle::before,
+    .table-resize-handle::after {
+      content: "";
+      position: absolute;
+      right: 3px;
+      bottom: 3px;
+      border-right: 2px solid rgba(255, 255, 255, 0.85);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.85);
+    }
+
+    .table-resize-handle::before {
+      width: 12px;
+      height: 12px;
+    }
+
+    .table-resize-handle::after {
+      width: 6px;
+      height: 6px;
+    }
+
+    .table.resizing,
+    .table.resizing:active {
+      cursor: nwse-resize;
+    }
+
+    .seating-grid {
+      display: grid;
+      width: 100%;
+      align-content: start;
+    }
+
+    .grid-seat {
+      width: auto;
+      min-height: 58px;
+      height: 58px;
+      font-size: 16px;
+      padding: 6px;
+      position: relative;
+    }
+
+    .grid-seat.aisle {
+      background: #2f2f2f !important;
+      border-style: dashed;
+      color: #cfcfcf;
+      opacity: 0.5;
+      text-shadow: none;
+    }
+
+    .fullscreen-classroom .grid-seat.aisle {
+      visibility: hidden;
+    }
+
+    .grid-seat-name {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow-wrap: anywhere;
+      line-height: 1;
+    }
+
+    .aisle-toggle-btn {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 18px;
+      height: 18px;
+      border: 0;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.85);
+      color: #333;
+      font-size: 11px;
+      line-height: 18px;
+      padding: 0;
+      cursor: pointer;
     }
 button.delete-btn {
   background: #e74c3c;

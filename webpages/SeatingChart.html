@@ -32,6 +32,10 @@ even make blacklist hideable for use in front of class
         placeholder="Paste student names here, one per line..."
         style="width: 100%"
       ></textarea>
+      <div id="bulk-group-row">
+        <label for="bulkGroupSelect">Add to:</label>
+        <select id="bulkGroupSelect"></select>
+      </div>
       <button id="bulk-add-btn" style="margin-top: 8px">Add Students</button>
     </div>
 
@@ -43,10 +47,35 @@ even make blacklist hideable for use in front of class
       <button id="deleteClassBtn">🗑️ Delete Class</button>
       <!-- New button -->
     </div>
+    <div id="layoutSelectorContainer">
+      <label for="layoutSelector">Layout:</label>
+      <select id="layoutSelector"></select>
+      <button id="saveLayoutBtn">Save Layout</button>
+      <button id="addLayoutBtn">+ New Layout</button>
+      <button id="deleteLayoutBtn">Delete Layout</button>
+    </div>
+    <div id="chartModeContainer">
+      <label for="layoutModeSelect">Mode:</label>
+      <select id="layoutModeSelect">
+        <option value="table">Table</option>
+        <option value="grid">Grid</option>
+      </select>
+      <div id="gridControls">
+        <label for="gridRowsInput">Rows</label>
+        <input id="gridRowsInput" type="number" min="1" step="1" value="5" />
+        <label for="gridColumnsInput">Columns</label>
+        <input id="gridColumnsInput" type="number" min="1" step="1" value="6" />
+        <label for="gridRowGapInput">Row gap</label>
+        <input id="gridRowGapInput" type="number" min="0" step="1" value="8" />
+        <label for="gridColumnGapInput">Column gap</label>
+        <input id="gridColumnGapInput" type="number" min="0" step="1" value="8" />
+      </div>
+    </div>
     <div id="listAndChart">
       <button id="toggleStudentListBtn">☰</button>
       <!-- Moved outside -->
       <div id="studentListContainer">
+        <div id="studentGroupControls"></div>
         <ul id="studentList">
           <!-- Student list items -->
         </ul>

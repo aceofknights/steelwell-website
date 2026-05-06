@@ -4,8 +4,20 @@ const studentList = document.getElementById('studentList');
 const classroom = document.getElementById('classroom');
 const seatColors = ['gray', 'pink', '#ff06ff', 'orange', 'blue', 'lightblue', 'yellow', 'green', 'purple', 'red'];
 let dragData = null;
+let resizeData = null;
 let currentClass = 'default'; // default starting class
 let classList = [];           // list of all classes (persisted)
+let currentLayoutName = '';
+let layoutMode = 'table';
+let gridSettings = {
+  rows: 5,
+  columns: 6,
+  rowGap: 8,
+  columnGap: 8,
+  aisles: [],
+};
+let studentGroups = [];
+let useGroupAlternating = false;
 console.log('INITIAL loadClassList():', localStorage.getItem('classList'));
 
 // Each class’s data saved separately in localStorage, key = `seatingChartData_${className}`
@@ -13,26 +25,243 @@ function getStorageKey(className) {
   return `seatingChartData_${className}`;
 }
 
+function getLayoutStorageKey() {
+  return 'tableLayouts';
+}
+
+function getCurrentLayoutStorageKey(className) {
+  return `currentTableLayout_${className}`;
+}
+
 function saveCurrentClassData() {
   saveTables(); 
 }
 
+function generateGroupId() {
+  return 'group-' + Math.random().toString(36).substr(2, 9);
+}
+
+function hasStudentGroups() {
+  return studentGroups.length > 0;
+}
+
+function normalizeStudentGroups(groups = []) {
+  return groups
+    .filter(group => group && group.id && group.name)
+    .map(group => ({ id: group.id, name: group.name }));
+}
+
+function getDefaultGroupId() {
+  return studentGroups[0]?.id || '';
+}
+
+function ensureStudentRecord(name) {
+  if (!studentsData[name]) {
+    studentsData[name] = { lockedSeat: null, lockedTable: null, blacklist: [], present: true };
+  }
+  if (hasStudentGroups() && !studentsData[name].groupId) {
+    studentsData[name].groupId = getDefaultGroupId();
+  }
+}
+
+function createInitialStudentGroups() {
+  if (hasStudentGroups()) return;
+
+  const firstGroup = { id: generateGroupId(), name: 'Group 1' };
+  const secondGroup = { id: generateGroupId(), name: 'Group 2' };
+  studentGroups = [firstGroup, secondGroup];
+
+  const existingNames = new Set([...manualStudentNames, ...Object.keys(studentsData)]);
+  existingNames.forEach(name => {
+    ensureStudentRecord(name);
+    studentsData[name].groupId = firstGroup.id;
+  });
+
+  useGroupAlternating = true;
+  updateStudentList();
+  saveTables();
+}
+
+function addStudentGroup() {
+  const groupName = prompt('Enter sublist name:', `Group ${studentGroups.length + 1}`);
+  if (!groupName) return;
+
+  const trimmedName = groupName.trim();
+  if (!trimmedName) return;
+
+  studentGroups.push({ id: generateGroupId(), name: trimmedName });
+  updateStudentList();
+  saveTables();
+}
+
+function renameStudentGroup(groupId) {
+  const group = studentGroups.find(item => item.id === groupId);
+  if (!group) return;
+
+  const newName = prompt('Rename sublist:', group.name);
+  if (!newName) return;
+
+  const trimmedName = newName.trim();
+  if (!trimmedName) return;
+
+  group.name = trimmedName;
+  updateStudentList();
+  saveTables();
+}
+
+function deleteStudentGroup(groupId) {
+  if (!hasStudentGroups()) return;
+  const group = studentGroups.find(item => item.id === groupId);
+  if (!group) return;
+
+  if (!confirm(`Delete sublist "${group.name}"? Students in it will stay in the class.`)) {
+    return;
+  }
+
+  studentGroups = studentGroups.filter(item => item.id !== groupId);
+
+  if (studentGroups.length <= 1) {
+    studentGroups = [];
+    useGroupAlternating = false;
+    Object.values(studentsData).forEach(data => {
+      delete data.groupId;
+    });
+  } else {
+    const fallbackGroupId = getDefaultGroupId();
+    Object.values(studentsData).forEach(data => {
+      if (data.groupId === groupId || !studentGroups.some(item => item.id === data.groupId)) {
+        data.groupId = fallbackGroupId;
+      }
+    });
+  }
+
+  updateStudentList();
+  saveTables();
+}
+
+function updateBulkGroupPicker() {
+  bulkGroupRow.style.display = hasStudentGroups() ? 'flex' : 'none';
+  bulkGroupSelect.innerHTML = '';
+
+  studentGroups.forEach(group => {
+    const option = document.createElement('option');
+    option.value = group.id;
+    option.textContent = group.name;
+    bulkGroupSelect.appendChild(option);
+  });
+}
+
+function renderStudentGroupControls() {
+  studentGroupControls.innerHTML = '';
+  studentGroupControls.classList.add('student-group-controls');
+
+  const heading = document.createElement('div');
+  heading.classList.add('student-panel-heading');
+  heading.textContent = 'Students';
+  studentGroupControls.appendChild(heading);
+
+  const actions = document.createElement('div');
+  actions.classList.add('student-group-actions');
+
+  const createGroupBtn = document.createElement('button');
+  createGroupBtn.type = 'button';
+  createGroupBtn.textContent = hasStudentGroups() ? '+ Sublist' : 'Create Sublists';
+  createGroupBtn.addEventListener('click', () => {
+    if (hasStudentGroups()) {
+      addStudentGroup();
+    } else {
+      createInitialStudentGroups();
+    }
+  });
+  actions.appendChild(createGroupBtn);
+
+  if (hasStudentGroups()) {
+    const alternateLabel = document.createElement('label');
+    alternateLabel.classList.add('group-toggle-label');
+
+    const alternateToggle = document.createElement('input');
+    alternateToggle.type = 'checkbox';
+    alternateToggle.checked = useGroupAlternating;
+    alternateToggle.addEventListener('change', () => {
+      useGroupAlternating = alternateToggle.checked;
+      saveTables();
+    });
+
+    alternateLabel.appendChild(alternateToggle);
+    alternateLabel.append(' Alternate random');
+    actions.appendChild(alternateLabel);
+  }
+
+  studentGroupControls.appendChild(actions);
+
+  if (hasStudentGroups()) {
+    const groupList = document.createElement('div');
+    groupList.classList.add('student-group-list');
+    studentGroups.forEach(group => {
+    const groupChip = document.createElement('button');
+    groupChip.type = 'button';
+    groupChip.classList.add('student-group-chip');
+    groupChip.textContent = group.name;
+    groupChip.title = 'Rename sublist';
+    groupChip.addEventListener('click', () => renameStudentGroup(group.id));
+    groupList.appendChild(groupChip);
+
+      const deleteGroupBtn = document.createElement('button');
+      deleteGroupBtn.type = 'button';
+      deleteGroupBtn.classList.add('student-group-delete-btn');
+      deleteGroupBtn.textContent = 'X';
+      deleteGroupBtn.title = `Delete ${group.name}`;
+      deleteGroupBtn.addEventListener('click', () => deleteStudentGroup(group.id));
+      groupList.appendChild(deleteGroupBtn);
+    });
+    studentGroupControls.appendChild(groupList);
+  }
+
+  updateBulkGroupPicker();
+}
 
 function loadClassData(className) {
   const saved = localStorage.getItem(getStorageKey(className));
   if (!saved) {
     manualStudentNames = new Set();
     studentsData = {};
+    studentGroups = [];
+    useGroupAlternating = false;
+    layoutMode = 'table';
+    gridSettings = normalizeGridSettings();
     clearTables();
+    syncModeControls();
+    updateStudentList();
+    refreshLayoutSelector();
     return;
   }
-  const { tables = [], manualStudentNames: manualNames = [], studentsData: savedStudentsData = {} } = JSON.parse(saved);
+  const {
+    tables = [],
+    manualStudentNames: manualNames = [],
+    studentsData: savedStudentsData = {},
+    layoutMode: savedLayoutMode = 'table',
+    gridSettings: savedGridSettings = {},
+    gridSeats = [],
+    studentGroups: savedStudentGroups = [],
+    useGroupAlternating: savedUseGroupAlternating = false,
+  } = JSON.parse(saved);
   manualStudentNames = new Set(manualNames);
   studentsData = savedStudentsData;
+  studentGroups = normalizeStudentGroups(savedStudentGroups);
+  useGroupAlternating = hasStudentGroups() && savedUseGroupAlternating;
+  manualStudentNames.forEach(name => ensureStudentRecord(name));
+  layoutMode = savedLayoutMode;
+  gridSettings = normalizeGridSettings(savedGridSettings);
   clearTables();
-  tables.forEach(tableData => createTable(tableData));
+  syncModeControls();
+  if (isGridMode()) {
+    createGrid(gridSeats);
+  } else {
+    tables.forEach(tableData => createTable(tableData));
+  }
   updateStudentList();
   updateSeatsFromLocked(true);
+  refreshLayoutSelector();
 }
 
 function saveClassList() {
@@ -48,6 +277,212 @@ function loadClassList() {
 const classSelector = document.getElementById('classSelector');
 const addClassBtn = document.getElementById('addClassBtn');
 const deleteClassBtn = document.getElementById('deleteClassBtn');
+const layoutSelector = document.getElementById('layoutSelector');
+const saveLayoutBtn = document.getElementById('saveLayoutBtn');
+const addLayoutBtn = document.getElementById('addLayoutBtn');
+const deleteLayoutBtn = document.getElementById('deleteLayoutBtn');
+const layoutModeSelect = document.getElementById('layoutModeSelect');
+const gridControls = document.getElementById('gridControls');
+const gridRowsInput = document.getElementById('gridRowsInput');
+const gridColumnsInput = document.getElementById('gridColumnsInput');
+const gridRowGapInput = document.getElementById('gridRowGapInput');
+const gridColumnGapInput = document.getElementById('gridColumnGapInput');
+const studentGroupControls = document.getElementById('studentGroupControls');
+const bulkGroupRow = document.getElementById('bulk-group-row');
+const bulkGroupSelect = document.getElementById('bulkGroupSelect');
+
+function loadLayouts() {
+  const saved = localStorage.getItem(getLayoutStorageKey());
+  return saved ? JSON.parse(saved) : {};
+}
+
+function saveLayouts(layouts) {
+  localStorage.setItem(getLayoutStorageKey(), JSON.stringify(layouts));
+}
+
+function migrateClassLayoutsToSharedLibrary() {
+  const sharedLayouts = loadLayouts();
+  let changed = false;
+
+  classList.forEach(className => {
+    const oldKey = `tableLayouts_${className}`;
+    const saved = localStorage.getItem(oldKey);
+    if (!saved) return;
+
+    const classLayouts = JSON.parse(saved);
+    Object.entries(classLayouts).forEach(([name, layout]) => {
+      let sharedName = name;
+      if (sharedLayouts[sharedName]) {
+        sharedName = `${name} (${className})`;
+      }
+
+      if (!sharedLayouts[sharedName]) {
+        sharedLayouts[sharedName] = { ...layout, name: sharedName };
+        changed = true;
+      }
+    });
+  });
+
+  if (changed) {
+    saveLayouts(sharedLayouts);
+  }
+}
+
+function getCurrentLayoutName(className = currentClass) {
+  return localStorage.getItem(getCurrentLayoutStorageKey(className)) || '';
+}
+
+function saveCurrentLayoutName(layoutName, className = currentClass) {
+  currentLayoutName = layoutName;
+  if (layoutName) {
+    localStorage.setItem(getCurrentLayoutStorageKey(className), layoutName);
+  } else {
+    localStorage.removeItem(getCurrentLayoutStorageKey(className));
+  }
+}
+
+function normalizeGridSettings(settings = {}) {
+  return {
+    rows: Math.max(1, parseInt(settings.rows, 10) || 5),
+    columns: Math.max(1, parseInt(settings.columns, 10) || 6),
+    rowGap: Math.max(0, parseInt(settings.rowGap, 10) || 0),
+    columnGap: Math.max(0, parseInt(settings.columnGap, 10) || 0),
+    aisles: Array.isArray(settings.aisles) ? settings.aisles : [],
+  };
+}
+
+function getGridSeatKey(row, column) {
+  return `${row}-${column}`;
+}
+
+function isGridMode() {
+  return layoutMode === 'grid';
+}
+
+function readGridSettingsFromInputs() {
+  return normalizeGridSettings({
+    rows: gridRowsInput.value,
+    columns: gridColumnsInput.value,
+    rowGap: gridRowGapInput.value,
+    columnGap: gridColumnGapInput.value,
+    aisles: gridSettings.aisles,
+  });
+}
+
+function syncModeControls() {
+  layoutModeSelect.value = layoutMode;
+  gridControls.style.display = isGridMode() ? 'flex' : 'none';
+  addTableBtn.style.display = isGridMode() ? 'none' : '';
+
+  gridRowsInput.value = gridSettings.rows;
+  gridColumnsInput.value = gridSettings.columns;
+  gridRowGapInput.value = gridSettings.rowGap;
+  gridColumnGapInput.value = gridSettings.columnGap;
+}
+
+function getCurrentTableLayout() {
+  return Array.from(classroom.querySelectorAll('.table')).map(tableDiv => {
+    const tableNameInput = tableDiv.querySelector('.table-name-input');
+    return {
+      id: tableDiv.dataset.id,
+      seatCount: parseInt(tableDiv.querySelector('.seat-count').value, 10) || 1,
+      columnCount: parseInt(tableDiv.querySelector('.column-count').value, 10) || 1,
+      seatColor: tableDiv.querySelector('.seat-color').value,
+      posX: parseInt(tableDiv.style.left, 10) || 20,
+      posY: parseInt(tableDiv.style.top, 10) || 20,
+      width: parseInt(tableDiv.style.width, 10) || tableDiv.offsetWidth,
+      height: parseInt(tableDiv.style.height, 10) || tableDiv.offsetHeight,
+      tableName: tableNameInput ? tableNameInput.value.trim() : '',
+    };
+  });
+}
+
+function getGridLayoutData() {
+  const aisles = Array.from(classroom.querySelectorAll('.grid-seat.aisle')).map(seat => {
+    return getGridSeatKey(seat.dataset.row, seat.dataset.column);
+  });
+  return normalizeGridSettings({ ...gridSettings, aisles });
+}
+
+function getCurrentGridSeatsData() {
+  return Array.from(classroom.querySelectorAll('.grid-seat')).map(seat => ({
+    row: parseInt(seat.dataset.row, 10),
+    column: parseInt(seat.dataset.column, 10),
+    isAisle: seat.dataset.seatType === 'aisle',
+    studentName: seat.dataset.studentName || '',
+  }));
+}
+
+function getCurrentLayoutData() {
+  if (isGridMode()) {
+    return {
+      mode: 'grid',
+      grid: getGridLayoutData(),
+      tables: [],
+    };
+  }
+
+  return {
+    mode: 'table',
+    tables: getCurrentTableLayout(),
+  };
+}
+
+function applyTableLayout(layoutTables = []) {
+  layoutMode = 'table';
+  clearTables();
+  layoutTables.forEach(tableData => createTable({ ...tableData, seats: [] }));
+  syncModeControls();
+  updateSeatsFromLocked(true);
+  updateStudentList();
+  saveTables();
+}
+
+function applySavedLayout(layoutData) {
+  if (Array.isArray(layoutData)) {
+    applyTableLayout(layoutData);
+    return;
+  }
+
+  if (layoutData?.mode === 'grid') {
+    layoutMode = 'grid';
+    gridSettings = normalizeGridSettings(layoutData.grid);
+    syncModeControls();
+    createGrid();
+    updateSeatsFromLocked(true);
+    updateStudentList();
+    saveTables();
+    return;
+  }
+
+  applyTableLayout(layoutData?.tables || []);
+}
+
+function refreshLayoutSelector() {
+  if (!layoutSelector || !currentClass) return;
+
+  const layouts = loadLayouts();
+  const names = Object.keys(layouts).sort((a, b) => a.localeCompare(b));
+  const savedCurrent = getCurrentLayoutName();
+  currentLayoutName = names.includes(savedCurrent) ? savedCurrent : '';
+
+  layoutSelector.innerHTML = '';
+  const placeholder = document.createElement('option');
+  placeholder.value = '';
+  placeholder.textContent = names.length ? 'Select saved layout' : 'No saved layouts';
+  layoutSelector.appendChild(placeholder);
+
+  names.forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    layoutSelector.appendChild(option);
+  });
+
+  layoutSelector.value = currentLayoutName;
+  saveLayoutBtn.disabled = !currentLayoutName;
+  deleteLayoutBtn.disabled = !currentLayoutName;
+}
 
 deleteClassBtn.addEventListener('click', () => {
   if (currentClass === 'default') {
@@ -61,6 +496,7 @@ deleteClassBtn.addEventListener('click', () => {
 
   // Remove class data from localStorage
   localStorage.removeItem(getStorageKey(currentClass));
+  localStorage.removeItem(getCurrentLayoutStorageKey(currentClass));
 
   // Remove class from classList array
   const index = classList.indexOf(currentClass);
@@ -80,6 +516,7 @@ deleteClassBtn.addEventListener('click', () => {
   } else {
     // No classes left - clear UI accordingly
     classSelector.innerHTML = '';
+    layoutSelector.innerHTML = '';
     clearTables();
     manualStudentNames.clear();
     studentsData = {};
@@ -128,6 +565,112 @@ addClassBtn.addEventListener('click', () => {
   loadClassData(currentClass);
 });
 
+layoutSelector.addEventListener('change', () => {
+  const layoutName = layoutSelector.value;
+  if (!layoutName) {
+    saveCurrentLayoutName('');
+    refreshLayoutSelector();
+    return;
+  }
+
+  const layouts = loadLayouts();
+  if (!layouts[layoutName]) return;
+
+  saveCurrentClassData();
+  saveCurrentLayoutName(layoutName);
+  applySavedLayout(layouts[layoutName]);
+  refreshLayoutSelector();
+});
+
+saveLayoutBtn.addEventListener('click', () => {
+  if (!currentLayoutName) {
+    alert('Select a layout or create a new layout first.');
+    return;
+  }
+
+  const layouts = loadLayouts();
+  if (layouts[currentLayoutName] && !confirm(`Save over the existing layout "${currentLayoutName}"?`)) {
+    return;
+  }
+
+  layouts[currentLayoutName] = {
+    name: currentLayoutName,
+    ...getCurrentLayoutData(),
+  };
+  saveLayouts(layouts);
+  saveCurrentLayoutName(currentLayoutName);
+  refreshLayoutSelector();
+  alert(`Saved layout "${currentLayoutName}".`);
+});
+
+addLayoutBtn.addEventListener('click', () => {
+  const layoutName = prompt('Enter new layout name:');
+  if (!layoutName) return;
+
+  const trimmedName = layoutName.trim();
+  if (!trimmedName) return;
+
+  const layouts = loadLayouts();
+  if (layouts[trimmedName] && !confirm(`Replace the existing layout "${trimmedName}"?`)) {
+    return;
+  }
+
+  layouts[trimmedName] = {
+    name: trimmedName,
+    ...getCurrentLayoutData(),
+  };
+  saveLayouts(layouts);
+  saveCurrentLayoutName(trimmedName);
+  refreshLayoutSelector();
+  alert(`Saved layout "${trimmedName}".`);
+});
+
+deleteLayoutBtn.addEventListener('click', () => {
+  if (!currentLayoutName) return;
+  if (!confirm(`Delete the layout "${currentLayoutName}"? This will not delete students or tables currently on the chart.`)) {
+    return;
+  }
+
+  const layouts = loadLayouts();
+  delete layouts[currentLayoutName];
+  saveLayouts(layouts);
+  saveCurrentLayoutName('');
+  refreshLayoutSelector();
+});
+
+layoutModeSelect.addEventListener('change', () => {
+  const newMode = layoutModeSelect.value;
+  if (newMode === layoutMode) return;
+
+  if (!confirm(`Switch to ${newMode} mode? This changes the table layout view but keeps your student list.`)) {
+    layoutModeSelect.value = layoutMode;
+    return;
+  }
+
+  layoutMode = newMode;
+  if (isGridMode()) {
+    gridSettings = readGridSettingsFromInputs();
+    createGrid(getCurrentGridSeatsData());
+  } else {
+    clearTables();
+  }
+  syncModeControls();
+  updateStudentList();
+  saveTables();
+});
+
+[gridRowsInput, gridColumnsInput, gridRowGapInput, gridColumnGapInput].forEach(input => {
+  input.addEventListener('change', () => {
+    if (!isGridMode()) return;
+    const currentSeats = getCurrentGridSeatsData();
+    gridSettings = readGridSettingsFromInputs();
+    createGrid(currentSeats);
+    updateSeatsFromLocked(true);
+    updateStudentList();
+    saveTables();
+  });
+});
+
 
 
 // Store manually added student names here
@@ -149,8 +692,9 @@ function addStudent() {
   }
   manualStudentNames.add(name);
   if (!studentsData[name]) {
-    studentsData[name] = { lockedSeat: null, blacklist: [] };
+    studentsData[name] = { lockedSeat: null, blacklist: [], present: true };
   }
+  ensureStudentRecord(name);
   updateStudentList();
   // studentInput.value = '';
   saveTables();
@@ -170,11 +714,10 @@ function updateStudentList() {
 
   // --- Ensure studentsData has all names ---
   namesSet.forEach(name => {
-    if (!studentsData[name]) {
-      studentsData[name] = { lockedSeat: null, lockedTable: null, blacklist: [] };
-    }
+    ensureStudentRecord(name);
   });
 
+  renderStudentGroupControls();
   studentList.innerHTML = '';
 
   // --- Clear All Students Button ---
@@ -186,6 +729,8 @@ function updateStudentList() {
   clearAllBtn.addEventListener('click', () => {
     if (confirm('Are you sure you want to remove ALL students? This cannot be undone.')) {
       manualStudentNames.clear();
+      studentGroups = [];
+      useGroupAlternating = false;
       for (const name in studentsData) {
         delete studentsData[name];
       }
@@ -198,28 +743,86 @@ function updateStudentList() {
 
   // --- Render Sorted Student Names ---
   const namesArray = Array.from(namesSet).sort((a, b) => a.localeCompare(b));
+  const groupStudentLists = new Map();
+
+  if (hasStudentGroups()) {
+    studentGroups.forEach(group => {
+      const groupCount = namesArray.filter(name => getStudentGroupId(name) === group.id).length;
+      const groupSection = document.createElement('li');
+      groupSection.classList.add('student-sublist-section');
+
+      const groupDetails = document.createElement('details');
+      groupDetails.classList.add('student-sublist-details');
+      groupDetails.open = true;
+
+      const groupSummary = document.createElement('summary');
+      groupSummary.classList.add('student-sublist-summary');
+
+      const groupTitle = document.createElement('span');
+      groupTitle.textContent = group.name;
+      groupSummary.appendChild(groupTitle);
+
+      const groupCountBadge = document.createElement('span');
+      groupCountBadge.classList.add('student-sublist-count');
+      groupCountBadge.textContent = `${groupCount}`;
+      groupSummary.appendChild(groupCountBadge);
+
+      const deleteGroupBtn = document.createElement('button');
+      deleteGroupBtn.type = 'button';
+      deleteGroupBtn.classList.add('student-sublist-delete-btn');
+      deleteGroupBtn.textContent = 'X';
+      deleteGroupBtn.title = `Delete ${group.name}`;
+      deleteGroupBtn.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        deleteStudentGroup(group.id);
+      });
+      groupSummary.appendChild(deleteGroupBtn);
+
+      const groupItems = document.createElement('ul');
+      groupItems.classList.add('student-sublist-items');
+
+      groupDetails.appendChild(groupSummary);
+      groupDetails.appendChild(groupItems);
+      groupSection.appendChild(groupDetails);
+      studentList.appendChild(groupSection);
+      groupStudentLists.set(group.id, groupItems);
+    });
+  }
   
   
   namesArray.forEach(name => {
   const li = document.createElement('li');
+  li.classList.add('student-list-item');
   li.dataset.student = name;
-  li.style.display = 'flex';
-  li.style.alignItems = 'center';
-  li.style.justifyContent = 'space-between';
-  li.style.gap = '8px';
 
   const nameSpan = document.createElement('span');
+  nameSpan.classList.add('student-name');
   nameSpan.textContent = name;
-  nameSpan.style.flex = '1';
-  nameSpan.style.whiteSpace = 'nowrap';
-  nameSpan.style.overflow = 'hidden';
-  nameSpan.style.textOverflow = 'ellipsis';
   li.appendChild(nameSpan);
 
+  if (hasStudentGroups()) {
+    const groupSelect = document.createElement('select');
+    groupSelect.classList.add('student-group-select');
+    groupSelect.title = 'Sublist';
+    studentGroups.forEach(group => {
+      const option = document.createElement('option');
+      option.value = group.id;
+      option.textContent = group.name;
+      groupSelect.appendChild(option);
+    });
+    groupSelect.value = studentsData[name]?.groupId || getDefaultGroupId();
+    groupSelect.addEventListener('change', () => {
+      ensureStudentRecord(name);
+      studentsData[name].groupId = groupSelect.value;
+      saveTables();
+      updateStudentList();
+    });
+    li.appendChild(groupSelect);
+  }
+
   const buttonGroup = document.createElement('div');
-  buttonGroup.style.flexShrink = '0';
-  buttonGroup.style.display = 'flex';
-  buttonGroup.style.gap = '4px';
+  buttonGroup.classList.add('student-button-group');
 
   // === Attendance Checkbox ===
   const attendanceBtn = document.createElement('input');
@@ -256,9 +859,7 @@ function updateStudentList() {
       // Clear this student from all seats
       classroom.querySelectorAll('.seat').forEach(seat => {
         if ((seat.dataset.studentName || '').trim() === name) {
-          seat.dataset.studentName = '';
-          seat.textContent = '';
-          seat.removeAttribute('data-student-name');
+          setSeatStudent(seat, '');
         }
       });
 
@@ -300,6 +901,10 @@ function updateStudentList() {
   const noneRadio = mkRadio('none', 'No lock');
   const tableRadio = mkRadio('table', 'Lock to Table');
   const seatRadio  = mkRadio('seat',  'Lock to Seat');
+  if (isGridMode()) {
+    tableRadio.lab.style.display = 'none';
+    seatRadio.lab.lastChild.textContent = ' Lock to Grid Seat';
+  }
 
   lockTypeWrapper.appendChild(noneRadio.lab);
   lockTypeWrapper.appendChild(tableRadio.lab);
@@ -311,13 +916,13 @@ function updateStudentList() {
   seatAssignmentContainer.classList.add('seat-assignment');
 
   const tableAssignLabel = document.createElement('label');
-  tableAssignLabel.textContent = 'Assign Table: ';
+  tableAssignLabel.textContent = isGridMode() ? 'Row: ' : 'Assign Table: ';
   const tableAssignSelect = document.createElement('select');
   tableAssignSelect.classList.add('assign-table');
   tableAssignLabel.appendChild(tableAssignSelect);
 
   const seatAssignLabel = document.createElement('label');
-  seatAssignLabel.textContent = 'Assign Seat: ';
+  seatAssignLabel.textContent = isGridMode() ? 'Column: ' : 'Assign Seat: ';
   const seatAssignSelect = document.createElement('select');
   seatAssignSelect.classList.add('assign-seat');
   seatAssignLabel.appendChild(seatAssignSelect);
@@ -330,15 +935,18 @@ function updateStudentList() {
     const selected = optionsPanel.querySelector(`input[name=lockType-${name}]:checked`);
     const val = selected ? selected.value : 'none';
     tableAssignLabel.style.display = (val === 'none') ? 'none' : 'block';
-    seatAssignLabel.style.display = (val === 'seat') ? 'block' : 'none';
+    seatAssignLabel.style.display = (val === 'seat' || (isGridMode() && val !== 'none')) ? 'block' : 'none';
   }
 
   // --- Blacklist Section ---
+  const blacklistDetails = document.createElement('details');
+  blacklistDetails.classList.add('blacklist-details');
+  const blacklistSummary = document.createElement('summary');
+  blacklistSummary.textContent = 'Blacklist Students';
+  blacklistDetails.appendChild(blacklistSummary);
   const blacklistFieldset = document.createElement('fieldset');
-  const blacklistLegend = document.createElement('legend');
-  blacklistLegend.textContent = 'Blacklist Students';
-  blacklistFieldset.appendChild(blacklistLegend);
-  optionsPanel.appendChild(blacklistFieldset);
+  blacklistDetails.appendChild(blacklistFieldset);
+  optionsPanel.appendChild(blacklistDetails);
 
   // --- Action Buttons ---
   const resetBtn = document.createElement('button');
@@ -358,11 +966,25 @@ function updateStudentList() {
   optionsPanel.appendChild(saveBtn);
   optionsPanel.appendChild(cancelBtn);
   li.appendChild(optionsPanel);
-  studentList.appendChild(li);
+  const targetStudentList = hasStudentGroups()
+    ? groupStudentLists.get(getStudentGroupId(name)) || groupStudentLists.get(getDefaultGroupId()) || studentList
+    : studentList;
+  targetStudentList.appendChild(li);
 
   // === Helpers ===
   function refreshTableOptions() {
     tableAssignSelect.innerHTML = '';
+    if (isGridMode()) {
+      for (let row = 1; row <= gridSettings.rows; row++) {
+        const option = document.createElement('option');
+        option.value = row;
+        option.textContent = `Row ${row}`;
+        tableAssignSelect.appendChild(option);
+      }
+      refreshSeatOptions();
+      return;
+    }
+
     const tables = classroom.querySelectorAll('.table');
     tables.forEach(table => {
       const inputName = table.querySelector('.table-name-input');
@@ -376,6 +998,32 @@ function updateStudentList() {
 
   function refreshSeatOptions() {
     seatAssignSelect.innerHTML = '';
+    if (isGridMode()) {
+      const row = parseInt(tableAssignSelect.value, 10);
+      if (!row) return;
+
+      for (let column = 1; column <= gridSettings.columns; column++) {
+        const seat = classroom.querySelector(`.grid-seat[data-row="${row}"][data-column="${column}"]`);
+        if (!seat || seat.dataset.seatType === 'aisle') continue;
+
+        const lockedByOther = Object.entries(studentsData).some(([otherName, data]) => {
+          return otherName !== name &&
+                 data.lockedSeat &&
+                 data.lockedSeat.mode === 'grid' &&
+                 data.lockedSeat.row === row &&
+                 data.lockedSeat.column === column;
+        });
+
+        if (!lockedByOther) {
+          const option = document.createElement('option');
+          option.value = column;
+          option.textContent = `Column ${column}`;
+          seatAssignSelect.appendChild(option);
+        }
+      }
+      return;
+    }
+
     const tableId = tableAssignSelect.value;
     const tableDiv = classroom.querySelector(`.table[data-id="${tableId}"]`);
     if (!tableDiv) return;
@@ -398,22 +1046,19 @@ function updateStudentList() {
 
   function refreshBlacklistOptions() {
     blacklistFieldset.innerHTML = '';
-    blacklistFieldset.appendChild(blacklistLegend);
     const others = namesArray.filter(n => n !== name);
     others.forEach(other => {
+      const wrapper = document.createElement('label');
+      wrapper.classList.add('blacklist-option');
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.value = other;
       checkbox.id = `blacklist-${name}-${other}`;
       checkbox.checked = studentsData[name]?.blacklist?.includes(other);
 
-      const label = document.createElement('label');
-      label.htmlFor = checkbox.id;
-      label.textContent = other;
-
-      blacklistFieldset.appendChild(checkbox);
-      blacklistFieldset.appendChild(label);
-      blacklistFieldset.appendChild(document.createElement('br'));
+      wrapper.appendChild(checkbox);
+      wrapper.append(` ${other}`);
+      blacklistFieldset.appendChild(wrapper);
     });
   }
 
@@ -424,12 +1069,17 @@ function updateStudentList() {
       refreshBlacklistOptions();
 
       const sData = studentsData[name] || {};
-      if (sData.lockedSeat) {
+      if (isGridMode() && sData.lockedSeat?.mode === 'grid') {
+        seatRadio.r.checked = true;
+        tableAssignSelect.value = String(sData.lockedSeat.row || '');
+        refreshSeatOptions();
+        seatAssignSelect.value = String(sData.lockedSeat.column || '');
+      } else if (!isGridMode() && sData.lockedSeat) {
         seatRadio.r.checked = true;
         tableAssignSelect.value = sData.lockedSeat.tableId || '';
         refreshSeatOptions();
         seatAssignSelect.value = String(sData.lockedSeat.seatIndex);
-      } else if (sData.lockedTable) {
+      } else if (!isGridMode() && sData.lockedTable) {
         tableRadio.r.checked = true;
         tableAssignSelect.value = sData.lockedTable;
         refreshSeatOptions();
@@ -464,12 +1114,16 @@ function updateStudentList() {
     const selected = optionsPanel.querySelector(`input[name=lockType-${name}]:checked`);
     const lockVal = selected ? selected.value : 'none';
 
+    if (isGridMode() && lockVal === 'table') {
+      alert('Grid mode only supports locking to a specific row and column.');
+      return;
+    }
     if ((lockVal === 'table' || lockVal === 'seat') && !tableAssignSelect.value) {
-      alert('Please select a table.');
+      alert(isGridMode() ? 'Please select a row.' : 'Please select a table.');
       return;
     }
     if (lockVal === 'seat' && !seatAssignSelect.value) {
-      alert('Please select a seat.');
+      alert(isGridMode() ? 'Please select a column.' : 'Please select a seat.');
       return;
     }
 
@@ -477,7 +1131,14 @@ function updateStudentList() {
       studentsData[name] = { lockedSeat: null, lockedTable: null, blacklist: [], present: true };
     }
 
-    if (lockVal === 'seat') {
+    if (isGridMode() && lockVal === 'seat') {
+      studentsData[name].lockedSeat = {
+        mode: 'grid',
+        row: parseInt(tableAssignSelect.value, 10),
+        column: parseInt(seatAssignSelect.value, 10)
+      };
+      studentsData[name].lockedTable = null;
+    } else if (lockVal === 'seat') {
       studentsData[name].lockedSeat = {
         tableId: tableAssignSelect.value,
         seatIndex: parseInt(seatAssignSelect.value, 10)
@@ -513,29 +1174,30 @@ function updateStudentList() {
 function updateSeatsFromLocked(suppressVisual = false) {
   // Clear all seats first
   classroom.querySelectorAll('.seat').forEach(seat => {
-    seat.dataset.studentName = '';
-    seat.textContent = '';
-    seat.title = 'Click to assign student';
+    setSeatStudent(seat, '', suppressVisual);
   });
+
+  if (isGridMode()) {
+    Object.entries(studentsData).forEach(([student, data]) => {
+      if (!data.lockedSeat || data.lockedSeat.mode !== 'grid') return;
+      const { row, column } = data.lockedSeat;
+      const seat = classroom.querySelector(`.grid-seat[data-row="${row}"][data-column="${column}"]`);
+      if (!seat || seat.dataset.seatType === 'aisle') return;
+      setSeatStudent(seat, student, suppressVisual);
+    });
+    return;
+  }
 
   // --- STEP 1: Exact seat locks ---
   Object.entries(studentsData).forEach(([student, data]) => {
-    if (data.lockedSeat) {
+    if (data.lockedSeat && data.lockedSeat.mode !== 'grid') {
       const { tableId, seatIndex } = data.lockedSeat;
       const table = classroom.querySelector(`.table[data-id="${tableId}"]`);
       if (!table) return;
       const seat = table.querySelectorAll('.seat')[seatIndex];
       if (!seat) return;
 
-      seat.dataset.studentName = student;
-
-      if (!suppressVisual) {
-        seat.textContent = student;
-        seat.title = student;
-      } else {
-        seat.textContent = '';
-        seat.title = 'Click to assign student';
-      }
+      setSeatStudent(seat, student, suppressVisual);
     }
   });
 
@@ -550,15 +1212,7 @@ function updateSeatsFromLocked(suppressVisual = false) {
         .find(seat => !seat.dataset.studentName);
 
       if (freeSeat) {
-        freeSeat.dataset.studentName = student;
-
-        if (!suppressVisual) {
-          freeSeat.textContent = student;
-          freeSeat.title = student;
-        } else {
-          freeSeat.textContent = '';
-          freeSeat.title = 'Click to assign student';
-        }
+        setSeatStudent(freeSeat, student, suppressVisual);
       }
     }
   });
@@ -579,9 +1233,12 @@ function saveTables() {
   classroom.querySelectorAll('.table').forEach(tableDiv => {
     const id = tableDiv.dataset.id;
     const seatCount = parseInt(tableDiv.querySelector('.seat-count').value);
+    const columnCount = parseInt(tableDiv.querySelector('.column-count').value, 10) || 1;
     const seatColor = tableDiv.querySelector('.seat-color').value;
     const posX = parseInt(tableDiv.style.left, 10) || 20;
     const posY = parseInt(tableDiv.style.top, 10) || 20;
+    const width = parseInt(tableDiv.style.width, 10) || tableDiv.offsetWidth;
+    const height = parseInt(tableDiv.style.height, 10) || tableDiv.offsetHeight;
 
     const seats = [];
     tableDiv.querySelectorAll('.seat').forEach(seat => {
@@ -594,16 +1251,27 @@ function saveTables() {
     tables.push({
       id,
       seatCount,
+      columnCount,
       seatColor,
       posX,
       posY,
+      width,
+      height,
       seats,
       tableName,
     });
   });
 
+  const savedGridSettings = isGridMode() ? getGridLayoutData() : gridSettings;
+  const gridSeats = getCurrentGridSeatsData();
+
   const saveObj = {
     tables,
+    layoutMode,
+    gridSettings: savedGridSettings,
+    gridSeats,
+    studentGroups,
+    useGroupAlternating,
     manualStudentNames: Array.from(manualStudentNames),
     studentsData,
   };
@@ -643,10 +1311,176 @@ function clearTables() {
   }
 }
 
+function fitGridSeatName(seat) {
+  const label = seat.querySelector('.grid-seat-name');
+  if (!label || seat.dataset.seatType === 'aisle' || !label.textContent.trim()) return;
+
+  const maxWidth = Math.max(1, seat.clientWidth - 14);
+  const maxHeight = Math.max(1, seat.clientHeight - 14);
+  let low = 4;
+  let high = 80;
+  let best = low;
+
+  label.style.fontSize = `${low}px`;
+  label.style.width = `${maxWidth}px`;
+  label.style.whiteSpace = 'normal';
+  label.style.overflowWrap = 'anywhere';
+
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    label.style.fontSize = `${mid}px`;
+
+    if (label.scrollWidth <= maxWidth && label.scrollHeight <= maxHeight) {
+      best = mid;
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+
+  label.style.fontSize = `${best}px`;
+}
+
+function fitAllGridSeatNames() {
+  classroom.querySelectorAll('.grid-seat').forEach(fitGridSeatName);
+}
+
+function setSeatStudent(seat, studentName, suppressVisual = false) {
+  const name = studentName || '';
+  seat.dataset.studentName = name;
+
+  if (seat.classList.contains('grid-seat')) {
+    const label = seat.querySelector('.grid-seat-name');
+    if (seat.dataset.seatType === 'aisle') {
+      seat.dataset.studentName = '';
+      if (label) label.textContent = 'Aisle';
+      seat.title = 'Aisle';
+      return;
+    }
+
+    if (label) label.textContent = suppressVisual ? '' : name;
+    seat.title = name || 'Click to assign student';
+    requestAnimationFrame(() => fitGridSeatName(seat));
+    return;
+  }
+
+  seat.textContent = suppressVisual ? '' : name;
+  seat.title = name || 'Click to assign student';
+}
+
+function createGrid(savedGridSeats = []) {
+  clearTables();
+  const savedByKey = new Map(savedGridSeats.map(seat => [getGridSeatKey(seat.row, seat.column), seat]));
+  const aisleSet = new Set(gridSettings.aisles);
+
+  const gridDiv = document.createElement('div');
+  gridDiv.classList.add('seating-grid');
+  gridDiv.style.gridTemplateColumns = `repeat(${gridSettings.columns}, minmax(54px, 1fr))`;
+  gridDiv.style.gap = `${gridSettings.rowGap}px ${gridSettings.columnGap}px`;
+
+  for (let row = 1; row <= gridSettings.rows; row++) {
+    for (let column = 1; column <= gridSettings.columns; column++) {
+      const key = getGridSeatKey(row, column);
+      const savedSeat = savedByKey.get(key);
+      const seat = document.createElement('div');
+      seat.classList.add('seat', 'grid-seat');
+      seat.dataset.row = row;
+      seat.dataset.column = column;
+      seat.dataset.seatIndex = key;
+      seat.dataset.seatType = savedSeat?.isAisle || aisleSet.has(key) ? 'aisle' : 'regular';
+      if (seat.dataset.seatType === 'aisle') seat.classList.add('aisle');
+
+      const label = document.createElement('span');
+      label.classList.add('grid-seat-name');
+      seat.appendChild(label);
+
+      const aisleBtn = document.createElement('button');
+      aisleBtn.type = 'button';
+      aisleBtn.classList.add('aisle-toggle-btn');
+      aisleBtn.title = 'Toggle aisle';
+      aisleBtn.textContent = 'A';
+      seat.appendChild(aisleBtn);
+
+      aisleBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        const isAisle = seat.dataset.seatType === 'aisle';
+        seat.dataset.seatType = isAisle ? 'regular' : 'aisle';
+        seat.classList.toggle('aisle', !isAisle);
+        if (!isAisle) {
+          setSeatStudent(seat, '');
+        } else {
+          setSeatStudent(seat, seat.dataset.studentName || '');
+        }
+        gridSettings = getGridLayoutData();
+        saveTables();
+      });
+
+      seat.addEventListener('click', () => {
+        if (seat.dataset.seatType === 'aisle') return;
+
+        const newName = prompt('Enter student name for this seat:', seat.dataset.studentName);
+        if (newName === null) return;
+
+        const trimmed = newName.trim();
+        if (trimmed && !manualStudentNames.has(trimmed)) {
+          manualStudentNames.add(trimmed);
+          if (!studentsData[trimmed]) studentsData[trimmed] = { lockedSeat: null, blacklist: [] };
+          updateStudentList();
+        }
+
+        const lockedByOptions = Object.entries(studentsData).some(([, sData]) => {
+          return sData.lockedSeat &&
+                 sData.lockedSeat.mode === 'grid' &&
+                 sData.lockedSeat.row === row &&
+                 sData.lockedSeat.column === column;
+        });
+
+        if (lockedByOptions) {
+          alert('This seat is locked via options. Please use the options panel to change assignment.');
+          return;
+        }
+
+        setSeatStudent(seat, trimmed);
+        updateStudentList();
+        saveTables();
+      });
+
+      setSeatStudent(seat, savedSeat?.studentName || '');
+      gridDiv.appendChild(seat);
+    }
+  }
+
+  classroom.appendChild(gridDiv);
+  requestAnimationFrame(fitAllGridSeatNames);
+}
+
 
 // --- Generate unique ID ---
 function generateId() {
   return 'table-' + Math.random().toString(36).substr(2, 9);
+}
+
+function updateTableScale(tableDiv) {
+  const width = parseInt(tableDiv.style.width, 10) || tableDiv.offsetWidth || 360;
+  const height = parseInt(tableDiv.style.height, 10) || tableDiv.offsetHeight || 400;
+  const scale = Math.max(0.65, Math.min(width / 360, height / 400));
+  tableDiv.style.setProperty('--table-scale', scale.toFixed(2));
+}
+
+function updateSeatGrid(tableDiv, count) {
+  const seatsDiv = tableDiv.querySelector('.seats');
+  if (!seatsDiv || count <= 0) return;
+
+  const seatsRect = seatsDiv.getBoundingClientRect();
+  const columnInput = tableDiv.querySelector('.column-count');
+  const columnCount = Math.max(1, parseInt(columnInput?.value, 10) || 1);
+  const rows = Math.ceil(count / columnCount);
+  const cellWidth = seatsRect.width / columnCount;
+  const cellHeight = seatsRect.height / rows;
+
+  const seatFontSize = Math.max(12, Math.min(80, cellHeight * 0.42, cellWidth * 0.18));
+  seatsDiv.style.setProperty('--seat-columns', columnCount);
+  seatsDiv.style.setProperty('--seat-font-size', seatFontSize + 'px');
 }
 
 // --- Create a table and append to classroom ---
@@ -658,6 +1492,9 @@ function createTable(data = {}) {
   // Position or default
   tableDiv.style.left = (data.posX || 20) + 'px';
   tableDiv.style.top = (data.posY || 20) + 'px';
+  tableDiv.style.width = (data.width || 360) + 'px';
+  tableDiv.style.height = (data.height || 400) + 'px';
+  updateTableScale(tableDiv);
 
   // Controls container
   const controlsDiv = document.createElement('div');
@@ -683,6 +1520,17 @@ function createTable(data = {}) {
   seatCountSelect.value = data.seatCount || 6;
   controlsDiv.appendChild(seatCountSelect);
 
+  // Column count input
+  const columnCountInput = document.createElement('input');
+  columnCountInput.type = 'number';
+  columnCountInput.classList.add('column-count');
+  columnCountInput.min = '1';
+  columnCountInput.step = '1';
+  columnCountInput.value = data.columnCount || 1;
+  columnCountInput.title = 'Columns';
+  columnCountInput.setAttribute('aria-label', 'Columns');
+  controlsDiv.appendChild(columnCountInput);
+
   // Seat color selector
   const colorSelect = document.createElement('select');
   colorSelect.classList.add('seat-color');
@@ -707,6 +1555,11 @@ function createTable(data = {}) {
   const seatsDiv = document.createElement('div');
   seatsDiv.classList.add('seats');
   tableDiv.appendChild(seatsDiv);
+
+  const resizeHandle = document.createElement('div');
+  resizeHandle.classList.add('table-resize-handle');
+  resizeHandle.title = 'Drag to resize table';
+  tableDiv.appendChild(resizeHandle);
 
   classroom.appendChild(tableDiv);
 
@@ -802,6 +1655,8 @@ function createTable(data = {}) {
 
       seatsDiv.appendChild(seat);
     }
+
+    updateSeatGrid(tableDiv, count);
   }
 
   renderSeats();
@@ -815,6 +1670,13 @@ function createTable(data = {}) {
     updateStudentList();
   });
 
+  columnCountInput.addEventListener('input', () => {
+    const value = Math.max(1, parseInt(columnCountInput.value, 10) || 1);
+    columnCountInput.value = value;
+    updateSeatGrid(tableDiv, parseInt(seatCountSelect.value, 10) || 1);
+    saveTables();
+  });
+
   colorSelect.addEventListener('change', () => {
     renderSeats();
     saveTables();
@@ -823,6 +1685,20 @@ function createTable(data = {}) {
   tableNameInput.addEventListener('input', () => {
     saveTables();
     updateStudentList();
+  });
+
+  resizeHandle.addEventListener('mousedown', e => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    resizeData = {
+      elem: tableDiv,
+      startX: e.clientX,
+      startY: e.clientY,
+      startWidth: tableDiv.offsetWidth,
+      startHeight: tableDiv.offsetHeight,
+    };
+    tableDiv.classList.add('resizing');
   });
 
   // Delete table
@@ -842,6 +1718,7 @@ function createTable(data = {}) {
 
   // Drag & drop
   tableDiv.addEventListener('mousedown', e => {
+    if (resizeData || e.target.closest('.table-resize-handle')) return;
     if (['SELECT', 'BUTTON', 'INPUT', 'LABEL'].includes(e.target.tagName)) return;
 
     dragData = {
@@ -852,31 +1729,165 @@ function createTable(data = {}) {
     tableDiv.style.cursor = 'grabbing';
   });
 
-  document.addEventListener('mousemove', e => {
-    if (!dragData) return;
+  return tableDiv;
+}
 
-    const x = e.clientX - dragData.offsetX;
-    const y = e.clientY - dragData.offsetY;
-
+document.addEventListener('mousemove', e => {
+  if (resizeData) {
     const parentRect = classroom.getBoundingClientRect();
-    const elemRect = dragData.elem.getBoundingClientRect();
+    const maxWidth = Math.max(220, parentRect.width - resizeData.elem.offsetLeft);
+    const maxHeight = Math.max(220, parentRect.height - resizeData.elem.offsetTop);
+    const newWidth = Math.min(Math.max(220, resizeData.startWidth + e.clientX - resizeData.startX), maxWidth);
+    const newHeight = Math.min(Math.max(220, resizeData.startHeight + e.clientY - resizeData.startY), maxHeight);
 
-    let newX = Math.min(Math.max(0, x - parentRect.left), parentRect.width - elemRect.width);
-    let newY = Math.min(Math.max(0, y - parentRect.top), parentRect.height - elemRect.height);
+    resizeData.elem.style.width = newWidth + 'px';
+    resizeData.elem.style.height = newHeight + 'px';
+    updateTableScale(resizeData.elem);
+    updateSeatGrid(resizeData.elem, parseInt(resizeData.elem.querySelector('.seat-count').value, 10) || 1);
+    return;
+  }
 
-    dragData.elem.style.left = newX + 'px';
-    dragData.elem.style.top = newY + 'px';
+  if (!dragData) return;
+
+  const x = e.clientX - dragData.offsetX;
+  const y = e.clientY - dragData.offsetY;
+
+  const parentRect = classroom.getBoundingClientRect();
+  const elemRect = dragData.elem.getBoundingClientRect();
+
+  let newX = Math.min(Math.max(0, x - parentRect.left), parentRect.width - elemRect.width);
+  let newY = Math.min(Math.max(0, y - parentRect.top), parentRect.height - elemRect.height);
+
+  dragData.elem.style.left = newX + 'px';
+  dragData.elem.style.top = newY + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+  if (resizeData) {
+    resizeData.elem.classList.remove('resizing');
+    resizeData = null;
+    saveTables();
+  }
+
+  if (dragData) {
+    dragData.elem.style.cursor = 'grab';
+    dragData = null;
+    saveTables();
+  }
+});
+
+function getStudentGroupId(student) {
+  const groupId = studentsData[student]?.groupId;
+  if (studentGroups.some(group => group.id === groupId)) return groupId;
+  return getDefaultGroupId();
+}
+
+function buildAlternatingStudentPool(students) {
+  if (!hasStudentGroups() || !useGroupAlternating) return [...students];
+
+  const grouped = studentGroups.map(group => {
+    const names = students.filter(student => getStudentGroupId(student) === group.id);
+    shuffleArray(names);
+    return names;
   });
+  const ordered = [];
+  let groupIndex = 0;
 
-  document.addEventListener('mouseup', () => {
-    if (dragData) {
-      dragData.elem.style.cursor = 'grab';
-      dragData = null;
-      saveTables();
+  while (grouped.some(group => group.length > 0)) {
+    const group = grouped[groupIndex % grouped.length];
+    if (group.length) {
+      ordered.push(group.shift());
+    }
+    groupIndex++;
+  }
+
+  return ordered;
+}
+
+function canSitWithTableBlacklist(student, tableId, seatIndex, seatsMap) {
+  const row = seatsMap[tableId];
+  if (!row || row[seatIndex] !== null) return false;
+
+  const data = studentsData[student] || {};
+  if (data.lockedTable && data.lockedTable !== tableId) return false;
+  if (data.lockedSeat && data.lockedSeat.mode !== 'grid') {
+    if (data.lockedSeat.tableId !== tableId || data.lockedSeat.seatIndex !== seatIndex) return false;
+  }
+
+  const blacklist = data.blacklist || [];
+  return row.every(other => {
+    return !other ||
+           (!blacklist.includes(other) &&
+            !(studentsData[other]?.blacklist || []).includes(student));
+  });
+}
+
+function randomizeTableByGroups() {
+  const presentStudents = Array.from(manualStudentNames).filter(
+    name => studentsData[name]?.present !== false
+  );
+  const pool = buildAlternatingStudentPool(presentStudents);
+  const tables = Array.from(classroom.querySelectorAll('.table')).sort((a, b) => {
+    const topDiff = (parseInt(a.style.top, 10) || 0) - (parseInt(b.style.top, 10) || 0);
+    if (topDiff !== 0) return topDiff;
+    return (parseInt(a.style.left, 10) || 0) - (parseInt(b.style.left, 10) || 0);
+  });
+  const seatsMap = {};
+  const orderedSeats = [];
+
+  tables.forEach(table => {
+    const count = parseInt(table.querySelector('.seat-count').value, 10) || 0;
+    seatsMap[table.dataset.id] = new Array(count).fill(null);
+    for (let seatIndex = 0; seatIndex < count; seatIndex++) {
+      orderedSeats.push({ tableId: table.dataset.id, seatIndex });
     }
   });
 
-  return tableDiv;
+  if (orderedSeats.length < pool.length) {
+    alert(`Not enough seats! You have ${pool.length} present students but only ${orderedSeats.length} seats.`);
+    return true;
+  }
+
+  function removeFromPool(student) {
+    const idx = pool.indexOf(student);
+    if (idx !== -1) pool.splice(idx, 1);
+  }
+
+  Object.entries(studentsData).forEach(([student, data]) => {
+    if (!data?.lockedSeat || data.lockedSeat.mode === 'grid') return;
+    if (!pool.includes(student)) return;
+    const { tableId, seatIndex } = data.lockedSeat;
+    if (canSitWithTableBlacklist(student, tableId, seatIndex, seatsMap)) {
+      seatsMap[tableId][seatIndex] = student;
+      removeFromPool(student);
+    }
+  });
+
+  for (const student of [...pool]) {
+    const spot = orderedSeats.find(({ tableId, seatIndex }) => {
+      return canSitWithTableBlacklist(student, tableId, seatIndex, seatsMap);
+    });
+
+    if (spot) {
+      seatsMap[spot.tableId][spot.seatIndex] = student;
+      removeFromPool(student);
+    }
+  }
+
+  tables.forEach(table => {
+    const tableId = table.dataset.id;
+    table.querySelectorAll('.seat').forEach((seat, index) => {
+      setSeatStudent(seat, seatsMap[tableId][index] || '');
+    });
+  });
+
+  if (pool.length) {
+    alert(`Could not place ${pool.length} student(s). Constraints may be impossible.`);
+  }
+
+  updateStudentList();
+  saveTables();
+  return true;
 }
 
 // Utility: Randomly shuffle an array (Fisher-Yates shuffle)
@@ -891,7 +1902,122 @@ function shuffleArray(array) {
 // 1. Assign locked seats
 // 2. Assign students with blacklists (respecting restrictions)
 // 3. Assign all remaining students randomly
+function randomizeGridSeating() {
+  const pool = Array.from(manualStudentNames).filter(
+    name => studentsData[name]?.present !== false
+  );
+  const orderedPool = useGroupAlternating ? buildAlternatingStudentPool(pool) : [...pool];
+  const seats = Array.from(classroom.querySelectorAll('.grid-seat'))
+    .filter(seat => seat.dataset.seatType !== 'aisle');
+
+  if (seats.length < orderedPool.length) {
+    alert(`Not enough seats! You have ${orderedPool.length} present students but only ${seats.length} regular grid seats.`);
+    return;
+  }
+
+  const seatsMap = {};
+  seats.forEach(seat => {
+    seatsMap[getGridSeatKey(seat.dataset.row, seat.dataset.column)] = null;
+  });
+
+  function removeFromPool(student) {
+    const poolIdx = pool.indexOf(student);
+    const orderedIdx = orderedPool.indexOf(student);
+    if (poolIdx !== -1) pool.splice(poolIdx, 1);
+    if (orderedIdx !== -1) orderedPool.splice(orderedIdx, 1);
+  }
+
+  function getNeighborNames(row, column, map) {
+    const neighborKeys = [
+      getGridSeatKey(row - 1, column),
+      getGridSeatKey(row + 1, column),
+      getGridSeatKey(row, column - 1),
+      getGridSeatKey(row, column + 1),
+    ];
+    return neighborKeys.map(key => map[key]).filter(Boolean);
+  }
+
+  function canSitAtGridSeat(student, row, column, map) {
+    const key = getGridSeatKey(row, column);
+    if (!(key in map) || map[key] !== null) return false;
+
+    const data = studentsData[student] || {};
+    if (data.lockedSeat?.mode === 'grid') {
+      if (data.lockedSeat.row !== row ||
+          data.lockedSeat.column !== column) {
+        return false;
+      }
+    }
+
+    const blacklist = data.blacklist || [];
+    return getNeighborNames(row, column, map).every(other => {
+      return !blacklist.includes(other) &&
+             !(studentsData[other]?.blacklist || []).includes(student);
+    });
+  }
+
+  Object.entries(studentsData).forEach(([student, data]) => {
+    if (!data?.lockedSeat || data.lockedSeat.mode !== 'grid') return;
+    if (!orderedPool.includes(student)) return;
+    const { row, column } = data.lockedSeat;
+    const key = getGridSeatKey(row, column);
+
+    if (canSitAtGridSeat(student, row, column, seatsMap)) {
+      seatsMap[key] = student;
+      removeFromPool(student);
+    } else {
+      console.warn(`Locked grid seat invalid/taken for ${student} (row=${row}, column=${column}).`);
+    }
+  });
+
+  const remaining = useGroupAlternating
+    ? [...orderedPool]
+    : [...orderedPool].sort((a, b) => {
+        return (studentsData[b]?.blacklist?.length || 0) - (studentsData[a]?.blacklist?.length || 0);
+      });
+
+  remaining.forEach(student => {
+    const candidates = Object.keys(seatsMap)
+      .filter(key => seatsMap[key] === null)
+      .map(key => {
+        const [row, column] = key.split('-').map(Number);
+        return { key, row, column };
+      });
+    if (!useGroupAlternating) shuffleArray(candidates);
+
+    const spot = candidates.find(candidate => canSitAtGridSeat(student, candidate.row, candidate.column, seatsMap));
+    if (spot) {
+      seatsMap[spot.key] = student;
+      removeFromPool(student);
+    } else {
+      console.warn(`Could not place ${student} in grid mode. Constraints may be impossible.`);
+    }
+  });
+
+  classroom.querySelectorAll('.grid-seat').forEach(seat => {
+    const key = getGridSeatKey(seat.dataset.row, seat.dataset.column);
+    setSeatStudent(seat, seatsMap[key] || '');
+  });
+
+  if (orderedPool.length) {
+    alert(`Could not place ${orderedPool.length} student(s). Constraints may be impossible.`);
+  }
+
+  updateStudentList();
+  saveTables();
+}
+
 function randomizeSeating() {
+  if (isGridMode()) {
+    randomizeGridSeating();
+    return;
+  }
+
+  if (hasStudentGroups() && useGroupAlternating) {
+    randomizeTableByGroups();
+    return;
+  }
+
   // ---------- Step 0: gather present students ----------
   const pool = Array.from(manualStudentNames).filter(
     name => studentsData[name]?.present !== false
@@ -942,7 +2068,7 @@ function randomizeSeating() {
 
     if (data.lockedTable && tableId !== data.lockedTable) return false;
 
-    if (data.lockedSeat) {
+    if (data.lockedSeat && data.lockedSeat.mode !== 'grid') {
       if (data.lockedSeat.tableId !== tableId || data.lockedSeat.seatIndex !== seatIndex) return false;
     }
 
@@ -963,7 +2089,7 @@ function randomizeSeating() {
     if (!row) return false;
 
     if (data.lockedTable && tableId !== data.lockedTable) return false;
-    if (data.lockedSeat) {
+    if (data.lockedSeat && data.lockedSeat.mode !== 'grid') {
       if (data.lockedSeat.tableId !== tableId || data.lockedSeat.seatIndex !== seatIndex) return false;
     }
 
@@ -982,7 +2108,7 @@ function randomizeSeating() {
   function constraintScore(name) {
     const d = studentsData[name] || {};
     let s = 0;
-    if (d.lockedSeat) s += 1000;
+    if (d.lockedSeat && d.lockedSeat.mode !== 'grid') s += 1000;
     else if (d.lockedTable) s += 200;
     s += (d.blacklist?.length || 0);
     return -s; // more negative = harder
@@ -990,7 +2116,7 @@ function randomizeSeating() {
 
   // ---------- STEP 1: place exact-seat locks first ----------
   Object.entries(studentsData).forEach(([student, data]) => {
-    if (!data?.lockedSeat) return;
+    if (!data?.lockedSeat || data.lockedSeat.mode === 'grid') return;
     if (!pool.includes(student)) return; // absent
     const { tableId, seatIndex } = data.lockedSeat;
     if (seatsMap[tableId] && seatIndex >= 0 && seatIndex < seatsMap[tableId].length && seatsMap[tableId][seatIndex] === null) {
@@ -1099,7 +2225,7 @@ function randomizeSeating() {
     visited.add(student);
 
     const d = studentsData[student] || {};
-    const tableIds = d.lockedSeat
+    const tableIds = d.lockedSeat && d.lockedSeat.mode !== 'grid'
       ? [d.lockedSeat.tableId]
       : d.lockedTable
       ? [d.lockedTable]
@@ -1123,7 +2249,7 @@ function randomizeSeating() {
           // consider a swap/chain only if occupant is movable
           const oData = studentsData[occupant] || {};
           const occupantSwappable =
-            !oData.lockedSeat &&
+            (!oData.lockedSeat || oData.lockedSeat.mode === 'grid') &&
             (!oData.lockedTable || oData.lockedTable === tableId); // can move (maybe within same table)
 
           if (
@@ -1203,7 +2329,7 @@ function randomizeSeating() {
     for (const info of singlePersonTables) {
       const { tableId: sourceTableId, student: singleStudent, seatIndex: sourceSeatIndex } = info;
 
-      if (studentsData[singleStudent]?.lockedSeat) continue;
+      if (studentsData[singleStudent]?.lockedSeat && studentsData[singleStudent].lockedSeat.mode !== 'grid') continue;
       if (studentsData[singleStudent]?.lockedTable === sourceTableId) continue;
 
       // temporarily remove
@@ -1273,7 +2399,7 @@ function randomizeSeating() {
           seatsMap[tId].forEach((sName, idx) => {
             if (!sName) return;
             const sData = studentsData[sName] || {};
-            if (!sData.lockedSeat && !sData.lockedTable && (!sData.blacklist || sData.blacklist.length === 0)) {
+            if ((!sData.lockedSeat || sData.lockedSeat.mode === 'grid') && !sData.lockedTable && (!sData.blacklist || sData.blacklist.length === 0)) {
               flexible.push({ student: sName, fromTableId: tId, fromIdx: idx });
             }
           });
@@ -1366,6 +2492,7 @@ toggleBtn.addEventListener('click', () => {
 function init() {
 
   addTableBtn.addEventListener('click', () => {
+    if (isGridMode()) return;
     createTable();
     saveTables();
   });
@@ -1377,12 +2504,13 @@ function init() {
   addTableBtn.parentNode.insertBefore(randomizeBtn, addTableBtn.nextSibling);
   randomizeBtn.addEventListener('click', randomizeSeating);
 
-  loadTables();
+  syncModeControls();
 }
 
 // ✅ Correct usage: call `init()` after DOM is ready
 window.addEventListener('DOMContentLoaded', () => {
   loadClassList();
+  migrateClassLayoutsToSharedLibrary();
   refreshClassSelector();
   loadClassData(currentClass);
   init(); // only called once here!
@@ -1395,6 +2523,7 @@ document.getElementById('bulk-add-btn').addEventListener('click', () => {
   if (!rawText) return alert('Please paste some student names first.');
 
   const newNames = rawText.split(/\r?\n/).map(name => name.trim()).filter(name => name.length > 0);
+  const selectedGroupId = hasStudentGroups() ? bulkGroupSelect.value || getDefaultGroupId() : '';
   let addedCount = 0;
 
   newNames.forEach(name => {
@@ -1403,7 +2532,11 @@ document.getElementById('bulk-add-btn').addEventListener('click', () => {
     }
 
     if (!studentsData[name]) {
-      studentsData[name] = { lockedSeat: null, blacklist: [] };
+      studentsData[name] = { lockedSeat: null, lockedTable: null, blacklist: [], present: true };
+    }
+    ensureStudentRecord(name);
+    if (selectedGroupId) {
+      studentsData[name].groupId = selectedGroupId;
     }
     addedCount++;
   });
@@ -1446,6 +2579,7 @@ fullscreenBtn.addEventListener('click', () => {
     // Add class to enlarge it
     classroomDiv.classList.add('fullscreen-classroom');
     fullscreenBtn.textContent = 'Exit Fullscreen';
+    requestAnimationFrame(fitAllGridSeatNames);
   } else {
     // Exit fullscreen mode
     if (document.exitFullscreen) {
@@ -1458,6 +2592,7 @@ fullscreenBtn.addEventListener('click', () => {
     // Remove class to revert size
     classroomDiv.classList.remove('fullscreen-classroom');
     fullscreenBtn.textContent = 'Fullscreen Classroom';
+    requestAnimationFrame(fitAllGridSeatNames);
   }
 });
 
@@ -1467,4 +2602,5 @@ document.addEventListener('fullscreenchange', () => {
     classroomDiv.classList.remove('fullscreen-classroom');
     fullscreenBtn.textContent = 'Fullscreen Classroom';
   }
+  requestAnimationFrame(fitAllGridSeatNames);
 });
