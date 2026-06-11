@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hex Math</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
+    />
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body class="hex-math-page">
+    <main class="hex-math-shell">
+      <header class="hex-math-header">
+        <div>
+          <h1>Hex Math</h1>
+          <p>
+            Change one factor, claim the matching answer, and connect 4 hexes.
+          </p>
+        </div>
+        <button id="newGameBtn" type="button">New game</button>
+      </header>
+
+      <section class="hex-game-status" aria-live="polite">
+        <div class="hex-player-card player-one active" id="playerOneCard">
+          <span>Player 1</span>
+          <strong id="playerOneCount">0</strong>
+        </div>
+        <div class="hex-turn-card">
+          <span>Turn</span>
+          <strong id="turnMessage">Player 1: change one number.</strong>
+        </div>
+        <div class="hex-player-card player-two" id="playerTwoCard">
+          <span>Player 2</span>
+          <strong id="playerTwoCount">0</strong>
+        </div>
+      </section>
+
+      <section class="hex-controls" aria-label="Factor controls">
+        <div class="factor-panel">
+          <h2>Change first number</h2>
+          <div id="factorAControls" class="factor-buttons"></div>
+        </div>
+        <div class="factor-panel">
+          <h2>Change second number</h2>
+          <div id="factorBControls" class="factor-buttons"></div>
+        </div>
+      </section>
+
+      <section class="hex-board-wrap">
+        <div id="hexBoard" class="hex-board" aria-label="Hex math board"></div>
+      </section>
+    </main>
+
+    <script src="../javascript/HexMath.js?v=3"></script>
+  </body>
+</html>
