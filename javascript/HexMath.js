@@ -18,11 +18,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const playerOneCount = document.getElementById("playerOneCount");
   const playerTwoCount = document.getElementById("playerTwoCount");
   const newGameBtn = document.getElementById("newGameBtn");
+  const victoryOverlay = document.getElementById("victoryOverlay");
+  const victoryCard = document.getElementById("victoryCard");
+  const victoryTitle = document.getElementById("victoryTitle");
+  const victoryNewGameBtn = document.getElementById("victoryNewGameBtn");
 
   const products = getUniqueProducts();
   const cells = getHexCells().slice(0, products.length);
   const cellsByCoord = new Map();
   const cellsByProduct = new Map();
+  const gameWins = [0, 0];
   let factors = [1, 1];
   let currentPlayer = 1;
   let gameOver = false;
@@ -65,10 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function startGame() {
     const shuffledProducts = shuffle(products);
-    factors = [1, 1];
+    factors = [getRandomFactor(), getRandomFactor()];
     currentPlayer = 1;
     gameOver = false;
     lastPickedCell = null;
+    hideVictorySplash();
     cellsByCoord.clear();
     cellsByProduct.clear();
     board.innerHTML = "";
@@ -166,7 +172,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (hasWinningLine(cell)) {
       gameOver = true;
+      gameWins[player - 1]++;
       updateStatus("Player " + player + " wins with 4 in a row!");
+      showVictorySplash(player);
       return;
     }
 
@@ -216,9 +224,23 @@ document.addEventListener("DOMContentLoaded", function () {
     turnMessage.textContent = message;
     playerOneCard.classList.toggle("active", currentPlayer === 1 && !gameOver);
     playerTwoCard.classList.toggle("active", currentPlayer === 2 && !gameOver);
-    playerOneCount.textContent = countClaims(1);
-    playerTwoCount.textContent = countClaims(2);
+    playerOneCount.textContent = gameWins[0];
+    playerTwoCount.textContent = gameWins[1];
     updateFactorHighlights();
+  }
+
+  function showVictorySplash(player) {
+    victoryOverlay.classList.remove("hidden", "player-1", "player-2");
+    victoryOverlay.classList.add("player-" + player);
+    victoryCard.classList.remove("player-1", "player-2");
+    victoryCard.classList.add("player-" + player);
+    victoryTitle.textContent = "Player " + player + " wins!";
+  }
+
+  function hideVictorySplash() {
+    victoryOverlay.classList.add("hidden");
+    victoryOverlay.classList.remove("player-1", "player-2");
+    victoryCard.classList.remove("player-1", "player-2");
   }
 
   function updateFactorHighlights() {
@@ -231,20 +253,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function countClaims(player) {
-    let count = 0;
-
-    cellsByCoord.forEach(function (cell) {
-      if (cell.owner === player) {
-        count++;
-      }
-    });
-
-    return count;
-  }
-
   function getCoordKey(q, r) {
     return q + "," + r;
+  }
+
+  function getRandomFactor() {
+    return Math.floor(Math.random() * MAX_FACTOR) + 1;
   }
 
   function shuffle(items) {
@@ -261,5 +275,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   newGameBtn.addEventListener("click", startGame);
+  victoryNewGameBtn.addEventListener("click", startGame);
   startGame();
 });
