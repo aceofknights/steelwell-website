@@ -24,7 +24,7 @@
 
       <section class="hex-game-status" aria-live="polite">
         <div class="hex-player-card player-one active" id="playerOneCard">
-          <span>Player 1</span>
+          <span>Player 1 wins</span>
           <strong id="playerOneCount">0</strong>
         </div>
         <div class="hex-turn-card">
@@ -32,7 +32,7 @@
           <strong id="turnMessage">Player 1: change one number.</strong>
         </div>
         <div class="hex-player-card player-two" id="playerTwoCard">
-          <span>Player 2</span>
+          <span>Player 2 wins</span>
           <strong id="playerTwoCount">0</strong>
         </div>
       </section>
@@ -53,6 +53,20 @@
       </section>
     </main>
 
-    <script src="../javascript/HexMath.js?v=3"></script>
+    <div
+      class="victory-overlay hidden"
+      id="victoryOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="victoryTitle"
+    >
+      <div class="victory-card" id="victoryCard">
+        <span class="victory-kicker">4 in a row</span>
+        <h2 id="victoryTitle">Player wins!</h2>
+        <button id="victoryNewGameBtn" type="button">Play again</button>
+      </div>
+    </div>
+
+    <script src="../javascript/HexMath.js?v=6"></script>
   </body>
 </html>
