@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" /><title>Synthetic Seating Backup Test Harness</title><script src="../../javascript/seating_backup_core.js"></script></head>
+<body>
+  <h1>Synthetic classroom tests only</h1>
+  <p>This harness is restricted to http://127.0.0.1:8873. It cannot seed or inspect production classroom data.</p>
+  <button id="seed-normal" type="button">Seed Normal Synthetic Classroom</button>
+  <button id="seed-malformed" type="button">Seed Malformed Synthetic Classroom</button>
+  <button id="seed-empty" type="button">Seed Empty Synthetic Classroom</button>
+  <button id="inspect" type="button">Inspect Synthetic Saved Items</button>
+  <p><a href="../../webpages/SeatingChart.html">Open Local Seating Chart</a></p>
+  <pre id="result" aria-live="polite"></pre>
+  <script>
+    (function () {
+      const output = document.getElementById('result');
+      if (location.origin !== 'http://127.0.0.1:8873') {
+        document.querySelectorAll('button').forEach(button => { button.disabled = true; });
+        output.textContent = 'Disabled: the dedicated synthetic test origin is required.';
+        return;
+      }
+      const core = window.SeatingBackup;
+      async function seed(scenario) {
+        const response = await fetch('../fixtures/seating-storage.json');
+        const fixtures = await response.json();
+        // This branch can only run on the explicit loopback test origin.
+        core.readEntries(localStorage).forEach(entry => localStorage.removeItem(entry.key));
+        localStorage.removeItem(core.JOURNAL_KEY);
+        Object.entries(fixtures[scenario]).forEach(([key, value]) => localStorage.setItem(key, value));
+        localStorage.setItem('fixture-unrelated-preference', 'keep-this-exactly');
+        output.textContent = 'Seeded synthetic scenario: ' + scenario;
+      }
+      document.getElementById('seed-normal').addEventListener('click', () => seed('classrooms'));
+      document.getElementById('seed-malformed').addEventListener('click', () => seed('malformed'));
+      document.getElementById('seed-empty').addEventListener('click', () => seed('empty'));
+      document.getElementById('inspect').addEventListener('click', () => {
+        output.textContent = JSON.stringify({ entries: core.readEntries(localStorage),
+          unrelated: localStorage.getItem('fixture-unrelated-preference'),
+          recoveryPending: localStorage.getItem(core.JOURNAL_KEY) !== null }, null, 2);
+      });
+    })();
+  </script>
+</body>
+</html>

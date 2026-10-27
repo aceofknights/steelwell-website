@@ -1,0 +1,24 @@
+/* Scoped additions only; the classroom keeps its existing layout and styles. */
+#classroomDataControls { box-sizing:border-box; width:min(760px,calc(100% - 24px)); margin:12px auto; padding:16px; border:1px solid #8fa1bb; border-radius:8px; background:#1b2638; color:#f2f6fc; font:15px/1.5 "Segoe UI",system-ui,sans-serif; text-shadow:none; }
+#classroomDataControls h1 { margin:0 0 8px; font-size:18px; }
+#classroomDataControls p { margin:8px 0; }
+#classroomDataControls .data-actions { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0; }
+#classroomDataControls button,#classroomDataControls .data-file-label { font:inherit; padding:10px 14px; min-height:44px; color:#f2f6fc; background:#263e61; border:1px solid #8fa1bb; border-radius:6px; cursor:pointer; }
+#classroomDataControls button:disabled { opacity:.55; cursor:default; }
+#classroomDataControls :is(button,input,summary):focus-visible { outline:3px solid #71a6fa; outline-offset:3px; }
+#classroomDataControls input[type=file] { display:block; width:100%; margin:12px 0; font:inherit; }
+#classroomDataControls details { margin:12px 0; }
+#classroomDataControls summary { cursor:pointer; }
+#classroomDataControls [hidden] { display:none!important; }
+#dataRestoreDialog { box-sizing:border-box; width:min(600px,calc(100% - 24px)); max-height:85vh; overflow:auto; padding:24px; border:1px solid #8fa1bb; border-radius:8px; background:#1b2638; color:#f2f6fc; font:16px/1.5 "Segoe UI",system-ui,sans-serif; text-shadow:none; }
+#dataRestoreDialog::backdrop { background:rgba(0,0,0,.65); }
+#dataRestoreDialog h2 { margin-top:0; }
+#dataRestoreDialog dl { display:grid; grid-template-columns:1fr auto; gap:8px 20px; }
+#dataRestoreDialog dd { margin:0; }
+#dataRestoreDialog label { display:block; margin:20px 0; }
+#dataRestoreDialog input { width:20px; height:20px; vertical-align:middle; }
+#dataRestoreDialog button { min-height:44px; padding:10px 14px; margin:4px; font:inherit; }
+#dataRestoreDialog :is(button,input):focus-visible { outline:3px solid #71a6fa; outline-offset:3px; }
+#dataRestoreDialog p { overflow-wrap:anywhere; }
+#seatingApplication { border:0; padding:0; margin:0; min-width:0; width:100%; display:flex; flex-direction:column; }
+@media (prefers-reduced-motion:reduce) { #classroomDataControls *,#dataRestoreDialog * { transition:none!important; animation:none!important; } }

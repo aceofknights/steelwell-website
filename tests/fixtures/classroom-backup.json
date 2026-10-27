@@ -1,0 +1,44 @@
+{
+  "format": "chriswellsdev-seating-backup",
+  "version": 1,
+  "createdAt": "2026-10-27T12:00:00.000Z",
+  "sourceOrigin": "https://classroom.example",
+  "entries": [
+    {
+      "key": "classList",
+      "value": "[\"default\", \"Science\"]"
+    },
+    {
+      "key": "seatingChartData_default",
+      "value": " \n{\"tables\": [{\"id\": \"fixture-table\", \"seatCount\": 4, \"columnCount\": 2, \"seatColor\": \"gray\", \"posX\": 0, \"posY\": 20, \"width\": 360, \"height\": 400, \"seats\": [\"Avery\", \"Blake\", \"\", \"\"], \"tableName\": \"Fixture Table\", \"futureTableField\": 17}], \"layoutMode\": \"table\", \"gridSettings\": {\"rows\": 5, \"columns\": 6, \"rowGap\": 8, \"columnGap\": 8, \"aisles\": []}, \"gridSeats\": [], \"studentGroups\": [{\"id\": \"group-one\", \"name\": \"Group One\"}, {\"id\": \"group-two\", \"name\": \"Group Two\"}], \"useGroupAlternating\": false, \"manualStudentNames\": [\"Avery\", \"Blake\", \"Casey\", \"Drew\"], \"studentsData\": {\"Avery\": {\"lockedSeat\": {\"tableId\": \"fixture-table\", \"seatIndex\": 0}, \"lockedTable\": null, \"blacklist\": [\"Casey\"], \"present\": true, \"groupId\": \"group-one\"}, \"Blake\": {\"lockedSeat\": null, \"lockedTable\": \"fixture-table\", \"blacklist\": [], \"present\": true, \"groupId\": \"group-two\"}, \"Casey\": {\"lockedSeat\": null, \"blacklist\": [\"Avery\"], \"present\": false, \"groupId\": \"group-one\"}, \"Drew\": {\"lockedSeat\": null, \"lockedTable\": null, \"blacklist\": [], \"present\": true, \"groupId\": \"group-two\", \"futureStudentField\": {\"retain\": true}}}, \"unknownClassField\": {\"nested\": [\"preserve\", null, 7]}}\n "
+    },
+    {
+      "key": "seatingChartData_Science",
+      "value": "{\"tables\": [], \"layoutMode\": \"grid\", \"gridSettings\": {\"rows\": 2, \"columns\": 3, \"rowGap\": 8, \"columnGap\": 12, \"aisles\": [\"1-2\"]}, \"gridSeats\": [{\"row\": 1, \"column\": 1, \"isAisle\": false, \"studentName\": \"Ellis\"}, {\"row\": 1, \"column\": 2, \"isAisle\": true, \"studentName\": \"\"}, {\"row\": 2, \"column\": 2, \"isAisle\": false, \"studentName\": \"Finley\"}], \"manualStudentNames\": [\"Ellis\", \"Finley\"], \"studentsData\": {\"Ellis\": {\"lockedSeat\": {\"mode\": \"grid\", \"row\": 1, \"column\": 1}, \"present\": true, \"blacklist\": []}, \"Finley\": {\"lockedSeat\": null, \"present\": true, \"blacklist\": []}}, \"studentGroups\": [], \"useGroupAlternating\": false}"
+    },
+    {
+      "key": "seatingChartData_Archived",
+      "value": "{\"tables\": [], \"manualStudentNames\": [\"Archived Fixture\"], \"studentsData\": {}, \"unknown\": true}"
+    },
+    {
+      "key": "tableLayouts",
+      "value": "{\"Shared Room\": {\"name\": \"Shared Room\", \"mode\": \"table\", \"tables\": [{\"id\": \"fixture-table\", \"seatCount\": 4, \"columnCount\": 2, \"seatColor\": \"gray\", \"posX\": 0, \"posY\": 20, \"width\": 360, \"height\": 400, \"tableName\": \"Fixture Table\", \"futureTableField\": 17}], \"unknownLayoutField\": \"preserve\"}}"
+    },
+    {
+      "key": "currentTableLayout_default",
+      "value": "Shared Room"
+    },
+    {
+      "key": "currentTableLayout_Archived",
+      "value": "Unlisted layout\nname"
+    },
+    {
+      "key": "tableLayouts_default",
+      "value": "{\"Legacy Room\": {\"mode\": \"table\", \"tables\": []}}"
+    },
+    {
+      "key": "tableLayouts_Orphan",
+      "value": "{\"Old Array Room\": [{\"id\": \"fixture-table\", \"seatCount\": 4, \"columnCount\": 2, \"seatColor\": \"gray\", \"posX\": 0, \"posY\": 20, \"width\": 360, \"height\": 400, \"tableName\": \"Fixture Table\", \"futureTableField\": 17}]}"
+    }
+  ]
+}

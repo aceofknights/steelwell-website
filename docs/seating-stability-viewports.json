@@ -1,0 +1,1026 @@
+[
+  {
+    "label": "Grid/open/320x740/100",
+    "frames": 719,
+    "duration": 3002,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      11,
+      444.5,
+      153.328125,
+      88,
+      17
+    ],
+    "last": [
+      11,
+      444.5,
+      153.328125,
+      88,
+      17
+    ],
+    "viewSizes": [
+      "283x251"
+    ],
+    "scrollbars": [
+      true,
+      true
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/320x740/Fit",
+    "frames": 722,
+    "duration": 3003,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      11,
+      444.5,
+      41.39859390258789,
+      23.760009765625,
+      17
+    ],
+    "last": [
+      11,
+      444.5,
+      41.39859390258789,
+      23.760009765625,
+      17
+    ],
+    "viewSizes": [
+      "298x266"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/390x844/100",
+    "frames": 720,
+    "duration": 3001,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      11,
+      444.5,
+      153.328125,
+      88,
+      17
+    ],
+    "last": [
+      11,
+      444.5,
+      153.328125,
+      88,
+      17
+    ],
+    "viewSizes": [
+      "353x355"
+    ],
+    "scrollbars": [
+      true,
+      true
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/390x844/Fit",
+    "frames": 722,
+    "duration": 3001,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      11,
+      444.5,
+      53.66484069824219,
+      30.79998779296875,
+      17
+    ],
+    "last": [
+      11,
+      444.5,
+      53.66484069824219,
+      30.79998779296875,
+      17
+    ],
+    "viewSizes": [
+      "368x370"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/768x1024/100",
+    "frames": 721,
+    "duration": 3002,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      15,
+      320,
+      153.328125,
+      88,
+      17
+    ],
+    "last": [
+      15,
+      320,
+      153.328125,
+      88,
+      17
+    ],
+    "viewSizes": [
+      "723x652"
+    ],
+    "scrollbars": [
+      true,
+      true
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/768x1024/Fit",
+    "frames": 722,
+    "duration": 3002,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      15,
+      320,
+      111.92953491210938,
+      64.239990234375,
+      17
+    ],
+    "last": [
+      15,
+      320,
+      111.92953491210938,
+      64.239990234375,
+      17
+    ],
+    "viewSizes": [
+      "738x667"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1024x768/100",
+    "frames": 721,
+    "duration": 3001,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      327,
+      228,
+      153.328125,
+      88,
+      17
+    ],
+    "last": [
+      327,
+      228,
+      153.328125,
+      88,
+      17
+    ],
+    "viewSizes": [
+      "661x488"
+    ],
+    "scrollbars": [
+      true,
+      true
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1024x768/Fit",
+    "frames": 722,
+    "duration": 3002,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      327,
+      228,
+      93.5301513671875,
+      53.67999267578125,
+      17
+    ],
+    "last": [
+      327,
+      228,
+      93.5301513671875,
+      53.67999267578125,
+      17
+    ],
+    "viewSizes": [
+      "676x503"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1280x960/100",
+    "frames": 722,
+    "duration": 3002,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      347,
+      228,
+      153.328125,
+      88,
+      17
+    ],
+    "last": [
+      347,
+      228,
+      153.328125,
+      88,
+      17
+    ],
+    "viewSizes": [
+      "912x680"
+    ],
+    "scrollbars": [
+      true,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1280x960/Fit",
+    "frames": 721,
+    "duration": 3000,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      347,
+      228,
+      133.39544677734375,
+      76.55999755859375,
+      17
+    ],
+    "last": [
+      347,
+      228,
+      133.39544677734375,
+      76.55999755859375,
+      17
+    ],
+    "viewSizes": [
+      "912x695"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 70,
+        "available": [
+          137,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 137,
+        "height": 60,
+        "available": [
+          137,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1360x960/100",
+    "frames": 722,
+    "duration": 3004,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      347,
+      228,
+      158.328125,
+      88,
+      17
+    ],
+    "last": [
+      347,
+      228,
+      158.328125,
+      88,
+      17
+    ],
+    "viewSizes": [
+      "992x695"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 142,
+        "height": 70,
+        "available": [
+          142,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 142,
+        "height": 63,
+        "available": [
+          142,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1360x960/Fit",
+    "frames": 722,
+    "duration": 3003,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      347,
+      228,
+      137.7454833984375,
+      76.55999755859375,
+      17
+    ],
+    "last": [
+      347,
+      228,
+      137.7454833984375,
+      76.55999755859375,
+      17
+    ],
+    "viewSizes": [
+      "992x695"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 142,
+        "height": 70,
+        "available": [
+          142,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 142,
+        "height": 63,
+        "available": [
+          142,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1440x960/100",
+    "frames": 722,
+    "duration": 3004,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      347,
+      228,
+      171.65625,
+      88,
+      17
+    ],
+    "last": [
+      347,
+      228,
+      171.65625,
+      88,
+      17
+    ],
+    "viewSizes": [
+      "1072x695"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 156,
+        "height": 70,
+        "available": [
+          156,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 156,
+        "height": 70,
+        "available": [
+          156,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1440x960/Fit",
+    "frames": 722,
+    "duration": 3002,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      347,
+      228,
+      149.3409423828125,
+      76.55999755859375,
+      17
+    ],
+    "last": [
+      347,
+      228,
+      149.3409423828125,
+      76.55999755859375,
+      17
+    ],
+    "viewSizes": [
+      "1072x695"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 156,
+        "height": 70,
+        "available": [
+          156,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 156,
+        "height": 70,
+        "available": [
+          156,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1920x1080/100",
+    "frames": 722,
+    "duration": 3002,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      347,
+      228,
+      251.65625,
+      88,
+      22
+    ],
+    "last": [
+      347,
+      228,
+      251.65625,
+      88,
+      22
+    ],
+    "viewSizes": [
+      "1552x815"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 236,
+        "height": 70,
+        "available": [
+          236,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 236,
+        "height": 67,
+        "available": [
+          236,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  },
+  {
+    "label": "Grid/open/1920x1080/Fit",
+    "frames": 722,
+    "duration": 3004,
+    "maxDelta": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "scrollDelta": 0,
+    "identities": true,
+    "fits": 0,
+    "children": 0,
+    "styles": 0,
+    "resizes": 1,
+    "first": [
+      347,
+      228,
+      246.62310791015625,
+      86.239990234375,
+      22
+    ],
+    "last": [
+      347,
+      228,
+      246.62310791015625,
+      86.239990234375,
+      22
+    ],
+    "viewSizes": [
+      "1552x815"
+    ],
+    "scrollbars": [
+      false,
+      false
+    ],
+    "fullNames": [
+      {
+        "name": "Alexandria Josephine Montgomery-Worthington",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 236,
+        "height": 70,
+        "available": [
+          236,
+          72
+        ]
+      },
+      {
+        "name": "李明 Rodríguez O’Connor-Smith",
+        "fullTitle": true,
+        "fullAccessibleName": true,
+        "width": 236,
+        "height": 67,
+        "available": [
+          236,
+          72
+        ]
+      }
+    ],
+    "pass": true
+  }
+]
