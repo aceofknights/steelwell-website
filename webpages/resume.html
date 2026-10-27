@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <!--this section is for using a wide set of ascii characters
         its set up to be easy to read on computers and moblile devices-->
@@ -11,33 +11,38 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
     />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+    <script src="../javascript/navigation.js" defer></script>
   </head>
   <!--below this line is whats displayed on the actual web page-->
-  <body class="text-center">
+  <body class="text-center portfolio">
+    <a class="cw-skip" href="#main">Skip to content</a>
     <!-- sets the top of the nav bar to have proper spacing -->
     <div class="cover-container">
-      <header class="masthead">
-        <div class="inner">
-          <h3 class="masthead-brand">chriswellsdev.com</h3>
-          <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link" href="../index.html">Home</a>
-            <a class="nav-link" href="about.html">About</a>
-            <a class="nav-link active" href="#">Resume</a>
-            <a class="nav-link" href="blog.html">Blog</a>
-            <a class="nav-link" href="https://github.com/aceofknights"
-              >Github</a
-            >
-            <a
-              class="nav-link"
-              href="https://www.linkedin.com/in/chris-wells-901611141/"
-              >Linkedin</a
-            >
-            <a class="nav-link" href="survey.html">Feedback</a>
-          </nav>
-        </div>
-      </header>
+      <header class="cw-header">
+      <div class="cw-container cw-header-row">
+        <a class="cw-brand" href="../index.html"><span class="cw-brand-mark" aria-hidden="true">&lt;/&gt;</span>ChrisWellsDev</a>
+        <details class="cw-navigation" open>
+          <summary>Menu</summary>
+          <div class="cw-nav-content">
+            <nav class="cw-nav-links" aria-label="Main navigation">
+              <a href="../index.html">Home</a>
+              <a href="../index.html#projects">Projects</a>
+              <a href="../index.html#tools-games">Tools &amp; Games</a>
+              <a href="../webpages/about.html">About</a>
+              <a href="../webpages/resume.html" aria-current="page">Resume</a>
+              <a href="../webpages/blog.html">Blog</a>
+            </nav>
+            <nav class="cw-social" aria-label="Social profiles">
+              <a href="https://github.com/aceofknights">GitHub <span aria-hidden="true">↗</span></a>
+              <a href="https://www.linkedin.com/in/chris-wells-901611141/">LinkedIn <span aria-hidden="true">↗</span></a>
+            </nav>
+          </div>
+        </details>
+      </div>
+    </header>
 
-      <main role="main" class="inner-cover">
+      <main id="main" role="main" class="inner-cover" tabindex="-1">
         <hr />
         <!-- Adjust the height of the container to ensure the entire PDF is visible -->
         <div class="pdf-container">
@@ -50,5 +55,6 @@
         </div>
       </main>
     </div>
+      <footer class="cw-footer"><div class="cw-container"><p>ChrisWellsDev / Tools, games &amp; software.</p><a href="survey.html">Feedback</a></div></footer>
   </body>
 </html>
