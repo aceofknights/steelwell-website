@@ -1,0 +1,407 @@
+{
+  "schemaVersion": 1,
+  "categories": [
+    "Browser Tools",
+    "Browser Games",
+    "Desktop/Mobile Applications",
+    "Coursework",
+    "Other Projects"
+  ],
+  "externalLinkChecks": [
+    {
+      "url": "https://github.com/aceofknights/steelwell-website",
+      "result": "Public repository verified with GitHub connector",
+      "checkedOn": "2026-10-27"
+    },
+    {
+      "url": "https://github.com/aceofknights/auto_clicker",
+      "result": "Public repository verified with GitHub connector",
+      "checkedOn": "2026-10-27"
+    },
+    {
+      "url": "https://drive.google.com/file/d/12fa61cd5eAd7B0me2zSQD42rHKy55Mmr/view",
+      "result": "Google Drive viewer displays Capstone.apk and Download controls; binary not tested",
+      "checkedOn": "2026-10-27"
+    }
+  ],
+  "projects": [
+    {
+      "id": "seating-chart",
+      "title": "Seating Chart",
+      "category": "Browser Tools",
+      "summary": "Plan classroom layouts and randomize seats with attendance, groups, and placement constraints.",
+      "showcase": "projects/seating-chart.html",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "localStorage"
+      ],
+      "overview": "A browser-based classroom planning tool with separate classes, reusable layouts, and table or grid seating. Student lists and layouts are saved in this browser on the website’s origin.",
+      "features": [
+        "Manage multiple classes, student sublists, and attendance.",
+        "Create, name, color, move, and resize tables with one to eight seats.",
+        "Configure grid rows, columns, spacing, and aisles.",
+        "Randomize seating with seat locks, table locks, and student separation constraints.",
+        "Save shared layouts and use fullscreen classroom presentation."
+      ],
+      "links": [
+        {
+          "kind": "launch",
+          "label": "Launch Tool",
+          "url": "webpages/SeatingChart.html"
+        },
+        {
+          "kind": "source",
+          "label": "View Source",
+          "url": "https://github.com/aceofknights/steelwell-website"
+        }
+      ],
+      "usage": [
+        "Open the tool and choose or create a class.",
+        "Paste names one per line, then configure tables or a grid.",
+        "Set attendance and placement options before randomizing seats."
+      ],
+      "notes": [
+        "Saved data stays in the browser where it was created. A different browser or domain has separate data.",
+        "The existing tool opens at its original URL; this showcase does not read or write classroom data."
+      ],
+      "preview": null
+    },
+    {
+      "id": "hex-math",
+      "title": "Hex Math",
+      "category": "Browser Games",
+      "summary": "Change one multiplication factor, claim a product, and connect four hexes in a two-player game.",
+      "showcase": "projects/hex-math.html",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "overview": "A local two-player multiplication strategy game. Players change one factor at a time; the matching product is claimed automatically when it is available.",
+      "features": [
+        "Choose factors from 1 through 12.",
+        "Alternate turns on a shuffled board of multiplication products.",
+        "Connect four owned hexes along a board axis to win.",
+        "Track wins during the current page session and start a new board."
+      ],
+      "links": [
+        {
+          "kind": "play",
+          "label": "Play Game",
+          "url": "webpages/HexMath.html"
+        },
+        {
+          "kind": "source",
+          "label": "View Source",
+          "url": "https://github.com/aceofknights/steelwell-website"
+        }
+      ],
+      "usage": [
+        "Share the screen with another player.",
+        "Select a different value in either factor panel; the game claims the matching unclaimed product.",
+        "Use New game or Play again to start another board."
+      ],
+      "notes": [],
+      "preview": {
+        "src": "assets/previews/hex-math.jpg",
+        "alt": "Hex Math interface with player scores, factor controls, and a board of multiplication products.",
+        "caption": "Screenshot of the existing browser game, captured locally without changing its rules."
+      }
+    },
+    {
+      "id": "sort-the-numbers",
+      "title": "Sort the Numbers",
+      "category": "Browser Games",
+      "summary": "Select shuffled numbers from one to five in ascending order.",
+      "showcase": "projects/sort-the-numbers.html",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "overview": "A small browser game built around a simple sequence challenge: find the shuffled numbers and click them in order from one to five.",
+      "features": [
+        "Shuffle five numbered cards at the start of each round.",
+        "Mark correct selections as you progress.",
+        "Restart automatically after success or an incorrect selection."
+      ],
+      "links": [
+        {
+          "kind": "play",
+          "label": "Play Game",
+          "url": "webpages/sortTheNumber.html"
+        },
+        {
+          "kind": "source",
+          "label": "View Source",
+          "url": "https://github.com/aceofknights/steelwell-website"
+        }
+      ],
+      "usage": [
+        "Select 1, then 2, 3, 4, and 5.",
+        "Dismiss the result message to continue with a freshly shuffled round."
+      ],
+      "notes": [
+        "The original game uses mouse-clickable cards and browser alerts. Its interactions are preserved in this milestone."
+      ],
+      "preview": {
+        "src": "assets/previews/sort-the-numbers.jpg",
+        "alt": "Sort the Numbers interface showing five shuffled numbered cards.",
+        "caption": "Screenshot of the existing browser game, captured locally without changing its rules."
+      }
+    },
+    {
+      "id": "auto-clicker",
+      "title": "Auto Clicker",
+      "category": "Desktop/Mobile Applications",
+      "summary": "A Python desktop utility with configurable click intervals, mouse buttons, and a start/stop hotkey.",
+      "showcase": "projects/auto-clicker.html",
+      "technologies": [
+        "Python",
+        "Tkinter",
+        "PyAutoGUI",
+        "keyboard"
+      ],
+      "overview": "A desktop auto-clicking project described in the development Blog. Its interface lets users configure repeated mouse clicks and a global hotkey.",
+      "features": [
+        "Configure the interval between clicks.",
+        "Choose the mouse button to use.",
+        "Customize the start/stop hotkey, with F4 described as the default.",
+        "Run clicking on a separate thread so the interface remains responsive."
+      ],
+      "links": [
+        {
+          "kind": "source",
+          "label": "View Source",
+          "url": "https://github.com/aceofknights/auto_clicker"
+        },
+        {
+          "kind": "notes",
+          "label": "Development Notes",
+          "url": "webpages/blog.html#auto-clicker"
+        }
+      ],
+      "usage": [],
+      "notes": [
+        "This is desktop software, not an application that runs inside this website.",
+        "The source repository is available. No separate executable download is advertised here."
+      ],
+      "preview": {
+        "src": "assets/auto_clicker_pic.png",
+        "alt": "Auto Clicker desktop window with interval, mouse-button, and hotkey controls.",
+        "caption": "Existing project screenshot from the development Blog."
+      }
+    },
+    {
+      "id": "vacation-planner",
+      "title": "Vacation Planner",
+      "category": "Desktop/Mobile Applications",
+      "summary": "A mobile vacation-planning application presented as a WGU capstone project.",
+      "showcase": "projects/vacation-planner.html",
+      "technologies": [],
+      "overview": "A mobile application introduced in the Blog as the WGU capstone project. The original post provides an APK through Google Drive.",
+      "features": [
+        "Vacation-planning mobile application.",
+        "APK shared through the existing Google Drive destination."
+      ],
+      "links": [
+        {
+          "kind": "download",
+          "label": "Download APK (Google Drive)",
+          "url": "https://drive.google.com/file/d/12fa61cd5eAd7B0me2zSQD42rHKy55Mmr/view"
+        },
+        {
+          "kind": "notes",
+          "label": "Development Notes",
+          "url": "webpages/blog.html#vacation-planner"
+        }
+      ],
+      "usage": [
+        "Open the Google Drive destination to find Capstone.apk and its Download control."
+      ],
+      "notes": [
+        "The download destination was checked and displays Capstone.apk. The APK was not installed or tested.",
+        "The repository does not include the mobile app’s source or screenshots, so no framework or additional features are claimed."
+      ],
+      "preview": null
+    },
+    {
+      "id": "hotdog-counter",
+      "title": "Hotdog Counter",
+      "category": "Desktop/Mobile Applications",
+      "summary": "A mobile application represented here by its published privacy policy.",
+      "showcase": "projects/hotdog-counter.html",
+      "technologies": [],
+      "overview": "The website hosts the privacy policy for the Hotdog Counter mobile application. The policy is the verified project material available in this repository.",
+      "features": [
+        "Published privacy policy with an application data-use statement.",
+        "Contact email provided in the policy."
+      ],
+      "links": [
+        {
+          "kind": "policy",
+          "label": "Privacy Policy",
+          "url": "webpages/PrivatePolicy.html"
+        }
+      ],
+      "usage": [],
+      "notes": [
+        "No application download, live demo, source repository, or screenshots are linked in the available project material.",
+        "The original policy URL and its content remain unchanged."
+      ],
+      "preview": null
+    },
+    {
+      "id": "tennessee-guide",
+      "title": "Tennessee City Guide",
+      "category": "Coursework",
+      "summary": "Explore a five-page Tennessee website featuring Nashville, Knoxville, Chattanooga, and a contact-form example.",
+      "showcase": "projects/tennessee-guide.html",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "overview": "A preserved coursework website introducing Tennessee and three of its cities. It includes illustrated state facts, city statistics, and links to weather, maps, and local government information.",
+      "features": [
+        "State overview and illustrated facts.",
+        "Dedicated Nashville, Knoxville, and Chattanooga pages.",
+        "City weather, map, and government links.",
+        "Contact-form demonstration with matching-email validation."
+      ],
+      "links": [
+        {
+          "kind": "demo",
+          "label": "Open Coursework",
+          "url": "wgu-web-task/Task%202%20pages/state.html"
+        },
+        {
+          "kind": "source",
+          "label": "View Source",
+          "url": "https://github.com/aceofknights/steelwell-website"
+        }
+      ],
+      "usage": [
+        "Open the coursework and use its own menu to explore the state, cities, and form."
+      ],
+      "notes": [
+        "The application’s original orange design and internal navigation are preserved.",
+        "The contact form is a coursework demonstration; it has no message-delivery backend."
+      ],
+      "preview": {
+        "src": "wgu-web-task/Task%202%20pages/assets/tn.png",
+        "alt": "Tennessee map illustration used on the original coursework homepage.",
+        "caption": "Original Tennessee coursework illustration; not a screenshot of the dashboard."
+      }
+    },
+    {
+      "id": "feedback-survey",
+      "title": "Feedback Survey Demo",
+      "category": "Browser Tools",
+      "summary": "A client-side feedback form demonstrating required-answer validation and a thank-you message.",
+      "showcase": "projects/feedback-survey.html",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript"
+      ],
+      "overview": "A browser form example with text, selection, radio, checkbox, and optional comment fields. Its JavaScript validates required answers before showing a personalized acknowledgment.",
+      "features": [
+        "Multiple input types and required-answer validation.",
+        "Inline validation messages.",
+        "Personalized thank-you state after valid answers."
+      ],
+      "links": [
+        {
+          "kind": "launch",
+          "label": "Launch Tool",
+          "url": "webpages/survey.html"
+        },
+        {
+          "kind": "source",
+          "label": "View Source",
+          "url": "https://github.com/aceofknights/steelwell-website"
+        }
+      ],
+      "usage": [],
+      "notes": [
+        "This is a form demonstration. It does not transmit, email, or store submitted answers."
+      ],
+      "preview": null
+    },
+    {
+      "id": "bootstrap-cover",
+      "title": "Bootstrap Cover Page",
+      "category": "Coursework",
+      "summary": "An earlier portfolio About page preserved from an internet software course.",
+      "showcase": "projects/bootstrap-cover.html",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "Bootstrap 4.5.3"
+      ],
+      "overview": "A legacy About page built from the Bootstrap cover example for an internet software class. It preserves an earlier biography, portrait, and template attribution.",
+      "features": [
+        "Bootstrap cover layout and responsive utilities.",
+        "Profile image and original student biography.",
+        "Original template attribution and navigation."
+      ],
+      "links": [
+        {
+          "kind": "demo",
+          "label": "Open Coursework",
+          "url": "webpages/oldaboutpage.html"
+        },
+        {
+          "kind": "source",
+          "label": "View Source",
+          "url": "https://github.com/aceofknights/steelwell-website"
+        }
+      ],
+      "usage": [],
+      "notes": [
+        "This historical page is retained at its existing URL. Its biography describes the time when it was created."
+      ],
+      "preview": null
+    },
+    {
+      "id": "chriswellsdev",
+      "title": "ChrisWellsDev Website",
+      "category": "Other Projects",
+      "summary": "A static developer portfolio bringing together interactive tools, games, software, and coursework.",
+      "showcase": "projects/chriswellsdev.html",
+      "technologies": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "GitHub Pages"
+      ],
+      "overview": "This website brings together browser applications, software project notes, and coursework in a shared developer dashboard design. Static HTML keeps its core navigation and project links available without JavaScript.",
+      "features": [
+        "A categorized project catalog and dedicated Tools & Games page.",
+        "Consistent showcase layouts, cards, and responsive navigation.",
+        "Direct links to the original interactive tools.",
+        "Static hosting through GitHub Pages."
+      ],
+      "links": [
+        {
+          "kind": "demo",
+          "label": "Explore Website",
+          "url": "index.html"
+        },
+        {
+          "kind": "source",
+          "label": "View Source",
+          "url": "https://github.com/aceofknights/steelwell-website"
+        }
+      ],
+      "usage": [],
+      "notes": [
+        "No runtime framework, backend, or build step is required to serve the checked-in pages."
+      ],
+      "preview": null
+    }
+  ]
+}

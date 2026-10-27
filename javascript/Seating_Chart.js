@@ -18,9 +18,51 @@ let gridSettings = {
 };
 let studentGroups = [];
 let useGroupAlternating = false;
-console.log('INITIAL loadClassList():', localStorage.getItem('classList'));
+// Stop editing after a storage failure; the opening raw backup remains available.
+let storageFailed = false;
+function storageFailure(cause) {
+  storageFailed = true;
+  const error = new Error('Classroom changes could not be saved or read. Check browser storage permissions and free space. Your saved records were not reset. Download a backup before reloading.');
+  error.cause = cause;
+  error.classroomStorageError = true;
+  if (window.reportClassroomStorageError) window.reportClassroomStorageError(error.message);
+  else alert(error.message);
+  throw error;
+}
+const classroomStorage = {
+  getItem(key) {
+    try { return window.localStorage.getItem(key); } catch (error) { return storageFailure(error); }
+  },
+  setItem(key, value) {
+    if (storageFailed) return storageFailure();
+    try {
+      const original = window.localStorage.getItem(key);
+      if (original !== null && !key.startsWith('currentTableLayout_')) {
+        window.SeatingBackup.checkReadable([{ key, value: original }]);
+      }
+      window.localStorage.setItem(key, value);
+    } catch (error) { return storageFailure(error); }
+  },
+  removeItem(key) {
+    if (storageFailed) return storageFailure();
+    try { window.localStorage.removeItem(key); } catch (error) { return storageFailure(error); }
+  }
+};
+function readClassroomJSON(key, raw) {
+  try {
+    window.SeatingBackup.checkReadable([{ key, value: raw }]);
+    return JSON.parse(raw);
+  } catch (error) { return storageFailure(error); }
+}
+window.addEventListener('error', event => {
+  if (event.error?.classroomStorageError) event.preventDefault();
+});
 
 // Each class’s data saved separately in localStorage, key = `seatingChartData_${className}`
+function findTable(id) {
+  return Array.from(classroom.querySelectorAll('.table')).find(table => table.dataset.id === id);
+}
+
 function getStorageKey(className) {
   return `seatingChartData_${className}`;
 }
@@ -221,8 +263,8 @@ function renderStudentGroupControls() {
 }
 
 function loadClassData(className) {
-  const saved = localStorage.getItem(getStorageKey(className));
-  if (!saved) {
+  const saved = classroomStorage.getItem(getStorageKey(className));
+  if (saved === null) {
     manualStudentNames = new Set();
     studentsData = {};
     studentGroups = [];
@@ -244,7 +286,7 @@ function loadClassData(className) {
     gridSeats = [],
     studentGroups: savedStudentGroups = [],
     useGroupAlternating: savedUseGroupAlternating = false,
-  } = JSON.parse(saved);
+  } = readClassroomJSON(getStorageKey(className), saved);
   manualStudentNames = new Set(manualNames);
   studentsData = savedStudentsData;
   studentGroups = normalizeStudentGroups(savedStudentGroups);
@@ -259,18 +301,19 @@ function loadClassData(className) {
   } else {
     tables.forEach(tableData => createTable(tableData));
   }
+  restoreUnseatedLocks();
   updateStudentList();
-  updateSeatsFromLocked(true);
+  // Saved seats already contain both locked and unlocked assignments.
   refreshLayoutSelector();
 }
 
 function saveClassList() {
-  localStorage.setItem('classList', JSON.stringify(classList));
+  classroomStorage.setItem('classList', JSON.stringify(classList));
 }
 
 function loadClassList() {
-  const saved = localStorage.getItem('classList');
-  classList = saved ? JSON.parse(saved) : ['default'];
+  const saved = classroomStorage.getItem('classList');
+  classList = saved !== null ? readClassroomJSON('classList', saved) : ['default'];
   if (!classList.includes('default')) classList.push('default');
 }
 
@@ -292,12 +335,12 @@ const bulkGroupRow = document.getElementById('bulk-group-row');
 const bulkGroupSelect = document.getElementById('bulkGroupSelect');
 
 function loadLayouts() {
-  const saved = localStorage.getItem(getLayoutStorageKey());
-  return saved ? JSON.parse(saved) : {};
+  const saved = classroomStorage.getItem(getLayoutStorageKey());
+  return saved !== null ? readClassroomJSON(getLayoutStorageKey(), saved) : {};
 }
 
 function saveLayouts(layouts) {
-  localStorage.setItem(getLayoutStorageKey(), JSON.stringify(layouts));
+  classroomStorage.setItem(getLayoutStorageKey(), JSON.stringify(layouts));
 }
 
 function migrateClassLayoutsToSharedLibrary() {
@@ -306,18 +349,27 @@ function migrateClassLayoutsToSharedLibrary() {
 
   classList.forEach(className => {
     const oldKey = `tableLayouts_${className}`;
-    const saved = localStorage.getItem(oldKey);
-    if (!saved) return;
+    const saved = classroomStorage.getItem(oldKey);
+    if (saved === null) return;
 
-    const classLayouts = JSON.parse(saved);
+    const classLayouts = readClassroomJSON(oldKey, saved);
     Object.entries(classLayouts).forEach(([name, layout]) => {
+      const normalized = Array.isArray(layout) ? { mode: 'table', tables: layout } : layout;
+      const candidate = { ...normalized, name };
+      const canonical = value => JSON.stringify(value, function (key, item) {
+        return item && typeof item === 'object' && !Array.isArray(item)
+          ? Object.fromEntries(Object.keys(item).sort().map(field => [field, item[field]])) : item;
+      });
+      const sameLayout = existing => existing && canonical({ ...existing, name }) === canonical(candidate);
+      // Recognize both the original name and the old conflict suffix on every run.
+      if (sameLayout(sharedLayouts[name]) || sameLayout(sharedLayouts[`${name} (${className})`])) return;
       let sharedName = name;
       if (sharedLayouts[sharedName]) {
         sharedName = `${name} (${className})`;
       }
 
       if (!sharedLayouts[sharedName]) {
-        sharedLayouts[sharedName] = { ...layout, name: sharedName };
+        sharedLayouts[sharedName] = { ...normalized, name: sharedName };
         changed = true;
       }
     });
@@ -329,15 +381,15 @@ function migrateClassLayoutsToSharedLibrary() {
 }
 
 function getCurrentLayoutName(className = currentClass) {
-  return localStorage.getItem(getCurrentLayoutStorageKey(className)) || '';
+  return classroomStorage.getItem(getCurrentLayoutStorageKey(className)) || '';
 }
 
 function saveCurrentLayoutName(layoutName, className = currentClass) {
   currentLayoutName = layoutName;
   if (layoutName) {
-    localStorage.setItem(getCurrentLayoutStorageKey(className), layoutName);
+    classroomStorage.setItem(getCurrentLayoutStorageKey(className), layoutName);
   } else {
-    localStorage.removeItem(getCurrentLayoutStorageKey(className));
+    classroomStorage.removeItem(getCurrentLayoutStorageKey(className));
   }
 }
 
@@ -388,8 +440,8 @@ function getCurrentTableLayout() {
       seatCount: parseInt(tableDiv.querySelector('.seat-count').value, 10) || 1,
       columnCount: parseInt(tableDiv.querySelector('.column-count').value, 10) || 1,
       seatColor: tableDiv.querySelector('.seat-color').value,
-      posX: parseInt(tableDiv.style.left, 10) || 20,
-      posY: parseInt(tableDiv.style.top, 10) || 20,
+      posX: Number.isFinite(parseInt(tableDiv.style.left, 10)) ? parseInt(tableDiv.style.left, 10) : 20,
+      posY: Number.isFinite(parseInt(tableDiv.style.top, 10)) ? parseInt(tableDiv.style.top, 10) : 20,
       width: parseInt(tableDiv.style.width, 10) || tableDiv.offsetWidth,
       height: parseInt(tableDiv.style.height, 10) || tableDiv.offsetHeight,
       tableName: tableNameInput ? tableNameInput.value.trim() : '',
@@ -495,8 +547,8 @@ deleteClassBtn.addEventListener('click', () => {
   }
 
   // Remove class data from localStorage
-  localStorage.removeItem(getStorageKey(currentClass));
-  localStorage.removeItem(getCurrentLayoutStorageKey(currentClass));
+  classroomStorage.removeItem(getStorageKey(currentClass));
+  classroomStorage.removeItem(getCurrentLayoutStorageKey(currentClass));
 
   // Remove class from classList array
   const index = classList.indexOf(currentClass);
@@ -932,7 +984,7 @@ function updateStudentList() {
   optionsPanel.appendChild(seatAssignmentContainer);
 
   function updateLockUI() {
-    const selected = optionsPanel.querySelector(`input[name=lockType-${name}]:checked`);
+    const selected = [noneRadio.r, tableRadio.r, seatRadio.r].find(radio => radio.checked);
     const val = selected ? selected.value : 'none';
     tableAssignLabel.style.display = (val === 'none') ? 'none' : 'block';
     seatAssignLabel.style.display = (val === 'seat' || (isGridMode() && val !== 'none')) ? 'block' : 'none';
@@ -1025,7 +1077,7 @@ function updateStudentList() {
     }
 
     const tableId = tableAssignSelect.value;
-    const tableDiv = classroom.querySelector(`.table[data-id="${tableId}"]`);
+    const tableDiv = findTable(tableId);
     if (!tableDiv) return;
     const seats = tableDiv.querySelectorAll('.seat');
     seats.forEach((seat, index) => {
@@ -1111,7 +1163,7 @@ function updateStudentList() {
   });
 
   saveBtn.addEventListener('click', () => {
-    const selected = optionsPanel.querySelector(`input[name=lockType-${name}]:checked`);
+    const selected = [noneRadio.r, tableRadio.r, seatRadio.r].find(radio => radio.checked);
     const lockVal = selected ? selected.value : 'none';
 
     if (isGridMode() && lockVal === 'table') {
@@ -1171,6 +1223,26 @@ function updateStudentList() {
 
 
 // --- Apply locked seat & table assignments to seats in UI ---
+function restoreUnseatedLocks() {
+  // Older records can contain locks without a seat snapshot. Fill only empty seats;
+  // never clear valid saved assignments while reconstructing those legacy locks.
+  const seats = Array.from(classroom.querySelectorAll('.seat'));
+  const placed = new Set(seats.map(seat => seat.dataset.studentName).filter(Boolean));
+  Object.entries(studentsData).forEach(([name, data]) => {
+    if (placed.has(name)) return;
+    let seat;
+    if (isGridMode() && data.lockedSeat?.mode === 'grid') {
+      seat = seats.find(item => Number(item.dataset.row) === data.lockedSeat.row &&
+        Number(item.dataset.column) === data.lockedSeat.column && item.dataset.seatType !== 'aisle');
+    } else if (!isGridMode() && data.lockedSeat && data.lockedSeat.mode !== 'grid') {
+      seat = findTable(data.lockedSeat.tableId)?.querySelectorAll('.seat')[data.lockedSeat.seatIndex];
+    } else if (!isGridMode() && data.lockedTable && !data.lockedSeat) {
+      seat = Array.from(findTable(data.lockedTable)?.querySelectorAll('.seat') || []).find(item => !item.dataset.studentName);
+    }
+    if (seat && !seat.dataset.studentName) { setSeatStudent(seat, name); placed.add(name); }
+  });
+}
+
 function updateSeatsFromLocked(suppressVisual = false) {
   // Clear all seats first
   classroom.querySelectorAll('.seat').forEach(seat => {
@@ -1192,7 +1264,7 @@ function updateSeatsFromLocked(suppressVisual = false) {
   Object.entries(studentsData).forEach(([student, data]) => {
     if (data.lockedSeat && data.lockedSeat.mode !== 'grid') {
       const { tableId, seatIndex } = data.lockedSeat;
-      const table = classroom.querySelector(`.table[data-id="${tableId}"]`);
+      const table = findTable(tableId);
       if (!table) return;
       const seat = table.querySelectorAll('.seat')[seatIndex];
       if (!seat) return;
@@ -1204,7 +1276,7 @@ function updateSeatsFromLocked(suppressVisual = false) {
   // --- STEP 2: Table-only locks ---
   Object.entries(studentsData).forEach(([student, data]) => {
     if (data.lockedTable && !data.lockedSeat) {
-      const table = classroom.querySelector(`.table[data-id="${data.lockedTable}"]`);
+      const table = findTable(data.lockedTable);
       if (!table) return;
 
       // Find the first free seat in this table
@@ -1229,14 +1301,17 @@ function saveTables() {
     return;
   }
 
+  const previousRaw = classroomStorage.getItem(getStorageKey(currentClass));
+  const previous = previousRaw === null ? {} : readClassroomJSON(getStorageKey(currentClass), previousRaw);
+
   const tables = [];
   classroom.querySelectorAll('.table').forEach(tableDiv => {
     const id = tableDiv.dataset.id;
     const seatCount = parseInt(tableDiv.querySelector('.seat-count').value);
     const columnCount = parseInt(tableDiv.querySelector('.column-count').value, 10) || 1;
     const seatColor = tableDiv.querySelector('.seat-color').value;
-    const posX = parseInt(tableDiv.style.left, 10) || 20;
-    const posY = parseInt(tableDiv.style.top, 10) || 20;
+    const posX = Number.isFinite(parseInt(tableDiv.style.left, 10)) ? parseInt(tableDiv.style.left, 10) : 20;
+    const posY = Number.isFinite(parseInt(tableDiv.style.top, 10)) ? parseInt(tableDiv.style.top, 10) : 20;
     const width = parseInt(tableDiv.style.width, 10) || tableDiv.offsetWidth;
     const height = parseInt(tableDiv.style.height, 10) || tableDiv.offsetHeight;
 
@@ -1249,6 +1324,7 @@ function saveTables() {
     const tableName = tableNameInput ? tableNameInput.value.trim() : '';
 
     tables.push({
+      ...(previous.tables || []).find(table => table.id === id),
       id,
       seatCount,
       columnCount,
@@ -1266,6 +1342,7 @@ function saveTables() {
   const gridSeats = getCurrentGridSeatsData();
 
   const saveObj = {
+    ...previous,
     tables,
     layoutMode,
     gridSettings: savedGridSettings,
@@ -1276,7 +1353,7 @@ function saveTables() {
     studentsData,
   };
 
-  localStorage.setItem(getStorageKey(currentClass), JSON.stringify(saveObj));
+  classroomStorage.setItem(getStorageKey(currentClass), JSON.stringify(saveObj));
 }
 
 
@@ -1289,9 +1366,9 @@ function loadTables() {
     return;
   }
 
-  const saved = localStorage.getItem(getStorageKey(currentClass));
-  if (saved) {
-    const { tables = [], manualStudentNames: manualNames = [], studentsData: savedStudentsData = {} } = JSON.parse(saved);
+  const saved = classroomStorage.getItem(getStorageKey(currentClass));
+  if (saved !== null) {
+    const { tables = [], manualStudentNames: manualNames = [], studentsData: savedStudentsData = {} } = readClassroomJSON(getStorageKey(currentClass), saved);
     manualStudentNames = new Set(manualNames);
 
     studentsData = savedStudentsData || {};
@@ -1300,8 +1377,9 @@ function loadTables() {
     clearTables();
 
     tables.forEach(tableData => createTable(tableData));
+    restoreUnseatedLocks();
     updateStudentList();
-    updateSeatsFromLocked(true); // Suppress visual update
+    // createTable restores the saved seats, including unlocked assignments.
   }
 }
 
@@ -1358,13 +1436,13 @@ function setSeatStudent(seat, studentName, suppressVisual = false) {
       return;
     }
 
-    if (label) label.textContent = suppressVisual ? '' : name;
+    if (label) label.textContent = name;
     seat.title = name || 'Click to assign student';
     requestAnimationFrame(() => fitGridSeatName(seat));
     return;
   }
 
-  seat.textContent = suppressVisual ? '' : name;
+  seat.textContent = name;
   seat.title = name || 'Click to assign student';
 }
 
@@ -1475,8 +1553,9 @@ function updateSeatGrid(tableDiv, count) {
   const columnInput = tableDiv.querySelector('.column-count');
   const columnCount = Math.max(1, parseInt(columnInput?.value, 10) || 1);
   const rows = Math.ceil(count / columnCount);
-  const cellWidth = seatsRect.width / columnCount;
-  const cellHeight = seatsRect.height / rows;
+  const viewScale = window.SeatingViewport?.getScale() || 1;
+  const cellWidth = seatsRect.width / viewScale / columnCount;
+  const cellHeight = seatsRect.height / viewScale / rows;
 
   const seatFontSize = Math.max(12, Math.min(80, cellHeight * 0.42, cellWidth * 0.18));
   seatsDiv.style.setProperty('--seat-columns', columnCount);
@@ -1490,8 +1569,8 @@ function createTable(data = {}) {
   tableDiv.dataset.id = data.id || generateId();
 
   // Position or default
-  tableDiv.style.left = (data.posX || 20) + 'px';
-  tableDiv.style.top = (data.posY || 20) + 'px';
+  tableDiv.style.left = (data.posX ?? 20) + 'px';
+  tableDiv.style.top = (data.posY ?? 20) + 'px';
   tableDiv.style.width = (data.width || 360) + 'px';
   tableDiv.style.height = (data.height || 400) + 'px';
   updateTableScale(tableDiv);
@@ -1540,7 +1619,11 @@ function createTable(data = {}) {
     opt.textContent = color.charAt(0).toUpperCase() + color.slice(1);
     colorSelect.appendChild(opt);
   });
-  colorSelect.value = data.seatColor || 'gray';
+  const savedColor = data.seatColor || 'gray';
+  if (!seatColors.includes(savedColor)) {
+    const custom = document.createElement('option'); custom.value = savedColor; custom.textContent = 'Custom color'; colorSelect.appendChild(custom);
+  }
+  colorSelect.value = savedColor;
   controlsDiv.appendChild(colorSelect);
 
   // Delete button
@@ -1565,10 +1648,12 @@ function createTable(data = {}) {
 
   // Render seats based on count, color, and assigned names
   function renderSeats() {
+    const assignedNames = seatsDiv.children.length
+      ? Array.from(seatsDiv.querySelectorAll('.seat'), seat => seat.dataset.studentName || '')
+      : data.seats || [];
     seatsDiv.innerHTML = '';
     const count = parseInt(seatCountSelect.value);
     const color = colorSelect.value;
-    const assignedNames = data.seats || [];
 
     for (let i = 0; i < count; i++) {
       const seat = document.createElement('div');
@@ -1663,8 +1748,11 @@ function createTable(data = {}) {
 
   // Event listeners for controls
   seatCountSelect.addEventListener('change', () => {
-    if (!data.seats) data.seats = [];
-    data.seats = data.seats.slice(0, seatCountSelect.value);
+    // Removed seats unassign their occupants; students remain in the roster.
+    Object.values(studentsData).forEach(student => {
+      if (student.lockedSeat?.tableId === tableDiv.dataset.id &&
+          student.lockedSeat.seatIndex >= Number(seatCountSelect.value)) student.lockedSeat = null;
+    });
     renderSeats();
     saveTables();
     updateStudentList();
@@ -1693,8 +1781,8 @@ function createTable(data = {}) {
 
     resizeData = {
       elem: tableDiv,
-      startX: e.clientX,
-      startY: e.clientY,
+      startX: classroomPointer(e).x,
+      startY: classroomPointer(e).y,
       startWidth: tableDiv.offsetWidth,
       startHeight: tableDiv.offsetHeight,
     };
@@ -1710,6 +1798,7 @@ function createTable(data = {}) {
       if (sData.lockedSeat && sData.lockedSeat.tableId === tableDiv.dataset.id) {
         studentsData[student].lockedSeat = null;
       }
+      if (sData.lockedTable === tableDiv.dataset.id) sData.lockedTable = null;
     }
 
     saveTables();
@@ -1723,8 +1812,8 @@ function createTable(data = {}) {
 
     dragData = {
       elem: tableDiv,
-      offsetX: e.clientX - tableDiv.getBoundingClientRect().left,
-      offsetY: e.clientY - tableDiv.getBoundingClientRect().top,
+      offsetX: classroomPointer(e).x - tableDiv.offsetLeft,
+      offsetY: classroomPointer(e).y - tableDiv.offsetTop,
     };
     tableDiv.style.cursor = 'grabbing';
   });
@@ -1732,13 +1821,20 @@ function createTable(data = {}) {
   return tableDiv;
 }
 
+// Pointer geometry only: saved coordinates and dimensions remain unscaled pixels.
+function classroomPointer(event) {
+  const rect = classroom.getBoundingClientRect();
+  const scale = window.SeatingViewport?.getScale() || 1;
+  return { x: (event.clientX - rect.left) / scale, y: (event.clientY - rect.top) / scale };
+}
+
 document.addEventListener('mousemove', e => {
   if (resizeData) {
-    const parentRect = classroom.getBoundingClientRect();
-    const maxWidth = Math.max(220, parentRect.width - resizeData.elem.offsetLeft);
-    const maxHeight = Math.max(220, parentRect.height - resizeData.elem.offsetTop);
-    const newWidth = Math.min(Math.max(220, resizeData.startWidth + e.clientX - resizeData.startX), maxWidth);
-    const newHeight = Math.min(Math.max(220, resizeData.startHeight + e.clientY - resizeData.startY), maxHeight);
+    const point = classroomPointer(e);
+    const maxWidth = Math.max(220, classroom.clientWidth - resizeData.elem.offsetLeft);
+    const maxHeight = Math.max(220, classroom.clientHeight - resizeData.elem.offsetTop);
+    const newWidth = Math.min(Math.max(220, resizeData.startWidth + point.x - resizeData.startX), maxWidth);
+    const newHeight = Math.min(Math.max(220, resizeData.startHeight + point.y - resizeData.startY), maxHeight);
 
     resizeData.elem.style.width = newWidth + 'px';
     resizeData.elem.style.height = newHeight + 'px';
@@ -1749,14 +1845,12 @@ document.addEventListener('mousemove', e => {
 
   if (!dragData) return;
 
-  const x = e.clientX - dragData.offsetX;
-  const y = e.clientY - dragData.offsetY;
+  const point = classroomPointer(e);
+  const x = point.x - dragData.offsetX;
+  const y = point.y - dragData.offsetY;
 
-  const parentRect = classroom.getBoundingClientRect();
-  const elemRect = dragData.elem.getBoundingClientRect();
-
-  let newX = Math.min(Math.max(0, x - parentRect.left), parentRect.width - elemRect.width);
-  let newY = Math.min(Math.max(0, y - parentRect.top), parentRect.height - elemRect.height);
+  let newX = Math.min(Math.max(0, x), classroom.clientWidth - dragData.elem.offsetWidth);
+  let newY = Math.min(Math.max(0, y), classroom.clientHeight - dragData.elem.offsetHeight);
 
   dragData.elem.style.left = newX + 'px';
   dragData.elem.style.top = newY + 'px';
@@ -2171,6 +2265,7 @@ function randomizeSeating() {
       shuffleArray(shuffledTableIds);
 
       for (const tableId of shuffledTableIds) {
+        if (!seatsMap[tableId]) continue; // A legacy constraint may reference a deleted table.
         const seatIndices = seatsMap[tableId].map((_, i) => i);
         shuffleArray(seatIndices);
         for (const seatIndex of seatIndices) {
@@ -2507,14 +2602,16 @@ function init() {
   syncModeControls();
 }
 
-// ✅ Correct usage: call `init()` after DOM is ready
-window.addEventListener('DOMContentLoaded', () => {
+// The data-protection controller calls this once, after its opening safety capture.
+function initializeSeatingChart() {
+  if (initializeSeatingChart.started) return;
   loadClassList();
   migrateClassLayoutsToSharedLibrary();
   refreshClassSelector();
   loadClassData(currentClass);
   init(); // only called once here!
-});
+  initializeSeatingChart.started = true;
+}
 
 
 document.getElementById('bulk-add-btn').addEventListener('click', () => {
@@ -2553,54 +2650,11 @@ document.getElementById('bulk-add-btn').addEventListener('click', () => {
 });
 
 document.addEventListener('keydown', (event) => {
-  if (event.key === 'r') {
-    randomizeSeating()
-    // Code to execute when the 'r' key is pressed
-    console.log('The "r" key was pressed!');
-    // Example: Trigger a function or change an element's style
-    // someFunction();
-    // document.getElementById('myElement').style.backgroundColor = 'red';
+  if (event.key.toLowerCase() === 'r' && !event.defaultPrevented && !event.repeat && !event.isComposing &&
+      !event.getModifierState('AltGraph') &&
+      !event.ctrlKey && !event.altKey && !event.metaKey && !event.shiftKey &&
+      !event.target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"]')) {
+    event.preventDefault();
+    randomizeSeating();
   }
-});
-
-const fullscreenBtn = document.getElementById('fullscreenClassroomBtn');
-const classroomDiv = document.getElementById('classroom');
-
-fullscreenBtn.addEventListener('click', () => {
-  if (!document.fullscreenElement) {
-    // Request full screen on the classroom div
-    if (classroomDiv.requestFullscreen) {
-      classroomDiv.requestFullscreen();
-    } else if (classroomDiv.webkitRequestFullscreen) { /* Safari */
-      classroomDiv.webkitRequestFullscreen();
-    } else if (classroomDiv.msRequestFullscreen) { /* IE11 */
-      classroomDiv.msRequestFullscreen();
-    }
-    // Add class to enlarge it
-    classroomDiv.classList.add('fullscreen-classroom');
-    fullscreenBtn.textContent = 'Exit Fullscreen';
-    requestAnimationFrame(fitAllGridSeatNames);
-  } else {
-    // Exit fullscreen mode
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-    // Remove class to revert size
-    classroomDiv.classList.remove('fullscreen-classroom');
-    fullscreenBtn.textContent = 'Fullscreen Classroom';
-    requestAnimationFrame(fitAllGridSeatNames);
-  }
-});
-
-// Also listen for fullscreen change to sync class toggle & button text (handles ESC key)
-document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement) {
-    classroomDiv.classList.remove('fullscreen-classroom');
-    fullscreenBtn.textContent = 'Fullscreen Classroom';
-  }
-  requestAnimationFrame(fitAllGridSeatNames);
 });

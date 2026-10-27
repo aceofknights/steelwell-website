@@ -1,0 +1,307 @@
+/* Workspace presentation only. Theme tokens come from dashboard.css (.portfolio).
+   View transforms scale the room; stored table geometry stays in logical pixels. */
+.seating-workspace { height:100dvh; overflow:hidden; font-size:14px; line-height:1.5; }
+.seating-workspace :is(button,input,select,textarea,summary) { font:inherit; color:var(--cw-text); }
+.seating-workspace :is(button,select,input,textarea,summary) { border:1px solid var(--cw-border); border-radius:7px; background:#152031; box-shadow:none; text-shadow:none; }
+.seating-workspace :is(button,summary) { min-height:40px; padding:8px 12px; cursor:pointer; font-weight:600; }
+.seating-workspace :is(button,summary):hover { border-color:#6680a6; background:#25354c; }
+.seating-workspace :is(input,select,textarea) { min-height:40px; padding:7px 10px; max-width:100%; }
+.seating-workspace input:is([type=radio],[type=checkbox]) { min-height:22px; width:22px; height:22px; margin:0; padding:0; accent-color:var(--cw-accent); flex:none; cursor:pointer; }
+.seating-workspace :is(button,input,select,textarea,summary,a,[tabindex]):focus-visible { outline:3px solid #8db7ff; outline-offset:3px; }
+.seating-workspace button:disabled { opacity:.5; cursor:default; }
+.seating-workspace [hidden] { display:none!important; }
+.seating-workspace h2 { font-size:16px; margin:0; line-height:1.4; }
+.seating-workspace h3 { font-size:15px; margin:22px 0 6px; }
+.seating-workspace p { color:var(--cw-muted); }
+.seating-workspace .sc-skip { position:fixed; top:-100px; left:12px; z-index:100; padding:12px; background:var(--cw-accent); color:#101722; }
+.seating-workspace .sc-skip:focus { top:8px; }
+.seating-workspace .sc-header { height:88px; padding:16px 24px; display:flex; align-items:center; gap:32px; border-bottom:var(--cw-line); background:var(--cw-panel); }
+.seating-workspace .sc-brand { display:flex; gap:10px; align-items:center; text-decoration:none; font-weight:700; font-size:16px; white-space:nowrap; }
+.seating-workspace .sc-brand > span:first-child { display:grid; place-items:center; background:#263e61; border:1px solid #45658e; color:#9bc2ff; border-radius:9px; width:36px; height:36px; font:700 16px var(--cw-mono); }
+.seating-workspace .sc-brand small { display:block; color:var(--cw-muted); font-weight:400; font-size:11px; }
+.seating-workspace .sc-title { flex:1; border-left:var(--cw-line); padding-left:28px; }
+.seating-workspace .sc-title h1 { margin:0; font-size:23px; letter-spacing:-.6px; line-height:1.3; }
+.seating-workspace .sc-title p { margin:2px 0 0; font-size:12px; }
+.seating-workspace .sc-header nav { display:flex; gap:8px; }
+.seating-workspace #seatingApplication { display:flex; flex-direction:column; height:calc(100dvh - 88px); padding:0 20px; gap:0; }
+.seating-workspace .sc-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:14px 0; border-bottom:var(--cw-line); flex-shrink:0; }
+.seating-workspace :is(#classSelectorContainer,#layoutSelectorContainer,#chartModeContainer,#gridControls) { margin:0; justify-content:flex-start; gap:7px; }
+.seating-workspace .sc-control { display:flex; align-items:center; gap:7px; }
+.seating-workspace .sc-control > label { color:var(--cw-muted); font-size:12px; }
+.seating-workspace .sc-control select { height:40px; flex-grow:0; width:130px; }
+.seating-workspace #classSelector { width:126px; }
+.seating-workspace #layoutModeSelect { width:90px; }
+.seating-workspace .sc-primary-actions { display:flex; gap:8px; padding-left:10px; border-left:var(--cw-line); }
+.seating-workspace :is(#addTableBtn,#randomizeSeatingBtn,#fullscreenClassroomBtn) { width:auto; height:40px; margin:0; padding:8px 13px; border-radius:7px; font-size:13px; letter-spacing:0; text-transform:none; line-height:1.4; transform:none; transition:none; }
+.seating-workspace #randomizeSeatingBtn { order:-1; background:var(--cw-accent); color:#101722; border-color:var(--cw-accent); font-weight:750; }
+.seating-workspace #randomizeSeatingBtn:hover { background:#79aaff; }
+.seating-workspace #fullscreenClassroomBtn { margin-left:auto; background:#263e61; border:1px solid #45658e; }
+.seating-workspace #fullscreenClassroomBtn::after { display:none; }
+.seating-workspace .sc-menu { position:relative; }
+.seating-workspace .sc-menu > summary { font-size:12px; }
+.seating-workspace .sc-menu[open] > summary { border-color:var(--cw-accent); }
+.seating-workspace .sc-popover { position:absolute; top:calc(100% + 8px); right:0; z-index:40; width:320px; max-width:calc(100vw - 32px); max-height:55dvh; overflow:auto; padding:18px; background:var(--cw-panel); border:var(--cw-line); border-radius:10px; box-shadow:0 12px 40px #0006; }
+.seating-workspace #classSelectorContainer .sc-popover { left:0; right:auto; width:260px; }
+.seating-workspace .sc-popover p { font-size:12px; margin:8px 0 16px; }
+.seating-workspace .sc-popover button { margin:4px 0; }
+.seating-workspace .sc-layout-actions { display:flex; flex-wrap:wrap; gap:6px; }
+.seating-workspace #gridControls { margin-bottom:12px; }
+.seating-workspace #gridControls label { width:calc(50% - 4px); font-size:12px; color:var(--cw-muted); }
+.seating-workspace #gridControls input { display:block; width:100%; height:40px; margin-top:4px; }
+.seating-workspace .sc-workspace-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 0 12px; flex-shrink:0; }
+.seating-workspace .sc-room-heading { flex:1; }
+.seating-workspace .sc-view-controls { display:flex; gap:5px; align-items:center; }
+.seating-workspace .sc-room-actions { display:flex; gap:8px; align-items:center; }
+.seating-workspace #editTables { min-height:44px; padding:8px 12px; white-space:nowrap; }
+.seating-workspace #editTables[aria-pressed=true] { background:var(--cw-accent); color:#101722; border-color:var(--cw-accent); }
+.seating-workspace .sc-edit-status { flex-shrink:0; margin:0 0 10px; padding:8px 12px; border:1px solid #5278ae; border-radius:7px; background:#1b304d; color:#e3efff; font-size:12px; }
+.seating-workspace.sc-touch-editing .sc-stage { outline:2px solid var(--cw-accent); outline-offset:-2px; }
+.seating-workspace .sc-touch-move,.seating-workspace .sc-touch-settings { display:none; }
+.seating-workspace .table-resize-handle { touch-action:pan-x pan-y; }
+.seating-workspace.sc-touch-editing .table { border-color:#78aaff; }
+.seating-workspace.sc-touch-editing :is(.sc-touch-move,.sc-touch-settings) { display:block; position:absolute; z-index:14; min-height:44px; height:44px; padding:6px; background:#29548f; border:1px solid #a4c7ff; border-radius:6px; color:#fff; font-size:13px; line-height:1.3; }
+.seating-workspace.sc-touch-editing .sc-touch-move { top:2px; left:2px; width:54px; transform:scale(var(--sc-inverse-zoom,1)); transform-origin:top left; touch-action:none; cursor:grab; }
+.seating-workspace.sc-touch-editing .sc-touch-settings { bottom:2px; left:2px; width:44px; transform:scale(var(--sc-inverse-zoom,1)); transform-origin:bottom left; touch-action:manipulation; font-size:20px; }
+.seating-workspace.sc-touch-editing .table-resize-handle { width:44px; height:44px; min-height:44px; right:2px; bottom:2px; transform:scale(var(--sc-inverse-zoom,1)); transform-origin:bottom right; touch-action:none; background:#29548f; border:1px solid #a4c7ff; border-radius:6px; }
+.seating-workspace.sc-touch-editing .table-resize-handle::before { display:none; }
+.seating-workspace.sc-touch-editing .table-resize-handle::after { content:'↘'; inset:0; border:0; display:grid; place-items:center; font-size:24px; color:white; }
+.seating-workspace .table.sc-touch-moving { z-index:45; outline:2px solid #a4c7ff; }
+.seating-workspace .sc-geometry-settings { margin:12px 0; border-top:var(--cw-line); padding-top:8px; }
+.seating-workspace .sc-geometry-settings > summary { font-size:12px; margin-bottom:8px; }
+.seating-workspace .sc-geometry-settings > button { width:100%; min-height:44px; }
+.seating-workspace .sc-view-controls button { min-height:36px; padding:6px 10px; font-size:12px; white-space:nowrap; }
+.seating-workspace .sc-view-controls :is(#zoomIn,#zoomOut) { min-width:36px; padding:2px 8px; font-size:20px; line-height:1; }
+.seating-workspace #resetZoom { min-width:62px; font-variant-numeric:tabular-nums; }
+.seating-workspace .sc-view-controls button[aria-pressed=true] { border-color:var(--cw-accent); background:#263e61; }
+.seating-workspace .sc-sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+.seating-workspace .sc-eyebrow { color:#c1d0e4; font:600 11px/1.5 var(--cw-mono); letter-spacing:1.6px; }
+.seating-workspace #workspaceHint { margin:2px 0 0; font-size:12px; }
+.seating-workspace #toggleStudentListBtn { position:static; width:auto; height:auto; border:var(--cw-line); border-radius:7px; box-shadow:none; font-size:13px; line-height:1.5; background:var(--cw-panel); }
+.seating-workspace #listAndChart { flex:1; min-height:0; height:auto; gap:16px; overflow:visible; }
+.seating-workspace #studentListContainer { width:310px; flex:0 0 310px; padding:16px; overflow:auto; background:var(--cw-panel); box-shadow:none; border:var(--cw-line); border-radius:10px; transition:none; }
+.seating-workspace #studentListContainer.hidden { display:none; transform:none; }
+.seating-workspace .sc-sidebar-title { display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:12px; }
+.seating-workspace #attendanceSummary { font-size:11px; color:var(--cw-muted); }
+.seating-workspace .sc-add-students summary { background:#24364f; border-color:#45658e; text-align:left; }
+.seating-workspace #bulk-add-container { margin:12px 0 0; padding:0; background:none; border:0; box-shadow:none; width:100%; display:block; }
+.seating-workspace #bulk-add-container > label { display:block; color:var(--cw-muted); font-size:12px; margin-bottom:6px; }
+.seating-workspace #bulk-add-textarea { width:100%; height:auto; resize:vertical; margin:0 0 8px; display:block; }
+.seating-workspace #bulk-add-btn { width:100%; margin:8px 0 0; height:auto; background:#263e61; }
+.seating-workspace #bulk-group-row { margin:8px 0; }
+.seating-workspace .sc-roster-hint { font-size:11px; margin:14px 0 10px; }
+.seating-workspace #studentGroupControls { margin:0 0 12px; padding:0 0 12px; border:0; border-bottom:var(--cw-line); border-radius:0; background:none; }
+.seating-workspace .student-panel-heading { display:none; }
+.seating-workspace .student-group-actions { gap:8px; }
+.seating-workspace .sc-group-chip { display:inline-flex; align-items:center; gap:4px; }
+.seating-workspace .sc-group-chip button { margin:6px 0 0; font-size:12px; padding-inline:8px; }
+.seating-workspace .group-toggle-label { font-size:12px; }
+.seating-workspace #studentList { width:100%; max-height:none; overflow:visible; padding:0; margin:0; border:0; }
+.seating-workspace #studentList li { white-space:normal; overflow:visible; max-width:100%; }
+.seating-workspace #studentList .student-list-item { padding:10px; grid-template-columns:minmax(0,1fr) auto; gap:8px; background:#172234; border:var(--cw-line); }
+.seating-workspace #studentList .student-name { font-size:14px; font-weight:600; white-space:normal; overflow-wrap:anywhere; grid-column:1 / -1; }
+.seating-workspace .student-button-group { gap:5px; align-items:center; }
+.seating-workspace .student-button-group button { width:36px; min-height:36px; height:36px; padding:4px; position:static; border-radius:6px; font-size:14px; }
+.seating-workspace .student-group-select { width:100%; min-width:0; font-size:12px; }
+.seating-workspace .student-list-item:not(:has(.student-group-select)) .student-button-group { grid-column:1 / -1; }
+.seating-workspace .student-sublist-items { padding:8px; }
+.seating-workspace .student-sublist-summary { font-size:13px; padding:8px; }
+.seating-workspace .student-sublist-summary span { font-size:13px; }
+.seating-workspace .student-sublist-count { background:#263e61; color:var(--cw-text); }
+.seating-workspace :is(.student-group-delete-btn,.student-sublist-delete-btn) { width:30px; height:30px; min-height:30px; line-height:1; padding:4px; }
+.seating-workspace :is(.remove-student-btn,.delete-btn,#deleteClassBtn,#deleteLayoutBtn) { color:#ffb9b5; background:#382830; border-color:#724049; }
+.seating-workspace .clear-all-students-btn { width:100%; margin:0 0 10px!important; text-align:left; font-size:12px; color:var(--cw-muted); background:transparent; }
+.seating-workspace .options-panel { margin-top:4px; padding:12px 8px; background:#101a29; overflow-wrap:anywhere; }
+.seating-workspace .options-panel h3 { margin:0 0 12px; font-size:13px; }
+.seating-workspace .options-panel :is(.assign-table,.assign-seat) { display:block; width:100%; margin-top:4px; }
+.seating-workspace .options-panel .seat-assignment label { color:var(--cw-muted); font-size:12px; }
+.seating-workspace .options-panel .lock-type-wrapper label { min-height:36px; }
+.seating-workspace .blacklist-option { min-height:36px; }
+.seating-workspace .options-panel > button { margin:8px 3px 0 0; padding:6px 10px; }
+.seating-workspace .sc-stage { flex:1; min-width:0; min-height:0; overflow:auto; position:relative; border:var(--cw-line); border-radius:10px; background:#121d2c; overscroll-behavior:contain; }
+.seating-workspace #classroom { display:block; position:relative; flex:none; padding:0; margin:0; min-height:680px; min-width:960px; background-color:#121d2c; background-image:radial-gradient(#2c3c54 .8px,transparent .8px); background-size:24px 24px; border:0; border-radius:0; box-shadow:none; overflow:visible; transition:none; }
+.seating-workspace #workspaceZoomFrame { position:relative; width:960px; height:680px; overflow:hidden; }
+.seating-workspace #workspaceZoomFrame > #classroom { position:absolute; left:0; top:0; transform:scale(var(--sc-view-scale,1)); transform-origin:0 0; }
+.seating-workspace .sc-pan-mode { cursor:grab; }
+.seating-workspace .sc-pan-mode :is(.table,.seat) { cursor:grab; }
+.seating-workspace .sc-panning,.seating-workspace .sc-panning * { cursor:grabbing!important; user-select:none; }
+.seating-workspace .table { background:#1e2d43; border-color:#506580; box-shadow:0 3px 10px #0003; padding:8px; gap:8px; overflow:visible; }
+.seating-workspace .table-controls { flex-wrap:nowrap; gap:6px; min-height:38px; position:relative; }
+.seating-workspace .table-name-input { flex:1; width:100%; min-width:0; min-height:34px; height:34px; padding:4px 8px; background:transparent; border-color:transparent; font-weight:650; }
+.seating-workspace .table-name-input:hover { border-color:var(--cw-border); }
+.seating-workspace .sc-table-settings { flex:none; position:static; }
+.seating-workspace .sc-table-settings > summary { min-height:34px; height:34px; padding:5px 8px; font-size:11px; }
+.seating-workspace .sc-table-settings[open] > summary { border-color:var(--cw-accent); }
+.seating-workspace .sc-table-popover { position:absolute; top:44px; right:0; width:240px; padding:14px; z-index:25; border:1px solid #6680a6; border-radius:8px; background:var(--cw-panel); box-shadow:0 12px 30px #0008; }
+.seating-workspace .sc-table-popover { transform:translate(var(--sc-panel-x,0px),var(--sc-panel-y,0px)) scale(var(--sc-inverse-zoom,1)); transform-origin:top right; max-height:min(360px,calc(100dvh - 220px)); overflow:auto; }
+.seating-workspace .sc-close-panel { display:block; width:100%; margin-top:12px!important; }
+.seating-workspace .sc-table-popover label { display:block; margin-bottom:10px; color:var(--cw-muted); font-size:12px; }
+.seating-workspace .sc-table-popover :is(input,select) { width:100%; min-width:0; min-height:40px; font-size:14px; margin-top:4px; }
+.seating-workspace .sc-table-popover .delete-btn { position:static; width:100%; height:auto; min-height:40px; border-radius:6px; font-size:13px; line-height:1.4; }
+.seating-workspace .table:has(.sc-table-settings[open]) { z-index:30; }
+.seating-workspace .table-resize-handle { width:28px; height:28px; }
+.seating-workspace .seats { gap:8px; }
+.seating-workspace .seat { border:1px solid #8fa1bb80; border-radius:6px; line-height:1.15; text-shadow:0 1px 3px #000,0 0 4px #000; }
+.seating-workspace .seat[data-workspace-color=gray] { background-color:#304056!important; }
+.seating-workspace .seat[data-workspace-color=blue] { background-color:#263e61!important; }
+.seating-workspace .seat[data-workspace-color=purple] { background-color:#42365b!important; }
+.seating-workspace .seat[data-workspace-color=green] { background-color:#24433d!important; }
+.seating-workspace .seat[data-workspace-color=pink] { background-color:#52334e!important; }
+.seating-workspace .seat[data-workspace-color=red] { background-color:#57323d!important; }
+.seating-workspace .seat[data-workspace-color=orange] { background-color:#5b4230!important; }
+.seating-workspace .seat[data-workspace-color=yellow] { background-color:#514b2c!important; }
+.seating-workspace .seat[data-workspace-color=lightblue] { background-color:#294753!important; }
+.seating-workspace .seat[data-workspace-color="#ff06ff"] { background-color:#523354!important; }
+.seating-workspace .grid-seat { min-height:88px; height:88px; background:#263e61; }
+.seating-workspace .grid-seat.aisle { background:#152031!important; color:#adbed4; opacity:1; }
+.seating-workspace .aisle-toggle-btn { width:28px; height:28px; min-height:28px; padding:0; font-size:11px; line-height:28px; }
+.seating-workspace .sc-workspace-footer { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; padding:10px 0; font-size:11px; color:var(--cw-muted); }
+.seating-workspace kbd { padding:1px 5px; border:var(--cw-line); border-radius:4px; color:var(--cw-text); font:11px var(--cw-mono); }
+.seating-workspace .sc-data-panel { position:fixed; top:78px; right:20px; width:min(600px,calc(100vw - 32px)); max-height:calc(100dvh - 100px); overflow:auto; z-index:70; background:var(--cw-panel); border:var(--cw-line); border-radius:12px; box-shadow:0 12px 40px #0008; }
+.seating-workspace .sc-data-panel:not([open]) { display:none; }
+.seating-workspace .sc-data-panel > summary { border-radius:12px 12px 0 0; background:#24364f; }
+.seating-workspace #classroomDataControls { width:100%; margin:0; border:0; padding:20px; background:none; font:14px/1.6 var(--cw-font); }
+.seating-workspace #classroomDataControls h2 { font-size:18px; }
+.seating-workspace #classroomDataControls button { min-height:40px; padding:8px 12px; font-size:13px; }
+.seating-workspace #dataProtectionError { color:#ffcec8; background:#382830; padding:12px; border:1px solid #99545c; border-radius:6px; }
+.seating-workspace :is(#dataRestoreDialog,#seatingHelp) { width:min(620px,calc(100vw - 24px)); max-height:85dvh; overflow:auto; border:var(--cw-line); border-radius:12px; background:var(--cw-panel); color:var(--cw-text); padding:24px; font:14px/1.6 var(--cw-font); }
+.seating-workspace :is(#dataRestoreDialog,#seatingHelp)::backdrop { background:#080e19bd; }
+.seating-workspace .sc-dialog-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.seating-workspace #seatingHelp h2 { font-size:21px; }
+.seating-workspace #seatingHelp p { margin:8px 0 0; }
+.seating-workspace .sc-help-steps { padding-left:22px; color:var(--cw-muted); }
+.seating-workspace .sc-help-steps li { margin:16px 0; padding-left:4px; }
+.seating-workspace .sc-help-steps strong { color:var(--cw-text); }
+.seating-workspace .sc-notice { position:fixed; bottom:16px; right:16px; z-index:90; max-width:calc(100vw - 32px); padding:14px; border:var(--cw-line); border-radius:8px; background:var(--cw-panel); color:var(--cw-text); }
+.seating-workspace .sc-presentation-controls { display:none; }
+.seating-workspace .sc-display-actions { margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; }
+.seating-workspace #workspaceFullscreenBtn { min-height:40px; white-space:nowrap; }
+.seating-workspace #workspaceFullscreenBtn[aria-pressed=true] { border-color:#8db7ff; }
+.seating-workspace #classroom.fullscreen-classroom { transform:none; transition:none; padding:70px 20px 20px; margin:0!important; box-sizing:border-box; min-width:0; min-height:100vh; width:100vw!important; height:100vh!important; overflow:auto; background:#101722; background-image:none; }
+.seating-workspace.sc-presenting #classroom.fullscreen-classroom { position:fixed!important; inset:0; z-index:1000; }
+.seating-workspace.sc-presenting :is(.sc-header,.sc-toolbar,.sc-workspace-heading,#studentListContainer,.sc-workspace-footer,#dataPanel,.sc-skip) { visibility:hidden; }
+.seating-workspace.sc-workspace-fullscreen #classroom.fullscreen-classroom { position:fixed!important; inset:0; z-index:1000; padding:0; }
+.seating-workspace.sc-workspace-fullscreen :is(.sc-header,.sc-toolbar,.sc-workspace-heading,#studentListContainer,.sc-workspace-footer,#dataPanel,.sc-skip) { visibility:hidden; }
+.seating-workspace.sc-workspace-fullscreen .sc-presentation-controls { display:none!important; }
+.seating-workspace .table[data-color-surface] { background:var(--sc-table-surface); }
+.seating-workspace .table[data-color-surface] .table-name-input { color:var(--sc-seat-ink); }
+.seating-workspace .table[data-color-surface] .seat { background:var(--sc-table-surface)!important; color:var(--sc-seat-ink); text-shadow:none; border-color:var(--sc-seat-ink); }
+.seating-workspace .table[data-color-surface] .seat.selected { box-shadow:0 0 0 2px var(--sc-seat-ink); }
+.seating-workspace .table[data-color-surface] .seat-tooltip { background:#101722; color:#fff; text-shadow:none; }
+.seating-workspace .sc-color-dialog { width:min(560px,calc(100vw - 24px)); max-height:calc(100dvh - 24px); overflow:auto; padding:24px; border:var(--cw-line); border-radius:14px; background:var(--cw-panel); color:var(--cw-text); }
+.seating-workspace .sc-color-dialog::backdrop { background:#050c17b8; }
+.seating-workspace .sc-color-dialog p { font-size:13px; }
+.seating-workspace .sc-color-studio { display:grid; grid-template-columns:200px 1fr; gap:24px; align-items:center; margin:20px 0; }
+.seating-workspace .sc-hue-wheel { width:200px; height:200px; border-radius:50%; background:conic-gradient(red,#ff0,#0f0,#0ff,#00f,#f0f,red); position:relative; touch-action:none; cursor:crosshair; flex:none; }
+.seating-workspace .sc-hue-wheel::before { content:''; position:absolute; inset:27px; background:var(--cw-panel); border-radius:50%; }
+.seating-workspace .sc-hue-handle { position:absolute; left:var(--hue-x,50%); top:var(--hue-y,8%); width:24px; height:24px; transform:translate(-50%,-50%); border:3px solid #fff; outline:2px solid #101722; border-radius:50%; pointer-events:none; }
+.seating-workspace .sc-color-instruction { margin:10px 0 0; text-align:center; }
+.seating-workspace .sc-color-adjustments label { display:flex; justify-content:space-between; gap:8px; font-size:13px; }
+.seating-workspace .sc-color-dialog input[type=range] { width:100%; min-height:44px; padding:0; margin:6px 0 14px; accent-color:#4388f5; cursor:pointer; }
+.seating-workspace .sc-color-preview { padding:16px 12px; border-radius:8px; font-size:20px; font-weight:700; border:1px solid #8fa1bb; text-align:center; }
+.seating-workspace .sc-color-preview small { display:block; font-size:11px; font-weight:400; margin-top:6px; }
+.seating-workspace .sc-color-presets { display:flex; flex-wrap:wrap; gap:8px; }
+.seating-workspace .sc-color-presets button { width:44px; height:44px; min-height:44px; padding:5px; border:2px solid #8fa1bb; background:var(--preset); border-radius:50%; }
+.seating-workspace .sc-color-presets button[aria-pressed=true] { outline:3px solid #a9cbff; outline-offset:2px; }
+.seating-workspace .sc-color-advanced { margin:18px 0; }
+.seating-workspace .sc-color-advanced label { display:block; margin-top:12px; }
+.seating-workspace .sc-color-footer { display:flex; justify-content:space-between; gap:12px; margin-top:18px; }
+.seating-workspace #applyTableColor { background:#4388f5; color:#101722; }
+.seating-workspace #tableColorError { color:#ffb4b4; }
+@media(max-width:560px) {
+  .seating-workspace .sc-display-actions { margin-left:0; }
+  .seating-workspace .sc-color-dialog { padding:18px; }
+  .seating-workspace .sc-color-studio { grid-template-columns:1fr; justify-items:center; gap:18px; }
+  .seating-workspace .sc-color-adjustments { width:100%; }
+}
+.seating-workspace #workspaceZoomFrame > #classroom.fullscreen-classroom { transform:none; }
+.seating-workspace .fullscreen-classroom :is(.table-controls,.table-resize-handle,.aisle-toggle-btn) { display:none!important; }
+.seating-workspace .fullscreen-classroom .table { cursor:default; }
+.seating-workspace .fullscreen-classroom .seat { pointer-events:none; }
+.seating-workspace .fullscreen-classroom .grid-seat { height:clamp(100px,16vh,180px); }
+.seating-workspace .fullscreen-classroom .sc-presentation-controls { display:flex; gap:8px; position:fixed; top:12px; right:16px; z-index:10000; padding:6px; border-radius:8px; background:#101722eb; }
+@media (max-width:1190px) {
+  .seating-workspace .sc-header { gap:20px; padding-inline:18px; }
+  .seating-workspace .sc-title { padding-left:20px; }
+  .seating-workspace .sc-toolbar { gap:8px; }
+  .seating-workspace #studentListContainer { width:290px; flex-basis:290px; }
+  .seating-workspace .sc-control select { width:118px; }
+  .seating-workspace .sc-primary-actions { padding-left:0; border:0; }
+}
+@media (max-width:900px) {
+  .seating-workspace .sc-title p { display:none; }
+  .seating-workspace #seatingApplication { padding-inline:14px; }
+  .seating-workspace #listAndChart { position:relative; }
+  .seating-workspace #studentListContainer { position:absolute; inset:0 auto 0 0; width:min(330px,100%); z-index:35; box-shadow:12px 0 24px #0006; }
+  .seating-workspace :is(button,summary) { min-height:44px; }
+  .seating-workspace .sc-toolbar { padding:10px 0; }
+  .seating-workspace #fullscreenClassroomBtn { margin-left:0; }
+  .seating-workspace .sc-workspace-footer span:last-child { display:none; }
+  .seating-workspace .student-button-group button { width:44px; height:44px; min-height:44px; }
+  .seating-workspace .sc-workspace-heading { flex-wrap:wrap; gap:8px; }
+  .seating-workspace .sc-room-heading { flex:1; }
+  .seating-workspace .sc-view-controls { order:3; width:100%; justify-content:flex-end; }
+}
+@media (max-width:600px) {
+  .seating-workspace .sc-header { height:104px; padding:12px 14px; gap:8px 14px; flex-wrap:wrap; }
+  .seating-workspace .sc-brand { font-size:13px; }
+  .seating-workspace .sc-brand > span:first-child { width:30px; height:30px; font-size:13px; }
+  .seating-workspace .sc-brand small { font-size:10px; }
+  .seating-workspace .sc-title { padding-left:12px; min-width:0; }
+  .seating-workspace .sc-title h1 { font-size:18px; }
+  .seating-workspace .sc-header nav { width:100%; justify-content:flex-end; }
+  .seating-workspace .sc-header nav button { min-height:32px; padding:4px 10px; font-size:11px; }
+  .seating-workspace #seatingApplication { height:calc(100dvh - 104px); padding-inline:10px; }
+  .seating-workspace .sc-toolbar { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:8px; }
+  .seating-workspace #classSelectorContainer { grid-column:1 / -1; }
+  .seating-workspace #classSelector { flex:1; width:auto; }
+  .seating-workspace .sc-control > label { font-size:11px; }
+  .seating-workspace #layoutSelectorContainer { min-width:0; }
+  .seating-workspace :is(#chartModeContainer,#layoutSelectorContainer) { flex-direction:column; align-items:stretch; gap:4px; }
+  .seating-workspace #layoutSelector { flex:1; min-width:0; width:100%; }
+  .seating-workspace #layoutModeSelect { width:100%; min-width:0; }
+  .seating-workspace .sc-primary-actions { grid-column:1 / -1; display:grid; grid-template-columns:1fr 1fr; }
+  .seating-workspace :is(#addTableBtn,#randomizeSeatingBtn,#fullscreenClassroomBtn) { font-size:12px; padding-inline:10px; white-space:nowrap; }
+  .seating-workspace #fullscreenClassroomBtn { width:100%; }
+  .seating-workspace .sc-popover { position:fixed; top:116px; left:12px!important; right:12px!important; width:auto!important; max-width:none; max-height:60dvh; }
+  .seating-workspace .sc-workspace-heading { padding:10px 0; gap:10px; }
+  .seating-workspace .sc-eyebrow { font-size:10px; letter-spacing:1px; }
+  .seating-workspace #workspaceHint { max-width:240px; font-size:11px; }
+  .seating-workspace #workspaceHint { display:none; }
+  .seating-workspace .sc-room-heading { display:none; }
+  .seating-workspace .sc-room-actions { width:100%; justify-content:space-between; }
+  .seating-workspace .sc-workspace-heading { gap:6px; padding:8px 0; }
+  .seating-workspace .sc-view-controls { justify-content:space-between; gap:4px; }
+  .seating-workspace .sc-view-controls button { padding-inline:8px; }
+  .seating-workspace #toggleStudentListBtn { padding-inline:10px; font-size:12px; }
+  .seating-workspace .sc-workspace-footer { font-size:10px; padding:7px 0; }
+  .seating-workspace .sc-data-panel { top:104px; right:10px; width:calc(100vw - 20px); max-height:calc(100dvh - 116px); }
+}
+@media (hover:none) {
+  .seating-workspace:not(.sc-touch-editing) .table-resize-handle { visibility:hidden; }
+}
+@media (max-height:600px) {
+  .seating-workspace { height:auto; overflow:auto; }
+  .seating-workspace #seatingApplication { height:auto; min-height:calc(100dvh - 88px); }
+  .seating-workspace #listAndChart { min-height:360px; }
+}
+@media (prefers-reduced-motion:reduce) { .seating-workspace * { transition:none!important; animation:none!important; scroll-behavior:auto!important; } }
+
+/* A fixed display viewport contains the same logical classroom, fitted visually. */
+.seating-workspace.sc-auto-fit #workspaceViewport { overflow:hidden; }
+.seating-workspace #workspaceZoomFrame > #classroom {
+  transform:translate(var(--sc-fit-x,0px),var(--sc-fit-y,0px)) scale(var(--sc-view-scale,1));
+}
+.seating-workspace:is(.sc-workspace-fullscreen,.sc-presenting) #workspaceZoomFrame {
+  position:fixed; inset:0; width:100vw!important; height:100dvh!important;
+  overflow:hidden; z-index:1000; border-radius:0; background:#101722;
+}
+.seating-workspace:is(.sc-workspace-fullscreen,.sc-presenting) #workspaceZoomFrame > #classroom.fullscreen-classroom {
+  position:absolute!important; inset:auto!important; left:0!important; top:0!important;
+  width:auto!important; height:auto!important; min-height:0; padding:0;
+  overflow:visible; background:transparent;
+  transform:translate(var(--sc-fit-x,0px),var(--sc-fit-y,0px)) scale(var(--sc-view-scale,1));
+}
+.seating-workspace #classroom .seating-grid { width:var(--sc-grid-width,960px); }
+.seating-workspace #classroom .grid-seat { min-height:88px; height:88px; min-width:0; overflow:hidden; }
+.seating-workspace.sc-presenting .sc-presentation-controls { display:flex; gap:8px; position:fixed; top:12px; right:16px; z-index:10000; padding:6px; background:#101722eb; }
+.seating-workspace.sc-workspace-fullscreen .sc-presentation-controls { display:none!important; }
