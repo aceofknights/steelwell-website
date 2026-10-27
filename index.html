@@ -1,52 +1,97 @@
-<!DOCTYPE html>
-<!-- author:Chris wells -->
-<!-- lab 6 citc 2375 P73 -->
-
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <!--this section is for using a wide set of ascii characters
-        its set up to be easy to read on computers and moblile devices-->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Chris Wells DEV</title>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
-    />
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
-    <!-- Link to your external CSS file -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="javascript/image_loader.js"></script>
+    <meta name="description" content="Explore Chris Wells’ interactive tools, browser games, software projects, and development notes." />
+    <title>ChrisWellsDev — Tools, Games &amp; Software</title>
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <script src="javascript/navigation.js" defer></script>
   </head>
-
-  <!--below this line is whats displayed on the actual web page-->
-  <body class="text-center">
-    <!-- sets the top of the nav bar to have proper spacing -->
-    <div class="cover-container">
-      <header class="masthead">
-        <div class="inner">
-          <h3 class="masthead-brand">chriswellsdev.com</h3>
-          <nav class="nav nav-masthead justify-content-center">
-            <a class="nav-link active" href="#">Home</a>
-            <a class="nav-link" href="webpages/about.html">About</a>
-            <a class="nav-link" href="webpages/resume.html">Resume</a>
-            <a class="nav-link" href="webpages/blog.html">Blog</a>
-            <a class="nav-link" href="https://github.com/aceofknights"
-              >Github</a
-            >
-            <a
-              class="nav-link"
-              href="https://www.linkedin.com/in/chris-wells-901611141/"
-              >Linkedin</a
-            >
-            <a class="nav-link" href="webpages/survey.html">Feedback</a>
-          </nav>
+  <body class="portfolio">
+    <a class="cw-skip" href="#main">Skip to content</a>
+    <header class="cw-header">
+      <div class="cw-container cw-header-row">
+        <a class="cw-brand" href="index.html"><span class="cw-brand-mark" aria-hidden="true">&lt;/&gt;</span>ChrisWellsDev</a>
+        <details class="cw-navigation" open>
+          <summary>Menu</summary>
+          <div class="cw-nav-content">
+            <nav class="cw-nav-links" aria-label="Main navigation">
+              <a href="index.html" aria-current="page">Home</a>
+              <a href="index.html#projects">Projects</a>
+              <a href="index.html#tools-games">Tools &amp; Games</a>
+              <a href="webpages/about.html">About</a>
+              <a href="webpages/resume.html">Resume</a>
+              <a href="webpages/blog.html">Blog</a>
+            </nav>
+            <nav class="cw-social" aria-label="Social profiles">
+              <a href="https://github.com/aceofknights">GitHub <span aria-hidden="true">↗</span></a>
+              <a href="https://www.linkedin.com/in/chris-wells-901611141/">LinkedIn <span aria-hidden="true">↗</span></a>
+            </nav>
+          </div>
+        </details>
+      </div>
+    </header>
+    <main id="main" class="cw-container" tabindex="-1">
+      <section class="cw-hero" aria-labelledby="intro-title">
+        <div>
+          <p class="cw-eyebrow">Chris Wells / Developer portfolio</p>
+          <h1 id="intro-title">Practical tools.<br />Playful ideas.<br /><span>Built to explore.</span></h1>
+          <p class="cw-intro">Welcome to my corner of the web. Explore interactive tools, browser games, and software projects — plus the notes behind them.</p>
+          <div class="cw-actions">
+            <a class="cw-button cw-button-primary" href="#projects">Explore projects <span aria-hidden="true">&nbsp;→</span></a>
+            <a class="cw-button" href="#tools-games">Browse tools &amp; games</a>
+          </div>
         </div>
-      </header>
-      <h1 class="cover-heading">Welcome</h1>
-      <a href="./wgu-web-task/Task 2 pages/state.html">wgu task</a>
-      <a href="webpages/SeatingChart.html">Seating Chart</a>
-      <a href="webpages/HexMath.html">Hex Math</a>
-    </div>
+        <aside class="cw-overview" aria-labelledby="workspace-title">
+          <div class="cw-overview-heading"><span aria-hidden="true">~/</span><h2 id="workspace-title">Inside the workspace</h2></div>
+          <dl>
+            <div><dt>Tools &amp; games</dt><dd>Try in your browser</dd></div>
+            <div><dt>Software</dt><dd>Explore the projects</dd></div>
+            <div><dt>Coursework</dt><dd>Follow the learning</dd></div>
+          </dl>
+        </aside>
+      </section>
+      <section class="cw-section" aria-labelledby="featured-title">
+        <div class="cw-section-heading"><div><h2 id="featured-title">Featured projects</h2><p>A few places to start exploring.</p></div><a class="cw-text-link" href="#projects">View the full collection <span aria-hidden="true">→</span></a></div>
+        <div class="cw-card-grid">
+          <article class="cw-card">
+            <div class="cw-card-preview" aria-hidden="true"><div class="cw-seat-preview"><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+            <div class="cw-card-body"><span class="cw-category">Classroom tool</span><h3>Seating Chart</h3><p>Build classroom layouts, manage student lists, and randomize seating with attendance and placement constraints.</p><ul class="cw-tags" aria-label="Technologies"><li>JavaScript</li><li>localStorage</li></ul><a class="cw-card-link" href="webpages/SeatingChart.html">Open Seating Chart <span aria-hidden="true">→</span></a></div>
+          </article>
+          <article class="cw-card">
+            <div class="cw-card-preview" aria-hidden="true"><div class="cw-hex-preview"><span>12</span><span>36</span><span>48</span></div></div>
+            <div class="cw-card-body"><span class="cw-category">Browser game</span><h3>Hex Math</h3><p>Change a factor, claim a product, and connect four hexes in a two-player multiplication strategy game.</p><ul class="cw-tags" aria-label="Technologies"><li>JavaScript</li><li>HTML / CSS</li></ul><a class="cw-card-link" href="webpages/HexMath.html">Play Hex Math <span aria-hidden="true">→</span></a></div>
+          </article>
+          <article class="cw-card">
+            <div class="cw-card-preview" aria-hidden="true"><div class="cw-code-preview"><span>import</span> tkinter<br /><span>import</span> pyautogui<br /><span>import</span> keyboard</div></div>
+            <div class="cw-card-body"><span class="cw-category">Desktop software</span><h3>Auto Clicker</h3><p>A Python desktop utility with configurable click intervals, mouse buttons, and a start/stop hotkey.</p><ul class="cw-tags" aria-label="Technologies"><li>Python</li><li>Tkinter</li></ul><a class="cw-card-link" href="https://github.com/aceofknights/auto_clicker">View source on GitHub <span aria-hidden="true">→</span></a></div>
+          </article>
+        </div>
+      </section>
+      <section id="projects" class="cw-section" aria-labelledby="projects-title">
+        <div class="cw-section-heading"><div><p class="cw-eyebrow">The collection</p><h2 id="projects-title">Find your next rabbit hole.</h2><p>Tools to use, games to play, and projects to read about.</p></div></div>
+        <div class="cw-catalog">
+          <section id="tools-games" class="cw-catalog-group" aria-labelledby="tools-title"><h3 id="tools-title">01 / Tools &amp; Games</h3><ul>
+            <li><a href="webpages/SeatingChart.html"><strong>Seating Chart <span aria-hidden="true">→</span></strong><span>Classroom planning with saved classes and layouts.</span></a></li>
+            <li><a href="webpages/HexMath.html"><strong>Hex Math <span aria-hidden="true">→</span></strong><span>Two players. Multiplication. Four hexes in a row.</span></a></li>
+            <li><a href="webpages/sortTheNumber.html"><strong>Sort the Numbers <span aria-hidden="true">→</span></strong><span>Find and select the shuffled numbers in order.</span></a></li>
+          </ul></section>
+          <section id="software" class="cw-catalog-group" aria-labelledby="software-title"><h3 id="software-title">02 / Software projects</h3><ul>
+            <li><a href="https://github.com/aceofknights/auto_clicker"><strong>Auto Clicker <span aria-hidden="true">→</span></strong><span>Explore the Python desktop utility’s source repository.</span></a></li>
+            <li><a href="webpages/blog.html"><strong>Vacation Planner <span aria-hidden="true">→</span></strong><span>WGU capstone mobile app. Read the notes and find the APK link.</span></a></li>
+            <li><a href="webpages/PrivatePolicy.html"><strong>Hotdog Counter · Privacy policy <span aria-hidden="true">→</span></strong><span>Policy for the mobile app; no app download is hosted here.</span></a></li>
+          </ul></section>
+          <section id="coursework" class="cw-catalog-group" aria-labelledby="coursework-title"><h3 id="coursework-title">03 / Coursework</h3><ul>
+            <li><a href="wgu-web-task/Task%202%20pages/state.html"><strong>Tennessee city guide <span aria-hidden="true">→</span></strong><span>A five-page HTML and CSS project, preserved in its original coursework design.</span></a></li>
+          </ul></section>
+          <section id="notes" class="cw-catalog-group" aria-labelledby="notes-title"><h3 id="notes-title">04 / Behind the projects</h3><ul>
+            <li><a href="webpages/blog.html"><strong>Development notes <span aria-hidden="true">→</span></strong><span>Project writeups, experiments, and software links.</span></a></li>
+            <li><a href="webpages/about.html"><strong>Meet the developer <span aria-hidden="true">→</span></strong><span>More about Chris and the journey into software engineering.</span></a></li>
+          </ul></section>
+        </div>
+      </section>
+    </main>
+    <footer class="cw-footer"><div class="cw-container"><p>ChrisWellsDev / Tools, games &amp; software.</p><a href="webpages/survey.html">Feedback</a></div></footer>
   </body>
 </html>
