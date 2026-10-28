@@ -30,7 +30,7 @@
       "title": "Seating Chart",
       "category": "Browser Tools",
       "summary": "Plan classroom layouts and randomize seats with attendance, groups, and placement constraints.",
-      "showcase": "projects/seating-chart.html",
+      "showcase": "/projects/seating-chart/",
       "technologies": [
         "HTML",
         "CSS",
@@ -51,7 +51,7 @@
         {
           "kind": "launch",
           "label": "Launch Tool",
-          "url": "webpages/SeatingChart.html"
+          "url": "/seating-chart/"
         },
         {
           "kind": "source",
@@ -85,7 +85,7 @@
       "title": "Hex Math",
       "category": "Browser Games",
       "summary": "Change one multiplication factor, claim a product, and connect four hexes in a two-player game.",
-      "showcase": "projects/hex-math.html",
+      "showcase": "/projects/hex-math/",
       "technologies": [
         "HTML",
         "CSS",
@@ -102,7 +102,7 @@
         {
           "kind": "play",
           "label": "Play Game",
-          "url": "webpages/HexMath.html"
+          "url": "/hex-math/"
         },
         {
           "kind": "source",
@@ -131,7 +131,7 @@
       "title": "Sort the Numbers",
       "category": "Browser Games",
       "summary": "Select shuffled numbers from one to five in ascending order.",
-      "showcase": "projects/sort-the-numbers.html",
+      "showcase": "/projects/sort-the-numbers/",
       "technologies": [
         "HTML",
         "CSS",
@@ -148,7 +148,7 @@
         {
           "kind": "play",
           "label": "Play Game",
-          "url": "webpages/sortTheNumber.html"
+          "url": "/sort-the-numbers/"
         },
         {
           "kind": "source",
@@ -178,7 +178,7 @@
       "title": "Auto Clicker",
       "category": "Desktop/Mobile Applications",
       "summary": "A Python desktop utility with configurable click intervals, mouse buttons, and a start/stop hotkey.",
-      "showcase": "projects/auto-clicker.html",
+      "showcase": "/projects/auto-clicker/",
       "technologies": [
         "Python",
         "Tkinter",
@@ -201,7 +201,7 @@
         {
           "kind": "notes",
           "label": "Development Notes",
-          "url": "webpages/blog.html#auto-clicker"
+          "url": "/blog/#auto-clicker"
         }
       ],
       "usage": [
@@ -228,7 +228,7 @@
       "title": "Vacation Planner",
       "category": "Desktop/Mobile Applications",
       "summary": "A mobile vacation-planning application presented as a WGU capstone project.",
-      "showcase": "projects/vacation-planner.html",
+      "showcase": "/projects/vacation-planner/",
       "technologies": [],
       "overview": "A mobile application introduced in the Blog as the WGU capstone project. The original post provides an APK through Google Drive.",
       "features": [
@@ -244,7 +244,7 @@
         {
           "kind": "notes",
           "label": "Development Notes",
-          "url": "webpages/blog.html#vacation-planner"
+          "url": "/blog/#vacation-planner"
         }
       ],
       "usage": [
@@ -263,7 +263,7 @@
       "title": "Hotdog Counter",
       "category": "Desktop/Mobile Applications",
       "summary": "A mobile application represented here by its published privacy policy.",
-      "showcase": "projects/hotdog-counter.html",
+      "showcase": "/projects/hotdog-counter/",
       "technologies": [],
       "overview": "The website hosts the privacy policy for the Hotdog Counter mobile application. The policy is the verified project material available in this repository.",
       "features": [
@@ -274,7 +274,7 @@
         {
           "kind": "policy",
           "label": "Privacy Policy",
-          "url": "webpages/PrivatePolicy.html"
+          "url": "/privacy/hotdog-counter/"
         }
       ],
       "usage": [],
@@ -291,7 +291,7 @@
       "title": "Tennessee City Guide",
       "category": "Coursework",
       "summary": "Explore a five-page Tennessee website featuring Nashville, Knoxville, Chattanooga, and a contact-form example.",
-      "showcase": "projects/tennessee-guide.html",
+      "showcase": "/projects/tennessee-guide/",
       "technologies": [
         "HTML",
         "CSS",
@@ -308,7 +308,7 @@
         {
           "kind": "demo",
           "label": "Open Coursework",
-          "url": "wgu-web-task/Task%202%20pages/state.html"
+          "url": "/coursework/tennessee/"
         },
         {
           "kind": "source",
@@ -338,7 +338,7 @@
       "title": "Feedback Survey Demo",
       "category": "Browser Tools",
       "summary": "Try a client-side survey with required-answer validation and a personalized demo acknowledgment; nothing is sent or saved.",
-      "showcase": "projects/feedback-survey.html",
+      "showcase": "/projects/feedback-survey/",
       "technologies": [
         "HTML",
         "CSS",
@@ -354,7 +354,7 @@
         {
           "kind": "launch",
           "label": "Try Form Demo",
-          "url": "webpages/survey.html"
+          "url": "/feedback/"
         },
         {
           "kind": "source",
@@ -384,7 +384,7 @@
       "title": "Bootstrap Cover Page",
       "category": "Coursework",
       "summary": "An earlier portfolio About page preserved from an internet software course.",
-      "showcase": "projects/bootstrap-cover.html",
+      "showcase": "/projects/bootstrap-cover/",
       "technologies": [
         "HTML",
         "CSS",
@@ -400,7 +400,7 @@
         {
           "kind": "demo",
           "label": "Open Coursework",
-          "url": "webpages/oldaboutpage.html"
+          "url": "/archive/bootstrap-cover/"
         },
         {
           "kind": "source",
@@ -427,7 +427,7 @@
       "title": "ChrisWellsDev Website",
       "category": "Other Projects",
       "summary": "A static developer portfolio bringing together interactive tools, games, software, and coursework.",
-      "showcase": "projects/chriswellsdev.html",
+      "showcase": "/projects/chriswellsdev/",
       "technologies": [
         "HTML",
         "CSS",
@@ -445,7 +445,7 @@
         {
           "kind": "demo",
           "label": "Explore Website",
-          "url": "index.html"
+          "url": "/"
         },
         {
           "kind": "source",

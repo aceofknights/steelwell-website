@@ -13,14 +13,14 @@ document.querySelector('#run').addEventListener('click', async () => {
   const settle = () => new Promise(resolve => setTimeout(resolve, 120));
   async function load(file, width = 390) {
     frame.style.width = width + 'px';
-    await new Promise(resolve => { frame.onload = resolve; frame.src = '../../webpages/' + file + '?test=' + Date.now(); });
+    await new Promise(resolve => { frame.onload = resolve; frame.src = file + '?test=' + Date.now(); });
     frame.contentWindow.addEventListener('error', e => errors.push(e.message));
     await settle();
     return frame.contentDocument;
   }
   output.textContent = 'Runningâ€¦';
   try {
-    let doc = await load('HexMath.html');
+    let doc = await load('/hex-math/');
     const cells = [...doc.querySelectorAll('.hex-cell')];
     check(cells.length === 59, 'Hex has all 59 original cells');
     // Make one legal move through the existing factor controls.
@@ -39,7 +39,7 @@ document.querySelector('#run').addEventListener('click', async () => {
       check(doc.documentElement.scrollWidth <= frame.contentWindow.innerWidth, 'No horizontal page overflow at ' + width + 'px');
       check(cells.every(e => e.isConnected) && state() === before, 'Resize preserves cell identity and progress at ' + width + 'px');
     }
-    doc = await load('sortTheNumber.html');
+    doc = await load('/sort-the-numbers/');
     const cards = [...doc.querySelectorAll('.card-box')];
     check(cards.length === 5 && cards.every(e => e.tagName === 'BUTTON' && e.type === 'button' && e.tabIndex === 0), 'Sort exposes five native keyboard buttons');
     const messages = [];
@@ -49,7 +49,7 @@ document.querySelector('#run').addEventListener('click', async () => {
     check(cards.every(e => !e.classList.contains('clicked')), 'Sort resets after a win');
     cards.find(e => Number(e.textContent) === 2).click();
     check(messages.length === 2 && messages[1].startsWith('Game over'), 'Sort wrong-number rules remain intact');
-    doc = await load('survey.html');
+    doc = await load('/feedback/');
     check(doc.querySelector('.survey-notice').textContent.includes('not a working contact form'), 'Survey warns before data entry');
     doc.querySelector('#submitBtn').click();
     check(doc.querySelector('#errorMessage').textContent.includes('Please answer'), 'Survey validation remains functional');
@@ -61,13 +61,13 @@ document.querySelector('#run').addEventListener('click', async () => {
     check(doc.querySelector('#submittedUserName').textContent === 'Synthetic Visitor', 'Survey acknowledgment uses its unique output ID');
     check(new Set([...doc.querySelectorAll('[id]')].map(e => e.id)).size === doc.querySelectorAll('[id]').length, 'Survey IDs are unique');
     for (const width of [390, 1440]) {
-      doc = await load('resume.html', width);
+      doc = await load('/resume/', width);
       const links = [...doc.querySelectorAll('main a')];
       check(links.length === 2 && links.every(e => e.getBoundingClientRect().width > 0) && links.some(e => e.hasAttribute('download')), 'Visible PDF open/download fallback at ' + width + 'px');
       doc.querySelector('embed').remove();
       check(links.every(e => e.isConnected), 'Fallback survives unavailable embed at ' + width + 'px');
     }
-    const pdf = await fetch('../../assets/Chris%20Wells%202024.pdf');
+    const pdf = await fetch('/assets/Chris%20Wells%202024.pdf');
     check(pdf.ok && (await pdf.text()).startsWith('%PDF-'), 'Fallback destination serves a real PDF');
     check(errors.length === 0, 'No runtime errors during scenarios: ' + JSON.stringify(errors));
     output.textContent += '\nCOMPLETE: ' + passed + ' passed.';

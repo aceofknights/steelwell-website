@@ -28,6 +28,8 @@ class Page(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if tag == "base":
+            return  # Resolution context, not a fetched resource or navigation link.
         if tag == 'meta':
             key = attrs.get('property', attrs.get('name'))
             if key:
@@ -67,7 +69,7 @@ def local_target(page_path, ref):
     # Match browser URL resolution, including legacy ../../ URLs clamped at site root.
     resolved = urlsplit(urljoin("https://catalog.invalid/" + page_path.relative_to(ROOT).as_posix(), ref))
     target = ROOT / unquote(resolved.path.lstrip("/"))
-    return target.resolve(), unquote(resolved.fragment)
+    return (target / "index.html" if target.is_dir() else target).resolve(), unquote(resolved.fragment)
 
 
 def check():
@@ -95,11 +97,11 @@ def check():
                 if fragment:
                     assert target in pages and fragment in pages[target].ids, f"Missing fragment: {ref}"
                 references += 1
-    catalog = pages[(ROOT / "webpages/projects.html").resolve()]
-    tools = pages[(ROOT / "webpages/tools-games.html").resolve()]
-    for relative in ['webpages/projects.html', 'webpages/tools-games.html']:
+    catalog = pages[(ROOT / "projects/index.html").resolve()]
+    tools = pages[(ROOT / "tools-games/index.html").resolve()]
+    for relative in ['projects/index.html', 'tools-games/index.html']:
         directory = pages[(ROOT / relative).resolve()]
-        assert directory.canonical == directory.metas['og:url'] == 'https://chriswellsdev.com/' + relative
+        assert directory.canonical == directory.metas['og:url'] == 'https://chriswellsdev.com/' + relative.removesuffix('index.html')
         assert directory.metas['description'] == directory.metas['og:description'] == directory.metas['twitter:description']
         assert directory.metas['description']
         assert directory.metas['og:title'] == directory.metas['twitter:title']
@@ -112,11 +114,11 @@ def check():
     for project in projects:
         assert re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", project["id"])
         assert project["category"] in manifest["categories"]
-        path = (ROOT / project["showcase"]).resolve()
+        path = local_target(ROOT / "index.html", project["showcase"])[0]
         page = pages[path]
         assert page.records == [project["id"]], f"Showcase ID mismatch: {path}"
         assert len(page.ids) == len(set(page.ids)), f"Duplicate IDs: {path}"
-        canonical = 'https://chriswellsdev.com/' + project['showcase']
+        canonical = 'https://chriswellsdev.com' + project['showcase']
         assert page.canonical == canonical
         assert page.metas['og:url'] == canonical
         assert page.metas['description'] == page.metas['og:description'] == page.metas['twitter:description'] == project['summary']
@@ -130,8 +132,8 @@ def check():
         catalog_text = " ".join(" ".join(catalog.text).split())
         for value in (project["title"], project["category"], project["summary"]):
             assert value in text and value in catalog_text, f"Metadata drift: {project['id']}: {value}"
-        for directory_name in ("projects.html", "tools-games.html"):
-            directory_path = ROOT / "webpages" / directory_name
+        for directory_name in ("projects/index.html", "tools-games/index.html"):
+            directory_path = ROOT / directory_name
             directory = pages[directory_path.resolve()]
             if project["id"] not in directory.cards:
                 continue

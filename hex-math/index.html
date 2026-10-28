@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hex Math</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
+    />
+    <link rel="stylesheet" href="/css/styles.css?v=4b" />
+      <link rel="canonical" href="https://chriswellsdev.com/hex-math/" />
+  <meta property="og:url" content="https://chriswellsdev.com/hex-math/" />
+<meta property="og:title" content="Hex Math" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Hex Math" />
+</head>
+  <body class="hex-math-page">
+    <main class="hex-math-shell">
+      <header class="hex-math-header">
+        <div>
+          <h1>Mrs. Lambs Hex Math</h1>
+          <p>
+            Change one factor, claim the matching answer, and connect 4 hexes.
+          </p>
+        </div>
+        <button id="newGameBtn" type="button">New game</button>
+      </header>
+
+      <section class="hex-game-status" aria-live="polite">
+        <div class="hex-player-card player-one active" id="playerOneCard">
+          <span>Player 1 wins</span>
+          <strong id="playerOneCount">0</strong>
+        </div>
+        <div class="hex-turn-card">
+          <span>Turn</span>
+          <strong id="turnMessage">Player 1: change one number.</strong>
+        </div>
+        <div class="hex-player-card player-two" id="playerTwoCard">
+          <span>Player 2 wins</span>
+          <strong id="playerTwoCount">0</strong>
+        </div>
+      </section>
+
+      <section class="hex-controls" aria-label="Factor controls">
+        <div class="factor-panel">
+          <h2>Change first number</h2>
+          <div id="factorAControls" class="factor-buttons"></div>
+        </div>
+        <div class="factor-panel">
+          <h2>Change second number</h2>
+          <div id="factorBControls" class="factor-buttons"></div>
+        </div>
+      </section>
+
+      <section class="hex-board-wrap">
+        <div class="hex-board-frame"><div id="hexBoard" class="hex-board" aria-label="Hex math board"></div></div>
+      </section>
+    </main>
+
+    <div
+      class="victory-overlay hidden"
+      id="victoryOverlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="victoryTitle"
+    >
+      <div class="victory-card" id="victoryCard">
+        <span class="victory-kicker">4 in a row</span>
+        <h2 id="victoryTitle">Player wins!</h2>
+        <button id="victoryNewGameBtn" type="button">Play again</button>
+      </div>
+    </div>
+
+    <script src="/javascript/HexMath.js?v=6"></script>
+    <script src="/javascript/hex_board_view.js?v=4b"></script>
+  </body>
+</html>

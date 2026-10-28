@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sort the Cards Game</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css?v=4b" />
+      <link rel="canonical" href="https://chriswellsdev.com/sort-the-numbers/" />
+  <meta property="og:url" content="https://chriswellsdev.com/sort-the-numbers/" />
+<meta property="og:title" content="Sort the Cards Game" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Sort the Cards Game" />
+</head>
+  <body class="game">
+    <a class="back-button" href="/blog/">Go back</a>
+    <div class="game-container">
+      <h1 class="game-title">Sort the Numbers Game</h1>
+      <p id="sortInstructions">Choose the numbers in order from 1 to 5. Use Tab to move between cards and Enter or Space to choose.</p>
+      <div aria-describedby="sortInstructions" id="cards-container" class="cards-container">
+        <!-- Boxes representing cards will be dynamically added here -->
+        <button type="button" class="card-box"></button>
+        <button type="button" class="card-box"></button>
+        <button type="button" class="card-box"></button>
+        <button type="button" class="card-box"></button>
+        <button type="button" class="card-box"></button>
+      </div>
+    </div>
+
+    <script src="/javascript/sort_the_number.js"></script>
+  </body>
+</html>

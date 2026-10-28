@@ -63,7 +63,7 @@
   button.addEventListener('click', async () => {
     button.disabled = true; output.textContent = 'Running synthetic tests…';
     try {
-      fixtures = await (await fetch('../fixtures/seating-storage.json')).json();
+      fixtures = await (await fetch('/tests/fixtures/seating-storage.json')).json();
       await run('locked/unlocked assignments and visible names survive load, autosave, switching and reload', async () => {
         const values = normal(); await open(values);
         equal(names(), ['Avery', 'Blake', 'Drew', ''], 'Loaded assignments');

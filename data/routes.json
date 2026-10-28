@@ -1,0 +1,2237 @@
+{
+  "origin": "https://chriswellsdev.com",
+  "routes": [
+    {
+      "old": "/index.html",
+      "clean": "/",
+      "file": "index.html",
+      "kind": "page",
+      "title": "ChrisWellsDev — Tools, Games & Software",
+      "purpose": "Personal developer homepage",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/index.html",
+          "reference": "index.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "index.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/templates/project.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/templates/project.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/about.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/about.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/oldaboutpage.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/resume.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/resume.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/SeatingChart.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/survey.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../index.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../index.html"
+        }
+      ],
+      "originalReferences": [
+        "css/dashboard.css?v=4d",
+        "javascript/navigation.js",
+        "#main",
+        "index.html",
+        "index.html",
+        "webpages/projects.html",
+        "webpages/tools-games.html",
+        "webpages/about.html",
+        "webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "webpages/projects.html",
+        "webpages/tools-games.html",
+        "webpages/SeatingChart.html",
+        "projects/seating-chart.html",
+        "assets/previews/seating-chart.jpg",
+        "webpages/projects.html",
+        "assets/previews/hex-math.jpg",
+        "projects/hex-math.html",
+        "webpages/HexMath.html",
+        "assets/previews/sort-the-numbers.jpg",
+        "projects/sort-the-numbers.html",
+        "webpages/sortTheNumber.html",
+        "assets/auto_clicker_pic.png",
+        "projects/auto-clicker.html",
+        "https://github.com/aceofknights/auto_clicker",
+        "webpages/tools-games.html",
+        "webpages/SeatingChart.html",
+        "webpages/HexMath.html",
+        "webpages/sortTheNumber.html",
+        "webpages/about.html",
+        "webpages/blog.html",
+        "webpages/survey.html"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/projects/auto-clicker.html",
+      "clean": "/projects/auto-clicker/",
+      "file": "projects/auto-clicker/index.html",
+      "kind": "page",
+      "title": "Auto Clicker — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "projects/auto-clicker.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "https://chriswellsdev.com/projects/auto-clicker.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "../projects/auto-clicker.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/auto-clicker.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/auto-clicker.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../assets/auto_clicker_pic.png",
+        "../assets/auto_clicker_pic.png",
+        "https://github.com/aceofknights/auto_clicker",
+        "../webpages/blog.html#auto-clicker",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/auto-clicker.html",
+      "canonical": "https://chriswellsdev.com/projects/auto-clicker/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/projects/bootstrap-cover.html",
+      "clean": "/projects/bootstrap-cover/",
+      "file": "projects/bootstrap-cover/index.html",
+      "kind": "page",
+      "title": "Bootstrap Cover Page — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "https://chriswellsdev.com/projects/bootstrap-cover.html"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/bootstrap-cover.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/bootstrap-cover.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../assets/previews/bootstrap-cover.jpg",
+        "../assets/previews/bootstrap-cover.jpg",
+        "../webpages/oldaboutpage.html",
+        "https://github.com/aceofknights/steelwell-website",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/bootstrap-cover.html",
+      "canonical": "https://chriswellsdev.com/projects/bootstrap-cover/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/projects/chriswellsdev.html",
+      "clean": "/projects/chriswellsdev/",
+      "file": "projects/chriswellsdev/index.html",
+      "kind": "page",
+      "title": "ChrisWellsDev Website — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "https://chriswellsdev.com/projects/chriswellsdev.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/chriswellsdev.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/chriswellsdev.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../assets/previews/chriswellsdev.jpg",
+        "../assets/previews/chriswellsdev.jpg",
+        "../index.html",
+        "https://github.com/aceofknights/steelwell-website",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/chriswellsdev.html",
+      "canonical": "https://chriswellsdev.com/projects/chriswellsdev/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/projects/feedback-survey.html",
+      "clean": "/projects/feedback-survey/",
+      "file": "projects/feedback-survey/index.html",
+      "kind": "page",
+      "title": "Feedback Survey Demo — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "https://chriswellsdev.com/projects/feedback-survey.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/feedback-survey.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../projects/feedback-survey.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/feedback-survey.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../assets/previews/feedback-survey.jpg",
+        "../assets/previews/feedback-survey.jpg",
+        "../webpages/survey.html",
+        "https://github.com/aceofknights/steelwell-website",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/feedback-survey.html",
+      "canonical": "https://chriswellsdev.com/projects/feedback-survey/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/projects/hex-math.html",
+      "clean": "/projects/hex-math/",
+      "file": "projects/hex-math/index.html",
+      "kind": "page",
+      "title": "Hex Math — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "projects/hex-math.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "https://chriswellsdev.com/projects/hex-math.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/hex-math.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../projects/hex-math.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/hex-math.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../assets/previews/hex-math.jpg",
+        "../assets/previews/hex-math.jpg",
+        "../webpages/HexMath.html",
+        "https://github.com/aceofknights/steelwell-website",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/hex-math.html",
+      "canonical": "https://chriswellsdev.com/projects/hex-math/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/projects/hotdog-counter.html",
+      "clean": "/projects/hotdog-counter/",
+      "file": "projects/hotdog-counter/index.html",
+      "kind": "page",
+      "title": "Hotdog Counter — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "https://chriswellsdev.com/projects/hotdog-counter.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/hotdog-counter.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/hotdog-counter.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../webpages/PrivatePolicy.html",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/hotdog-counter.html",
+      "canonical": "https://chriswellsdev.com/projects/hotdog-counter/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/projects/seating-chart.html",
+      "clean": "/projects/seating-chart/",
+      "file": "projects/seating-chart/index.html",
+      "kind": "page",
+      "title": "Seating Chart — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "projects/seating-chart.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "https://chriswellsdev.com/projects/seating-chart.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/seating-chart.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../projects/seating-chart.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/seating-chart.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../assets/previews/seating-chart.jpg",
+        "../assets/previews/seating-chart.jpg",
+        "../webpages/SeatingChart.html",
+        "https://github.com/aceofknights/steelwell-website",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/seating-chart.html",
+      "canonical": "https://chriswellsdev.com/projects/seating-chart/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/projects/sort-the-numbers.html",
+      "clean": "/projects/sort-the-numbers/",
+      "file": "projects/sort-the-numbers/index.html",
+      "kind": "page",
+      "title": "Sort the Numbers — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "projects/sort-the-numbers.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "https://chriswellsdev.com/projects/sort-the-numbers.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "../projects/sort-the-numbers.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/sort-the-numbers.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../projects/sort-the-numbers.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/sort-the-numbers.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../assets/previews/sort-the-numbers.jpg",
+        "../assets/previews/sort-the-numbers.jpg",
+        "../webpages/sortTheNumber.html",
+        "https://github.com/aceofknights/steelwell-website",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/sort-the-numbers.html",
+      "canonical": "https://chriswellsdev.com/projects/sort-the-numbers/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/projects/tennessee-guide.html",
+      "clean": "/projects/tennessee-guide/",
+      "file": "projects/tennessee-guide/index.html",
+      "kind": "page",
+      "title": "Tennessee City Guide — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "https://chriswellsdev.com/projects/tennessee-guide.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/tennessee-guide.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/tennessee-guide.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../assets/previews/tennessee-guide.jpg",
+        "../assets/previews/tennessee-guide.jpg",
+        "../wgu-web-task/Task%202%20pages/state.html",
+        "https://github.com/aceofknights/steelwell-website",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/tennessee-guide.html",
+      "canonical": "https://chriswellsdev.com/projects/tennessee-guide/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/projects/vacation-planner.html",
+      "clean": "/projects/vacation-planner/",
+      "file": "projects/vacation-planner/index.html",
+      "kind": "page",
+      "title": "Vacation Planner — ChrisWellsDev",
+      "purpose": "Project showcase",
+      "incoming": [
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "https://chriswellsdev.com/projects/vacation-planner.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "../projects/vacation-planner.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../projects/vacation-planner.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/vacation-planner.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "https://drive.google.com/file/d/12fa61cd5eAd7B0me2zSQD42rHKy55Mmr/view",
+        "../webpages/blog.html#vacation-planner",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/vacation-planner.html",
+      "canonical": "https://chriswellsdev.com/projects/vacation-planner/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/templates/project.html",
+      "clean": "/projects/",
+      "file": "projects/index.html",
+      "kind": "retired-authoring-template",
+      "title": "{{title}} — ChrisWellsDev",
+      "purpose": "Authoring source, moved to a non-HTML text file",
+      "incoming": [
+        {
+          "from": "/templates/project.html",
+          "reference": "#main"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/projects/{{id}}.html",
+        "../css/dashboard.css",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../webpages/projects.html",
+        "../webpages/projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/projects/{{id}}.html",
+      "canonical": "https://chriswellsdev.com/projects/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/tests/browser/homepage-harness.html",
+      "clean": "/test-lab/homepage-harness/",
+      "file": "test-lab/homepage-harness/index.html",
+      "kind": "test",
+      "title": "Homepage checks",
+      "purpose": "Synthetic test utility",
+      "incoming": [],
+      "originalReferences": [
+        "homepage-tests.js"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/homepage-harness/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/tests/browser/project-showcase-harness.html",
+      "clean": "/test-lab/project-showcase-harness/",
+      "file": "test-lab/project-showcase-harness/index.html",
+      "kind": "test",
+      "title": "Project showcase checks",
+      "purpose": "Synthetic test utility",
+      "incoming": [],
+      "originalReferences": [
+        "project-showcase-tests.js"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/project-showcase-harness/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/tests/browser/seating-autofit-harness.html",
+      "clean": "/test-lab/seating-autofit-harness/",
+      "file": "test-lab/seating-autofit-harness/index.html",
+      "kind": "test",
+      "title": "Automatic fit synthetic tests",
+      "purpose": "Synthetic test utility",
+      "incoming": [],
+      "originalReferences": [
+        "../../webpages/SeatingChart.html",
+        "../../javascript/seating_backup_core.js",
+        "seating-test-page.js",
+        "seating-autofit-tests.js"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/seating-autofit-harness/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/tests/browser/seating-backup-harness.html",
+      "clean": "/test-lab/seating-backup-harness/",
+      "file": "test-lab/seating-backup-harness/index.html",
+      "kind": "test",
+      "title": "Synthetic Seating Backup Test Harness",
+      "purpose": "Synthetic test utility",
+      "incoming": [],
+      "originalReferences": [
+        "../../javascript/seating_backup_core.js",
+        "../../webpages/SeatingChart.html"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/seating-backup-harness/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/tests/browser/seating-display-color-harness.html",
+      "clean": "/test-lab/seating-display-color-harness/",
+      "file": "test-lab/seating-display-color-harness/index.html",
+      "kind": "test",
+      "title": "Fullscreen and colors — synthetic tests",
+      "purpose": "Synthetic test utility",
+      "incoming": [],
+      "originalReferences": [
+        "../../javascript/seating_backup_core.js",
+        "../../webpages/SeatingChart.html?display-review=3h",
+        "seating-test-page.js",
+        "seating-display-color-tests.js"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/seating-display-color-harness/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/tests/browser/seating-reliability-harness.html",
+      "clean": "/test-lab/seating-reliability-harness/",
+      "file": "test-lab/seating-reliability-harness/index.html",
+      "kind": "test",
+      "title": "Seating reliability regressions — synthetic data only",
+      "purpose": "Synthetic test utility",
+      "incoming": [],
+      "originalReferences": [
+        "../../javascript/seating_backup_core.js",
+        "seating-test-page.js",
+        "seating-reliability-tests.js"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/seating-reliability-harness/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/tests/browser/seating-stability-harness.html",
+      "clean": "/test-lab/seating-stability-harness/",
+      "file": "test-lab/seating-stability-harness/index.html",
+      "kind": "test",
+      "title": "Seating stability — synthetic only",
+      "purpose": "Synthetic test utility",
+      "incoming": [],
+      "originalReferences": [
+        "../../webpages/SeatingChart.html",
+        "../../javascript/seating_backup_core.js",
+        "seating-test-page.js",
+        "seating-stability-tests.js"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/seating-stability-harness/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/tests/browser/seating-workspace-harness.html",
+      "clean": "/test-lab/seating-workspace-harness/",
+      "file": "test-lab/seating-workspace-harness/index.html",
+      "kind": "test",
+      "title": "Synthetic workspace review",
+      "purpose": "Synthetic test utility",
+      "incoming": [],
+      "originalReferences": [
+        "../../javascript/seating_backup_core.js",
+        "../../webpages/SeatingChart.html",
+        "seating-test-page.js",
+        "seating-workspace-tests.js"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/seating-workspace-harness/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/tests/browser/website-usability-harness.html",
+      "clean": "/test-lab/website-usability-harness/",
+      "file": "test-lab/website-usability-harness/index.html",
+      "kind": "test",
+      "title": "Website usability regressions",
+      "purpose": "Synthetic test utility",
+      "incoming": [],
+      "originalReferences": [
+        "website-usability-tests.js"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/website-usability-harness/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/webpages/about.html",
+      "clean": "/about/",
+      "file": "about/index.html",
+      "kind": "page",
+      "title": "Chris Wells DEV",
+      "purpose": "Personal biography",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "webpages/about.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "webpages/about.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/templates/project.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/webpages/about.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/about.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/webpages/resume.html",
+          "reference": "../webpages/about.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../webpages/about.html"
+        }
+      ],
+      "originalReferences": [
+        "https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap",
+        "../css/styles.css",
+        "../css/dashboard.css",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "survey.html"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/about/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/webpages/blog.html",
+      "clean": "/blog/",
+      "file": "blog/index.html",
+      "kind": "page",
+      "title": "Chris Wells DEV",
+      "purpose": "Project development notes and download/source links",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "webpages/blog.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "webpages/blog.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../webpages/blog.html#auto-clicker"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../webpages/blog.html#vacation-planner"
+        },
+        {
+          "from": "/templates/project.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/webpages/about.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/webpages/resume.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/webpages/sortTheNumber.html",
+          "reference": "../webpages/blog.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../webpages/blog.html"
+        }
+      ],
+      "originalReferences": [
+        "https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap",
+        "../css/styles.css",
+        "../css/dashboard.css",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../projects/vacation-planner.html",
+        "https://drive.google.com/file/d/12fa61cd5eAd7B0me2zSQD42rHKy55Mmr/view?usp=drive_link",
+        "../projects/auto-clicker.html",
+        "../assets/auto_clicker_pic.png",
+        "https://github.com/aceofknights/auto_clicker",
+        "../projects/sort-the-numbers.html",
+        "sortTheNumber.html",
+        "survey.html"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/blog/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/webpages/HexMath.html",
+      "clean": "/hex-math/",
+      "file": "hex-math/index.html",
+      "kind": "page",
+      "title": "Hex Math",
+      "purpose": "Two-player multiplication strategy game",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "webpages/HexMath.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "webpages/HexMath.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../webpages/HexMath.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/HexMath.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../webpages/HexMath.html"
+        }
+      ],
+      "originalReferences": [
+        "https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap",
+        "../css/styles.css?v=4b",
+        "../javascript/HexMath.js?v=6",
+        "../javascript/hex_board_view.js?v=4b"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/hex-math/",
+      "specialDependencies": [],
+      "risk": "medium",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/webpages/oldaboutpage.html",
+      "clean": "/archive/bootstrap-cover/",
+      "file": "archive/bootstrap-cover/index.html",
+      "kind": "page",
+      "title": "About",
+      "purpose": "Historical Bootstrap coursework biography",
+      "incoming": [
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../webpages/oldaboutpage.html"
+        },
+        {
+          "from": "/webpages/oldaboutpage.html",
+          "reference": "#"
+        },
+        {
+          "from": "/webpages/oldaboutpage.html",
+          "reference": "#"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/oldaboutpage.html"
+        }
+      ],
+      "originalReferences": [
+        "https://getbootstrap.com/docs/4.5/examples/cover/",
+        "../assets/dist/css/bootstrap.min.css",
+        "../css/cover.css",
+        "../index.html",
+        "#",
+        "#",
+        "survey.html",
+        "/assets/me.jpg",
+        "https://getbootstrap.com/",
+        "https://twitter.com/mdo"
+      ],
+      "originalCanonical": "https://getbootstrap.com/docs/4.5/examples/cover/",
+      "canonical": "https://chriswellsdev.com/archive/bootstrap-cover/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/webpages/PrivatePolicy.html",
+      "clean": "/privacy/hotdog-counter/",
+      "file": "privacy/hotdog-counter/index.html",
+      "kind": "page",
+      "title": "Privacy Policy",
+      "purpose": "Hotdog Counter privacy policy",
+      "incoming": [
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../webpages/PrivatePolicy.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/PrivatePolicy.html"
+        }
+      ],
+      "originalReferences": [
+        "mailto:cwell51@wgu.edu"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/privacy/hotdog-counter/",
+      "specialDependencies": [
+        "Keep policy text available to external policy consumers that may not execute JavaScript"
+      ],
+      "risk": "low",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/webpages/projects.html",
+      "clean": "/projects/",
+      "file": "projects/index.html",
+      "kind": "page",
+      "title": "Projects — ChrisWellsDev",
+      "purpose": "Complete project catalog",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "webpages/projects.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "webpages/projects.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "webpages/projects.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/templates/project.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/templates/project.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/templates/project.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/webpages/about.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "https://chriswellsdev.com/webpages/projects.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "#browser-tools"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "#browser-games"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "#applications"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "#coursework"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "#other-projects"
+        },
+        {
+          "from": "/webpages/resume.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../webpages/projects.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "projects.html"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/webpages/projects.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "#browser-tools",
+        "#browser-games",
+        "#applications",
+        "#coursework",
+        "#other-projects",
+        "../assets/previews/seating-chart.jpg",
+        "../projects/seating-chart.html",
+        "../webpages/SeatingChart.html",
+        "../assets/previews/feedback-survey.jpg",
+        "../projects/feedback-survey.html",
+        "../webpages/survey.html",
+        "../assets/previews/hex-math.jpg",
+        "../projects/hex-math.html",
+        "../webpages/HexMath.html",
+        "../assets/previews/sort-the-numbers.jpg",
+        "../projects/sort-the-numbers.html",
+        "../webpages/sortTheNumber.html",
+        "../assets/auto_clicker_pic.png",
+        "../projects/auto-clicker.html",
+        "https://github.com/aceofknights/auto_clicker",
+        "../projects/vacation-planner.html",
+        "https://drive.google.com/file/d/12fa61cd5eAd7B0me2zSQD42rHKy55Mmr/view",
+        "../projects/hotdog-counter.html",
+        "../webpages/PrivatePolicy.html",
+        "../assets/previews/tennessee-guide.jpg",
+        "../projects/tennessee-guide.html",
+        "../wgu-web-task/Task%202%20pages/state.html",
+        "../assets/previews/bootstrap-cover.jpg",
+        "../projects/bootstrap-cover.html",
+        "../webpages/oldaboutpage.html",
+        "../assets/previews/chriswellsdev.jpg",
+        "../projects/chriswellsdev.html",
+        "../index.html",
+        "tools-games.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/webpages/projects.html",
+      "canonical": "https://chriswellsdev.com/projects/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/webpages/resume.html",
+      "clean": "/resume/",
+      "file": "resume/index.html",
+      "kind": "page",
+      "title": "Chris Wells DEV",
+      "purpose": "Embedded resume PDF with direct fallback",
+      "incoming": [
+        {
+          "from": "/webpages/resume.html",
+          "reference": "#main"
+        }
+      ],
+      "originalReferences": [
+        "../css/styles.css?v=4b",
+        "https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap",
+        "../css/dashboard.css",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "../assets/Chris%20Wells%202024.pdf",
+        "../assets/Chris%20Wells%202024.pdf",
+        "../assets/Chris Wells 2024.pdf",
+        "survey.html"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/resume/",
+      "specialDependencies": [
+        "Embedded existing PDF and direct download fallback; deliberately absent from normal navigation"
+      ],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/webpages/SeatingChart.html",
+      "clean": "/seating-chart/",
+      "file": "seating-chart/index.html",
+      "kind": "page",
+      "title": "Seating Chart · ChrisWellsDev",
+      "purpose": "Interactive classroom seating planner with browser-local records",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "webpages/SeatingChart.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "webpages/SeatingChart.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../webpages/SeatingChart.html"
+        },
+        {
+          "from": "/tests/browser/seating-autofit-harness.html",
+          "reference": "../../webpages/SeatingChart.html"
+        },
+        {
+          "from": "/tests/browser/seating-backup-harness.html",
+          "reference": "../../webpages/SeatingChart.html"
+        },
+        {
+          "from": "/tests/browser/seating-display-color-harness.html",
+          "reference": "../../webpages/SeatingChart.html?display-review=3h"
+        },
+        {
+          "from": "/tests/browser/seating-stability-harness.html",
+          "reference": "../../webpages/SeatingChart.html"
+        },
+        {
+          "from": "/tests/browser/seating-workspace-harness.html",
+          "reference": "../../webpages/SeatingChart.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/SeatingChart.html"
+        },
+        {
+          "from": "/webpages/SeatingChart.html",
+          "reference": "#workspaceViewport"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../webpages/SeatingChart.html"
+        }
+      ],
+      "originalReferences": [
+        "https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap",
+        "../css/styles.css",
+        "../css/seating-data-protection.css",
+        "../css/dashboard.css",
+        "../css/seating-workspace.css",
+        "../javascript/seating_view_math.js",
+        "../javascript/seating_color_math.js",
+        "../javascript/seating_colors.js",
+        "../javascript/seating_workspace.js",
+        "../javascript/seating_touch.js",
+        "../javascript/seating_backup_core.js",
+        "../javascript/seating_data_protection.js",
+        "#workspaceViewport",
+        "../index.html"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/seating-chart/",
+      "specialDependencies": [
+        "Opening capture before initialization",
+        "Origin-scoped localStorage and recovery journal",
+        "Dynamic ../javascript/Seating_Chart.js remains valid: old and new document directories are both one level deep; no application script changes."
+      ],
+      "risk": "high",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/webpages/sortTheNumber.html",
+      "clean": "/sort-the-numbers/",
+      "file": "sort-the-numbers/index.html",
+      "kind": "page",
+      "title": "Sort the Cards Game",
+      "purpose": "Number-order browser game",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "webpages/sortTheNumber.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "webpages/sortTheNumber.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../webpages/sortTheNumber.html"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "sortTheNumber.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/sortTheNumber.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../webpages/sortTheNumber.html"
+        }
+      ],
+      "originalReferences": [
+        "../css/styles.css?v=4b",
+        "../webpages/blog.html",
+        "../javascript/sort_the_number.js"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/sort-the-numbers/",
+      "specialDependencies": [],
+      "risk": "medium",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/webpages/survey.html",
+      "clean": "/feedback/",
+      "file": "feedback/index.html",
+      "kind": "page",
+      "title": "Feedback Survey",
+      "purpose": "Client-side form validation demo; no message delivery",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "webpages/survey.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/templates/project.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/webpages/about.html",
+          "reference": "survey.html"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "survey.html"
+        },
+        {
+          "from": "/webpages/oldaboutpage.html",
+          "reference": "survey.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/webpages/resume.html",
+          "reference": "survey.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../webpages/survey.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../webpages/survey.html"
+        }
+      ],
+      "originalReferences": [
+        "../../css/stylesheet_survey.css?v=4b",
+        "../index.html",
+        "../../javascript/script_survey.js?v=4b"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/feedback/",
+      "specialDependencies": [],
+      "risk": "medium",
+      "legacyStrategy": "functional canonical alias"
+    },
+    {
+      "old": "/webpages/tools-games.html",
+      "clean": "/tools-games/",
+      "file": "tools-games/index.html",
+      "kind": "page",
+      "title": "Tools & Games — ChrisWellsDev",
+      "purpose": "Browser tool and game catalog",
+      "incoming": [
+        {
+          "from": "/index.html",
+          "reference": "webpages/tools-games.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "webpages/tools-games.html"
+        },
+        {
+          "from": "/index.html",
+          "reference": "webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/auto-clicker.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/bootstrap-cover.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/chriswellsdev.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/feedback-survey.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/hex-math.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/hotdog-counter.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/seating-chart.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/sort-the-numbers.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/projects/vacation-planner.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/templates/project.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/webpages/about.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/webpages/blog.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "tools-games.html"
+        },
+        {
+          "from": "/webpages/resume.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "https://chriswellsdev.com/webpages/tools-games.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "#main"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "../webpages/tools-games.html"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "#browser-tools"
+        },
+        {
+          "from": "/webpages/tools-games.html",
+          "reference": "#browser-games"
+        }
+      ],
+      "originalReferences": [
+        "https://chriswellsdev.com/webpages/tools-games.html",
+        "../css/dashboard.css?v=4c.2",
+        "../javascript/navigation.js",
+        "#main",
+        "../index.html",
+        "../index.html",
+        "../webpages/projects.html",
+        "../webpages/tools-games.html",
+        "../webpages/about.html",
+        "../webpages/blog.html",
+        "https://github.com/aceofknights",
+        "https://www.linkedin.com/in/chris-wells-901611141/",
+        "#browser-tools",
+        "#browser-games",
+        "../assets/previews/seating-chart.jpg",
+        "../projects/seating-chart.html",
+        "../webpages/SeatingChart.html",
+        "../assets/previews/feedback-survey.jpg",
+        "../projects/feedback-survey.html",
+        "../webpages/survey.html",
+        "../assets/previews/hex-math.jpg",
+        "../projects/hex-math.html",
+        "../webpages/HexMath.html",
+        "../assets/previews/sort-the-numbers.jpg",
+        "../projects/sort-the-numbers.html",
+        "../webpages/sortTheNumber.html",
+        "projects.html",
+        "../webpages/survey.html"
+      ],
+      "originalCanonical": "https://chriswellsdev.com/webpages/tools-games.html",
+      "canonical": "https://chriswellsdev.com/tools-games/",
+      "specialDependencies": [],
+      "risk": "low",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/wgu-web-task/Task 2 pages/chattanooga.html",
+      "clean": "/coursework/tennessee/chattanooga/",
+      "file": "coursework/tennessee/chattanooga/index.html",
+      "kind": "page",
+      "title": "Chattanooga",
+      "purpose": "Tennessee coursework state/city/contact page",
+      "incoming": [
+        {
+          "from": "/wgu-web-task/Task 2 pages/chattanooga.html",
+          "reference": "chattanooga.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/knoxville.html",
+          "reference": "chattanooga.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/nashville.html",
+          "reference": "chattanooga.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/state.html",
+          "reference": "chattanooga.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/state.html",
+          "reference": "chattanooga.html"
+        }
+      ],
+      "originalReferences": [
+        "styles.css",
+        "state.html",
+        "nashville.html",
+        "knoxville.html",
+        "chattanooga.html",
+        "contact.html",
+        "./assets/chatta.png",
+        "./assets/group.png",
+        "./assets/skyline.png",
+        "./assets/red-flag.png",
+        "./assets/profit.png",
+        "./assets/countries.png",
+        "./assets/crime.png",
+        "https://weather.com/weather/tenday/l/Chattanooga+TN?canonicalCityId=f233b9e4dc1583109ba85788f03bad81706dedf3542d46c48987172063b1794c",
+        "./assets/weather.png",
+        "https://www.google.com/maps/place/Chattanooga,+TN/data=!4m2!3m1!1s0x886060408a83e785:0x2471261f898728aa?sa=X&ved=1t:242&ictx=111",
+        "./assets/map.png",
+        "https://chattanooga.gov/",
+        "./assets/gov.png"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/coursework/tennessee/chattanooga/",
+      "specialDependencies": [],
+      "risk": "medium",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/wgu-web-task/Task 2 pages/contact.html",
+      "clean": "/coursework/tennessee/contact/",
+      "file": "coursework/tennessee/contact/index.html",
+      "kind": "page",
+      "title": "Contact Us",
+      "purpose": "Tennessee coursework state/city/contact page",
+      "incoming": [
+        {
+          "from": "/wgu-web-task/Task 2 pages/chattanooga.html",
+          "reference": "contact.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/knoxville.html",
+          "reference": "contact.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/nashville.html",
+          "reference": "contact.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/state.html",
+          "reference": "contact.html"
+        }
+      ],
+      "originalReferences": [
+        "styles.css"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/coursework/tennessee/contact/",
+      "specialDependencies": [],
+      "risk": "medium",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/wgu-web-task/Task 2 pages/knoxville.html",
+      "clean": "/coursework/tennessee/knoxville/",
+      "file": "coursework/tennessee/knoxville/index.html",
+      "kind": "page",
+      "title": "Knoxville",
+      "purpose": "Tennessee coursework state/city/contact page",
+      "incoming": [
+        {
+          "from": "/wgu-web-task/Task 2 pages/chattanooga.html",
+          "reference": "knoxville.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/knoxville.html",
+          "reference": "knoxville.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/nashville.html",
+          "reference": "knoxville.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/state.html",
+          "reference": "knoxville.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/state.html",
+          "reference": "knoxville.html"
+        }
+      ],
+      "originalReferences": [
+        "styles.css",
+        "state.html",
+        "nashville.html",
+        "knoxville.html",
+        "chattanooga.html",
+        "contact.html",
+        "./assets/knoxville.png",
+        "./assets/group.png",
+        "./assets/skyline.png",
+        "./assets/red-flag.png",
+        "./assets/profit.png",
+        "./assets/countries.png",
+        "./assets/crime.png",
+        "https://weather.com/weather/tenday/l/Knoxville+TN?canonicalCityId=626ef612d09792fa3f39bfb5ad2b6808faf39bd6c597c5d8c7301e27cec2ed4a",
+        "./assets/weather.png",
+        "https://www.google.com/maps?sca_esv=ad3cebe3ffb4734a&rlz=1C1ONGR_enUS1009US1009&output=search&q=google+maps+knoxville+tn&source=lnms&fbs=AEQNm0Aa4sjWe7Rqy32pFwRj0UkW1DRbm01j6DCVS0r1sTxn7rqU1uhV7mfeoM5P4clGxajLKi2kyxSnvw3X4_OCUlklyxJd14zEJyDdTIYQC9RZtr_hsD7GaVIx7ydNZFvwnU2llVk-e-BVA0ilwTTjGDaskJSTJszXhJYl94eubWlnL8na_MwsytcGyaSBiixepRMfotHyY9fExUfPd5m96x-9YUoJEA&entry=mc&ved=1t:200715&ictx=111",
+        "./assets/map.png",
+        "https://www.knoxvilletn.gov/",
+        "./assets/gov.png"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/coursework/tennessee/knoxville/",
+      "specialDependencies": [],
+      "risk": "medium",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/wgu-web-task/Task 2 pages/nashville.html",
+      "clean": "/coursework/tennessee/nashville/",
+      "file": "coursework/tennessee/nashville/index.html",
+      "kind": "page",
+      "title": "Nashville",
+      "purpose": "Tennessee coursework state/city/contact page",
+      "incoming": [
+        {
+          "from": "/wgu-web-task/Task 2 pages/chattanooga.html",
+          "reference": "nashville.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/knoxville.html",
+          "reference": "nashville.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/nashville.html",
+          "reference": "nashville.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/state.html",
+          "reference": "nashville.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/state.html",
+          "reference": "nashville.html"
+        }
+      ],
+      "originalReferences": [
+        "styles.css",
+        "state.html",
+        "nashville.html",
+        "knoxville.html",
+        "chattanooga.html",
+        "contact.html",
+        "./assets/nashville.png",
+        "./assets/group.png",
+        "./assets/skyline.png",
+        "./assets/red-flag.png",
+        "./assets/profit.png",
+        "./assets/countries.png",
+        "./assets/crime.png",
+        "https://weather.com/weather/tenday/l/Nashville+TN?canonicalCityId=d2e9d5e23261bad08730344442ecada76f5e96e85bdebe15cb4658490e1b09f0",
+        "./assets/weather.png",
+        "https://www.google.com/maps?sca_esv=ad3cebe3ffb4734a&rlz=1C1ONGR_enUS1009US1009&output=search&q=nashville+g+maps&source=lnms&fbs=AEQNm0Aa4sjWe7Rqy32pFwRj0UkW1DRbm01j6DCVS0r1sTxn7rqU1uhV7mfeoM5P4clGxaiHSiRT_SgXLW3QC7VzcWpagcbunMVDZCbXWBeOejkKBvejXGOd2fxUijSrB1dyKxABaUcrDK_YTJ_dtaPHxlUcrpWKc22BuCYeO1TlzDqWHZYZ-UVQ0nPlBdGqzyxWmxekSF_eUHK8u56BpAANa2AOzTVXmg&entry=mc&ved=1t:200715&ictx=111",
+        "./assets/map.png",
+        "https://www.nashville.gov/",
+        "./assets/gov.png"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/coursework/tennessee/nashville/",
+      "specialDependencies": [],
+      "risk": "medium",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": "/wgu-web-task/Task 2 pages/state.html",
+      "clean": "/coursework/tennessee/",
+      "file": "coursework/tennessee/index.html",
+      "kind": "page",
+      "title": "Welcome to Tennessee",
+      "purpose": "Tennessee coursework state/city/contact page",
+      "incoming": [
+        {
+          "from": "/projects/tennessee-guide.html",
+          "reference": "../wgu-web-task/Task%202%20pages/state.html"
+        },
+        {
+          "from": "/webpages/projects.html",
+          "reference": "../wgu-web-task/Task%202%20pages/state.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/chattanooga.html",
+          "reference": "state.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/knoxville.html",
+          "reference": "state.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/nashville.html",
+          "reference": "state.html"
+        },
+        {
+          "from": "/wgu-web-task/Task 2 pages/state.html",
+          "reference": "state.html"
+        }
+      ],
+      "originalReferences": [
+        "styles.css",
+        "state.html",
+        "nashville.html",
+        "knoxville.html",
+        "chattanooga.html",
+        "contact.html",
+        "./assets/tn.png",
+        "nashville.html",
+        "knoxville.html",
+        "chattanooga.html",
+        "./assets/group.png",
+        "./assets/star.png",
+        "./assets/red-flag.png",
+        "./assets/profit.png",
+        "./assets/bird.png",
+        "./assets/flower.png"
+      ],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/coursework/tennessee/",
+      "specialDependencies": [],
+      "risk": "medium",
+      "legacyStrategy": "client-side replace with query/hash and visible fallback"
+    },
+    {
+      "old": null,
+      "clean": "/test-lab/migration/",
+      "file": "test-lab/migration/index.html",
+      "kind": "test",
+      "title": "Complete migration browser audit",
+      "purpose": "New exhaustive route/resource and synthetic data verification utility",
+      "incoming": [],
+      "originalReferences": [],
+      "originalCanonical": null,
+      "canonical": "https://chriswellsdev.com/test-lab/migration/",
+      "specialDependencies": [
+        "Disposable http://127.0.0.1:8873 only",
+        "Test-server early error instrumentation"
+      ],
+      "risk": "low",
+      "legacyStrategy": "new clean route"
+    }
+  ],
+  "decisions": [
+    "/projects/index.html is added alongside the existing project files; no directory replacement.",
+    "Application routes and /projects/<id>/ showcases remain distinct.",
+    "Coursework uses /coursework/tennessee/ and city children.",
+    "Test harnesses receive noindex /test-lab/ routes and retain functional originals.",
+    "The authoring template becomes docs/project-template.html.txt; its old browser URL redirects to Projects.",
+    "Root and /index.html share a physical file; canonical is /.",
+    "The original privacy-policy URL retains full policy content for non-JavaScript external consumers."
+  ]
+}

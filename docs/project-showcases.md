@@ -1,76 +1,26 @@
-# Project catalog and showcase authoring
+# Static project showcases
 
-The site serves ordinary checked-in HTML directly through GitHub Pages. There is
-no backend, framework, runtime metadata fetch, or required generation/build step.
-Navigation, category links, project details, and application links work without
-JavaScript. Only the existing responsive-navigation enhancement loads on these pages.
+The site is checked-in HTML/CSS/JavaScript, served at the custom-domain root without a runtime framework or build dependency.
 
-## Files and responsibilities
+- `/projects/` (`projects/index.html`) is the full catalog. Existing `/projects/*.html` files are compatibility redirects, not catalog sources.
+- `/tools-games/` (`tools-games/index.html`) lists the four browser entries.
+- `/projects/<stable-id>/` (`projects/<stable-id>/index.html`) is each showcase.
+- `data/projects.json` contains verified content, availability, original previews, and clean action destinations.
+- `data/routes.json` records canonical destinations, original compatibility URLs, risks, source references, and collision decisions.
+- `css/dashboard.css` supplies the shared design; core navigation and actions remain ordinary HTML links.
+- `docs/project-template.html.txt` is the authoring skeleton. Its former public HTML URL now redirects to Projects so visitors never see unresolved placeholders.
 
-- `data/projects.json`: canonical project IDs, categories, descriptions, technologies,
-  overview/features, optional usage/notes/media, action URLs, and link-check provenance.
-- `webpages/projects.html`: complete catalog, grouped by the manifest's categories.
-- `webpages/tools-games.html`: Browser Tools and Browser Games only.
-- `projects/<stable-id>.html`: a static showcase for each project.
-- `templates/project.html`: copyable HTML showcase skeleton, including shared navigation.
-- `css/dashboard.css`: existing design tokens/components plus shared catalog/showcase rules.
-- `scripts/check_catalog.py`: standard-library-only metadata and internal-link validation.
+## Editing or adding a project
 
-## Current catalog
+1. Verify descriptions, technologies, availability, and destinations against project material. Do not invent releases, downloads, or screenshots.
+2. Copy `docs/project-template.html.txt` to `projects/<stable-id>/index.html`. Replace every placeholder; remove unused optional sections. Canonical and sharing URLs must identify the new trailing-slash route.
+3. Use root-relative resources and internal actions. Keep project details separate from launching tools. No Resume navigation entry.
+4. Match the manifest's content, preview alt text/intrinsic dimensions, and verified links in both catalogs. Use the existing showcase/card classes.
+5. Add the route to `data/routes.json`. Preserve existing public addresses with a safe compatibility document if a URL changes. Do not redirect classroom tools before their opening data capture.
+6. Run `python scripts/check_catalog.py`, `python scripts/audit_routes.py`, Node tests, and relevant browser checks with `python scripts/serve_seating_tests.py`.
 
-| Category | Stable project IDs |
-| --- | --- |
-| Browser Tools | `seating-chart`, `feedback-survey` |
-| Browser Games | `hex-math`, `sort-the-numbers` |
-| Desktop/Mobile Applications | `auto-clicker`, `vacation-planner`, `hotdog-counter` |
-| Coursework | `tennessee-guide`, `bootstrap-cover` |
-| Other Projects | `chriswellsdev` |
+## Compatibility and data
 
-Every ID maps to `projects/<id>.html`. Other existing portfolio pages (About,
-Resume, and Blog) remain supporting content rather than invented extra projects.
-Media is optional: existing Auto Clicker/Tennessee assets and locally captured
-Hex Math/Sort the Numbers screenshots are used where available. Missing media
-does not generate a fake preview or an empty gallery.
+Functional old and new tool pages load identical markup and shared scripts. Both paths stay on the same origin, so browser-local classroom records remain available without a schema change. The Node parity test prevents functional aliases from drifting. Directory depth keeps Seating Chart's dynamic script resolution unchanged.
 
-## Adding or editing a project
-
-1. Add/update its record in `data/projects.json`. Keep IDs and public showcase URLs
-   stable. Leave unknown technologies empty; omit unavailable actions and preview assets.
-2. Copy `templates/project.html` to `projects/<stable-id>.html`, or edit the existing
-   showcase. Populate title, description, category, overview, features, details,
-   technologies, and actions from the metadata. Add optional media, instructions,
-   and notes only when supported by project material.
-3. Add/update its catalog card. Use `data-project-id`, `.cw-project-summary`, and
-   `data-action="showcase"`. Add browser tools/games to both directory pages.
-4. Keep the shared static header consistent when changing navigation. Showcase
-   pages live one directory below the root, as do the directory pages.
-5. Run `python scripts/check_catalog.py`, check the resulting layout and keyboard
-   operation in a browser, and commit the HTML with the metadata. Validation is
-   optional for hosting but should be run before reviewing catalog changes.
-
-Static HTML is intentionally explicit. The validator catches drift between the
-metadata and published pages rather than requiring visitors or GitHub Pages to
-run a renderer. The template and CSS define one design for all projects.
-
-## Action semantics
-
-- **View Project**: showcase HTML, never the application itself.
-- **Launch Tool / Play Game**: original interactive page URL.
-- **View Source**: verified existing repository; shared website-source links lead
-  to the website repository, not a separately invented tool repository.
-- **Download APK (Google Drive)**: the existing Google Drive file viewer, checked
-  to show `Capstone.apk` and Download controls; the binary has not been tested.
-- **Open Coursework / Explore Website**: existing static project entry point.
-- **Privacy Policy / Development Notes**: supporting material, not an app demo.
-
-Do not add downloads or app features inferred only from a project name. Hotdog
-Counter currently has policy material only. The survey and coursework contact
-form do not deliver messages. Legacy content and URLs remain available.
-
-## Preservation boundary
-
-The catalogs/showcases do not load tool scripts, embed live applications, access
-browser storage, or migrate saved data. Launch links use the original tool paths
-on the same production origin. Tool HTML/scripts/styles, coursework, policy text,
-and CNAME are not changed by this milestone. The Blog retains its existing content
-and gains only showcase links and stable anchors for the referenced entries.
+The existing privacy-policy URL also retains full text for consumers without JavaScript. Other old content addresses use a small same-origin client redirect that preserves query/fragment state and offers a visible fallback. These are HTTP-200 static files, not server-side 301/308 redirects. See the migration report for full verification and rollback instructions.
