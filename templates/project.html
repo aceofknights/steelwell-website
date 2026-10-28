@@ -5,6 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="{{summary}}" />
     <title>{{title}} — ChrisWellsDev</title>
+    <link rel="canonical" href="https://chriswellsdev.com/projects/{{id}}.html" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ChrisWellsDev" />
+    <meta property="og:title" content="{{title}} — ChrisWellsDev" />
+    <meta property="og:description" content="{{summary}}" />
+    <meta property="og:url" content="https://chriswellsdev.com/projects/{{id}}.html" />
+    <meta property="og:image" content="https://chriswellsdev.com/{{previewSrc}}" />
+    <meta property="og:image:alt" content="{{previewAlt}}" />
+    <meta property="og:image:width" content="{{previewWidth}}" />
+    <meta property="og:image:height" content="{{previewHeight}}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="{{title}} — ChrisWellsDev" />
+    <meta name="twitter:description" content="{{summary}}" />
+    <meta name="twitter:image" content="https://chriswellsdev.com/{{previewSrc}}" />
+    <meta name="twitter:image:alt" content="{{previewAlt}}" />
     <link rel="stylesheet" href="../css/dashboard.css" />
     <script src="../javascript/navigation.js" defer></script>
   </head>
@@ -21,7 +36,6 @@
               <a href="../webpages/projects.html" aria-current="location">Projects</a>
               <a href="../webpages/tools-games.html">Tools &amp; Games</a>
               <a href="../webpages/about.html">About</a>
-              <a href="../webpages/resume.html">Resume</a>
               <a href="../webpages/blog.html">Blog</a>
             </nav>
             <nav class="cw-social" aria-label="Social profiles">
@@ -45,10 +59,11 @@
                    Use an existing asset or an actual screenshot, with useful alt text. -->
             </section>
             <section class="cw-project-section"><h2>Key features</h2><ul><li>{{feature}}</li></ul></section>
-            <!-- Optional sections: How to use (ordered list), Development notes (paragraphs/list). -->
+            <section class="cw-project-section"><h2>How it works</h2><p>{{approach}}</p></section>
+            <!-- Optional sections: How to use (ordered list), Project notes (paragraphs/list). -->
           </div>
           <aside class="cw-project-sidebar" aria-label="Project details">
-            <section class="cw-project-section"><h2>Project details</h2>
+            <section class="cw-project-section"><h2>Try or explore</h2><p class="cw-project-availability">{{status}}</p>
               <dl class="cw-project-facts"><dt>Category</dt><dd>{{category}}</dd></dl>
               <h3>Technologies</h3><ul class="cw-tags" aria-label="Technologies"><li>{{technology}}</li></ul>
               <div class="cw-actions cw-showcase-actions">

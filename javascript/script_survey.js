@@ -66,13 +66,17 @@ function validateForm() {
     }
 
     // Event listener for form submission
+    surveyForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        submitBtn.click();
+    });
     submitBtn.addEventListener("click", function () {
         clearErrorMessage(); // Clear any previous error messages
         if (validateForm()) {
             // Form is valid, show thank you message
             const userName = document.querySelector("input[name='userName']").value;
             thankYouMessage.classList.remove("hidden");
-            thankYouMessage.querySelector("#userName").textContent = userName;
+            thankYouMessage.querySelector("#submittedUserName").textContent = userName;
             surveyForm.style.display = "none"; // Hide the form
         }
     });

@@ -1,18 +1,18 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
-const childProcess = require('node:child_process');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
 const current = fs.readFileSync(path.join(root, 'javascript/Seating_Chart.js'), 'utf8').replace(/\r\n/g, '\n');
-const previous = childProcess.execFileSync('git', ['show', 'HEAD:javascript/Seating_Chart.js'], { cwd: root, encoding: 'utf8' }).replace(/\r\n/g, '\n');
-test('all three placement algorithms retain their existing rules apart from the dangling-table guard', () => {
-  function body(source, name, next) {
-    return source.slice(source.indexOf('function ' + name + '('), source.indexOf('function ' + next + '(')).trim();
-  }
+const baseline = require('./fixtures/seating-algorithms-a9ef211.json');
+
+test('all three placement algorithms exactly retain the audited a9ef211 rules and safety guard', () => {
+  assert.equal(baseline.sourceCommit, 'a9ef211f279c2799a6360221ac6b1642b8da9457');
   for (const [name, next] of [['randomizeTableByGroups', 'shuffleArray'], ['randomizeGridSeating', 'randomizeSeating'], ['randomizeSeating', 'resetStudentData']]) {
-    const actual = body(current, name, next).replace('        if (!seatsMap[tableId]) continue; // A legacy constraint may reference a deleted table.\n', '');
-    assert.equal(actual, body(previous, name, next), name + ' rules must be preserved');
+    const start = current.indexOf('function ' + name + '(');
+    const end = current.indexOf('function ' + next + '(', start);
+    assert.ok(start >= 0 && end > start, name + ' must exist with its expected boundary');
+    assert.equal(current.slice(start, end).trim(), baseline.functions[name], name + ' rules must be preserved');
   }
 });
 
