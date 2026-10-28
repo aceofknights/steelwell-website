@@ -7,10 +7,10 @@ document.querySelector('#run').addEventListener('click', async () => {
   function check(ok, message) { if (!ok) throw Error(message); output.textContent += '\nPASS ' + message; passed++; }
   output.textContent = 'Running...';
   try {
-    const { projects } = await (await fetch('../../data/projects.json')).json();
+    const { projects } = await (await fetch('/data/projects.json')).json();
     for (const width of [320, 390, 768, 1248, 1440]) {
       frame.style.width = width + 'px';
-      await new Promise(resolve => { frame.onload = resolve; frame.src = '../../index.html?home-review=' + Date.now(); });
+      await new Promise(resolve => { frame.onload = resolve; frame.src = '/?home-review=' + Date.now(); });
       const doc = frame.contentDocument, win = frame.contentWindow;
       win.addEventListener('error', event => errors.push(event.message));
       const images = [...doc.querySelectorAll('main img')];
@@ -26,12 +26,12 @@ document.querySelector('#run').addEventListener('click', async () => {
       const cards = [...doc.querySelectorAll('.cw-card')];
       check(cards.length === 3 && cards.every(card => {
         const project = projects.find(p => p.id === card.dataset.projectId);
-        return project && card.querySelector('h3').textContent === project.title && card.querySelector('.cw-project-summary').textContent === project.summary && card.querySelector('img').getAttribute('src') === project.preview.src;
+        return project && card.querySelector('h3').textContent === project.title && card.querySelector('.cw-project-summary').textContent === project.summary && card.querySelector('img').src === new URL(project.preview.src, location.origin + '/').href;
       }), 'Curated names, descriptions, and previews match metadata at ' + width);
       check(doc.querySelectorAll('h1').length === 1 && !doc.querySelector('a[href$="resume.html"]') && doc.querySelectorAll('main script').length === 0, 'Semantic heading, no Resume, no homepage runtime code at ' + width);
       const links = [...doc.querySelectorAll('main a')];
       check(links.every(a => { const r = a.getBoundingClientRect(); return r.width > 0 && r.left >= 0 && r.right <= width && win.getComputedStyle(a).visibility === 'visible'; }), 'Every homepage action remains visible and within bounds at ' + width);
-      check([...doc.querySelectorAll('.cw-home-launches a')].map(a => a.getAttribute('href')).join('|') === 'webpages/SeatingChart.html|webpages/HexMath.html|webpages/sortTheNumber.html', 'Quick access opens the three original applications at ' + width);
+      check([...doc.querySelectorAll('.cw-home-launches a')].map(a => a.getAttribute('href')).join('|') === '/seating-chart/|/hex-math/|/sort-the-numbers/', 'Quick access opens the three original applications at ' + width);
       check(doc.querySelector('[data-project-id="auto-clicker"] a[href^="https://github.com/"]')?.textContent === 'View Source', 'Auto Clicker offers source rather than a browser launch at ' + width);
       if (width === 390) check(doc.querySelector('.cw-home-feature').getBoundingClientRect().top < 650, 'Seating Chart arrives earlier in the mobile page');
       if (width <= 390) check(cards.every(card => card.getBoundingClientRect().width > win.innerWidth / 2), 'Cards stack into a readable single column at ' + width);

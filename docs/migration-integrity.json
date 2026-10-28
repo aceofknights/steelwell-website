@@ -1,0 +1,128 @@
+[
+  {
+    "file": "javascript/HexMath.js",
+    "before": "0373b2cae72c197792e76a37357555f1a3b4baa21362d4a9703b987649c7d0a1",
+    "after": "0373b2cae72c197792e76a37357555f1a3b4baa21362d4a9703b987649c7d0a1",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/hex_board_view.js",
+    "before": "9e4232618402c0b9bf4c6dd702d21d2f116902998c65eed85ed01be85474138f",
+    "after": "9e4232618402c0b9bf4c6dd702d21d2f116902998c65eed85ed01be85474138f",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/navigation.js",
+    "before": "822e8ee7a56aa5392db7434ec5a3a9f44c1b35aa61b839935fdb0bbb6f4be0b3",
+    "after": "822e8ee7a56aa5392db7434ec5a3a9f44c1b35aa61b839935fdb0bbb6f4be0b3",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/script_survey.js",
+    "before": "7f6e95da608e4d16ebb6d8110437db55650f4ee7afda1d833f9715fcaf5d99ef",
+    "after": "7f6e95da608e4d16ebb6d8110437db55650f4ee7afda1d833f9715fcaf5d99ef",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/seating_backup_core.js",
+    "before": "2996ee7f0974fb91b69bcaaab84a173f9c29c9da9a11a5b501439e618fa0be5b",
+    "after": "2996ee7f0974fb91b69bcaaab84a173f9c29c9da9a11a5b501439e618fa0be5b",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/Seating_Chart.js",
+    "before": "d5b27bc871140eb1350d5007ae9d88ba4a0a60f81e2b210246e27b84cbc27ff1",
+    "after": "d5b27bc871140eb1350d5007ae9d88ba4a0a60f81e2b210246e27b84cbc27ff1",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/seating_colors.js",
+    "before": "0eb914a27dd73050ae130ad62116297442b4872370df934a801eddf86e5f10a4",
+    "after": "0eb914a27dd73050ae130ad62116297442b4872370df934a801eddf86e5f10a4",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/seating_color_math.js",
+    "before": "b2c6d904dbf0fad0d520feff115b358b4323b4cca79ebabf814c7f3f74438a60",
+    "after": "b2c6d904dbf0fad0d520feff115b358b4323b4cca79ebabf814c7f3f74438a60",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/seating_data_protection.js",
+    "before": "760d1922509340e5f83f7f51dbcd89dd6c5e3053bbc5252ce897a5d2d74f2eb3",
+    "after": "760d1922509340e5f83f7f51dbcd89dd6c5e3053bbc5252ce897a5d2d74f2eb3",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/seating_touch.js",
+    "before": "35e6988d1f94c7ecc5a5142e0fb874b7e4c69a82a5f8f2251f62a8317917c65e",
+    "after": "35e6988d1f94c7ecc5a5142e0fb874b7e4c69a82a5f8f2251f62a8317917c65e",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/seating_view_math.js",
+    "before": "7da4d5116140e23351832ca41de48dcd0e3afe39df3641756068aa6a8818320a",
+    "after": "7da4d5116140e23351832ca41de48dcd0e3afe39df3641756068aa6a8818320a",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/seating_workspace.js",
+    "before": "8a6f099ef5d8c4eaa47e273a38a187cedc175869d49364f6e204fe5a45825510",
+    "after": "8a6f099ef5d8c4eaa47e273a38a187cedc175869d49364f6e204fe5a45825510",
+    "unchanged": true
+  },
+  {
+    "file": "javascript/sort_the_number.js",
+    "before": "907e9cd4e9a1408f541b0f041aef673cd4a02ea6b348b456e0eaf7aca1bca410",
+    "after": "907e9cd4e9a1408f541b0f041aef673cd4a02ea6b348b456e0eaf7aca1bca410",
+    "unchanged": true
+  },
+  {
+    "file": "CNAME",
+    "before": "d8a2b6e90c3733daa07067ed53eab1fe2e11c7384da0d3d0706a5a84608ec46c",
+    "after": "d8a2b6e90c3733daa07067ed53eab1fe2e11c7384da0d3d0706a5a84608ec46c",
+    "unchanged": true
+  },
+  {
+    "file": "css/cover.css",
+    "before": "2218640020d30461d1e2efd3d5af91acd9efb73f4a05975ecbbcb4338f515c3b",
+    "after": "2218640020d30461d1e2efd3d5af91acd9efb73f4a05975ecbbcb4338f515c3b",
+    "unchanged": true
+  },
+  {
+    "file": "css/dashboard.css",
+    "before": "68940f1a77ea8b022f4355d18c8f09a27d511e01609b34b5d5cabd4fbfb5b2c5",
+    "after": "68940f1a77ea8b022f4355d18c8f09a27d511e01609b34b5d5cabd4fbfb5b2c5",
+    "unchanged": true
+  },
+  {
+    "file": "css/seating-data-protection.css",
+    "before": "512de80e565f87e83948ec5b70764557304538c2bc052fb140e636148a535256",
+    "after": "512de80e565f87e83948ec5b70764557304538c2bc052fb140e636148a535256",
+    "unchanged": true
+  },
+  {
+    "file": "css/seating-workspace.css",
+    "before": "ab5c32c0db92c3e48fb832da98d45575f777d0bee0ab9f8a3f95b1825c84d9d8",
+    "after": "ab5c32c0db92c3e48fb832da98d45575f777d0bee0ab9f8a3f95b1825c84d9d8",
+    "unchanged": true
+  },
+  {
+    "file": "css/styles.css",
+    "before": "0a13ee9f6a01e5a1c9b2d5bb7a1cf3efb3353c0142d3a090014c44b76814b816",
+    "after": "0a13ee9f6a01e5a1c9b2d5bb7a1cf3efb3353c0142d3a090014c44b76814b816",
+    "unchanged": true
+  },
+  {
+    "file": "css/stylesheet_resume.css",
+    "before": "6887e539951e0b8c296b3d2ff88b9edf76aa6491dd0a6cf7cbc88b4604ac40a0",
+    "after": "6887e539951e0b8c296b3d2ff88b9edf76aa6491dd0a6cf7cbc88b4604ac40a0",
+    "unchanged": true
+  },
+  {
+    "file": "css/stylesheet_survey.css",
+    "before": "e6de17596bffdd9ff6a4dbcbd86e48a02e26227e6423f3d1951a6acfadcebdaf",
+    "after": "e6de17596bffdd9ff6a4dbcbd86e48a02e26227e6423f3d1951a6acfadcebdaf",
+    "unchanged": true
+  }
+]

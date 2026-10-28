@@ -7,12 +7,12 @@ document.querySelector('#run').addEventListener('click', async () => {
   function check(ok, message) { if (!ok) throw Error(message); output.textContent += '\nPASS ' + message; passed++; }
   output.textContent = 'Running...';
   try {
-    const manifest = await (await fetch('../../data/projects.json')).json();
-    const pages = ['webpages/projects.html', 'webpages/tools-games.html', ...manifest.projects.map(p => p.showcase)];
+    const manifest = await (await fetch('/data/projects.json')).json();
+    const pages = ['/projects/', '/tools-games/', ...manifest.projects.map(p => p.showcase)];
     for (const width of [1248, 768, 390, 320]) {
       frame.style.width = width + 'px';
       for (const page of pages) {
-        await new Promise(resolve => { frame.onload = resolve; frame.src = '../../' + page + '?review=' + Date.now(); });
+        await new Promise(resolve => { frame.onload = resolve; frame.src = page + '?review=' + Date.now(); });
         const doc = frame.contentDocument;
         frame.contentWindow.addEventListener('error', event => errors.push(event.message));
         const images = [...doc.querySelectorAll('main img')];
@@ -25,7 +25,7 @@ document.querySelector('#run').addEventListener('click', async () => {
         check(previews.every(el => { const r = el.getBoundingClientRect(); return Math.abs(r.width / r.height - 1.6) < 0.02; }), page + ' reserves consistent 16:10 preview space at ' + width);
         const links = [...doc.querySelectorAll('[data-action]')];
         check(links.length > 0 && links.every(link => { const r = link.getBoundingClientRect(); return r.width > 0 && r.left >= 0 && r.right <= width; }) && !doc.querySelector('a[href$="resume.html"]'), page + ' exposes actions and omits Resume at ' + width);
-        if (page.startsWith('projects/') && width <= 768) {
+        if (page.startsWith('/projects/') && page !== '/projects/' && width <= 768) {
           check(doc.querySelector('.cw-project-sidebar').getBoundingClientRect().top < doc.querySelector('.cw-showcase-content').getBoundingClientRect().top, page + ' keeps actions before long content at ' + width);
         }
       }

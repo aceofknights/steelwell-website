@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seating Chart · ChrisWellsDev</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/seating-data-protection.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="/css/seating-workspace.css" />
+    <script src="/javascript/seating_view_math.js"></script>
+    <script src="/javascript/seating_color_math.js"></script>
+    <script src="/javascript/seating_colors.js" defer></script>
+    <script src="/javascript/seating_workspace.js" defer></script>
+    <script src="/javascript/seating_touch.js" defer></script>
+    <!-- Capture raw classroom values before the application script can run. -->
+    <script src="/javascript/seating_backup_core.js"></script>
+    <script src="/javascript/seating_data_protection.js"></script>
+    <!-- Link to external CSS file -->
+      <link rel="canonical" href="https://chriswellsdev.com/seating-chart/" />
+  <meta property="og:url" content="https://chriswellsdev.com/seating-chart/" />
+<meta property="og:title" content="Seating Chart · ChrisWellsDev" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Seating Chart · ChrisWellsDev" />
+</head>
+  <body class="portfolio seating-workspace">
+    <a class="sc-skip" href="#workspaceViewport">Skip to classroom</a>
+    <header class="sc-header">
+      <a class="sc-brand" href="/" aria-label="ChrisWellsDev — return to website"><span aria-hidden="true">&lt;/&gt;</span><span>ChrisWellsDev<small>← Back to website</small></span></a>
+      <div class="sc-title"><h1>Seating Chart</h1><p>Your classroom, thoughtfully arranged.</p></div>
+      <nav aria-label="Workspace support"><button id="openSeatingHelp" type="button">Help</button><button id="toggleDataPanel" type="button" aria-controls="dataPanel" aria-expanded="false">Backup &amp; Restore</button></nav>
+    </header>
+    <details id="dataPanel" class="sc-data-panel">
+      <summary>Classroom backups &amp; recovery</summary>
+    <section id="classroomDataControls" aria-labelledby="dataProtectionTitle">
+      <h2 id="dataProtectionTitle">Keep a copy of your classroom</h2>
+      <p>Classrooms normally stay in this browser. Backups download to your device; they are not saved to an online account.</p>
+      <div class="data-actions">
+        <button id="backupCurrentClassroomData" type="button" disabled>Backup Current Classroom Data</button>
+        <button id="restoreClassroomData" type="button" disabled>Restore Backup</button>
+      </div>
+      <p>Backup Current Classroom Data includes your saved changes up to now. Download a new backup after editing your classroom.</p>
+      <p id="dataProtectionStatus" role="status" aria-live="polite">Preparing your safety copy…</p>
+      <p id="dataProtectionError" role="alert" hidden></p>
+      <details>
+        <summary>More backup options</summary>
+        <p>The opening safety copy preserves exactly what was saved before this page opened. It does not include later edits. Use it to recover information from before this session; use Backup Current Classroom Data for your latest saved work.</p>
+        <button id="backupClassroomData" type="button" disabled>Backup Classroom Data — Opening Safety Copy</button>
+        <button id="verifyClassroomBackup" type="button">Verify Backup File</button>
+        <p>Verification checks a downloaded file without restoring it or changing your classroom.</p>
+        <button id="backupRecoveryClassroomData" type="button" hidden>Download Pre-Restore Safety Copy</button>
+      </details>
+      <div id="restoreFilePicker" hidden>
+        <label for="classroomBackupFile">Choose a Classroom Data JSON backup. You will review it before anything changes.</label>
+        <input id="classroomBackupFile" type="file" accept=".json,application/json" />
+      </div>
+      <button id="recoverClassroomData" type="button" hidden>Recover Original Classroom Data</button>
+      <button id="openRestoredClassroom" type="button" hidden>Open Saved Classroom</button>
+      <noscript>Backup and restore need JavaScript. The classroom is paused so saved data cannot change before a safety copy is captured.</noscript>
+    </section>
+    </details>
+    <dialog id="dataRestoreDialog" aria-labelledby="dataRestoreTitle" aria-describedby="dataRestoreWarning">
+      <h2 id="dataRestoreTitle">Review your backup</h2>
+      <p id="dataRestoreSummary"></p>
+      <dl id="dataRestoreCounts"></dl>
+      <p id="dataRestoreWarning">Restoring can overwrite saved classroom data in this browser. Items not included in the backup will stay as they are. Close other Seating Chart tabs first.</p>
+      <label><input id="dataRestoreConfirm" type="checkbox" /> I understand and want to make these changes.</label>
+      <button id="cancelDataRestore" type="button">Cancel</button>
+      <button id="confirmDataRestore" type="button" disabled>Restore Backup</button>
+    </dialog>
+    <fieldset id="seatingApplication" disabled aria-label="Seating Chart workspace">
+      <div class="sc-toolbar" aria-label="Classroom controls">
+        <div id="classSelectorContainer" class="sc-control">
+          <label for="classSelector">Class</label><select id="classSelector"></select>
+          <details class="sc-menu"><summary aria-label="Class options">Class options</summary><div class="sc-popover"><h2>Manage classes</h2><button id="addClassBtn" type="button">+ Add Class</button><button id="deleteClassBtn" type="button">Delete Class</button></div></details>
+        </div>
+        <div class="sc-primary-actions"><button id="addTableBtn" type="button">+ Add Table</button></div>
+        <div id="chartModeContainer" class="sc-control"><label for="layoutModeSelect">Mode</label><select id="layoutModeSelect"><option value="table">Table</option><option value="grid">Grid</option></select></div>
+        <div id="layoutSelectorContainer" class="sc-control"><label for="layoutSelector">Layout</label><select id="layoutSelector"></select></div>
+        <details id="layoutSettings" class="sc-menu"><summary>Layout settings</summary><div class="sc-popover">
+          <h2>Layout settings</h2><p>Save room arrangements separately from student assignments.</p>
+          <div id="gridControls">
+            <label>Rows<input id="gridRowsInput" type="number" min="1" step="1" value="5" /></label>
+            <label>Columns<input id="gridColumnsInput" type="number" min="1" step="1" value="6" /></label>
+            <label>Row gap<input id="gridRowGapInput" type="number" min="0" step="1" value="8" /></label>
+            <label>Column gap<input id="gridColumnGapInput" type="number" min="0" step="1" value="8" /></label>
+          </div>
+          <div class="sc-layout-actions"><button id="saveLayoutBtn" type="button">Save Layout</button><button id="addLayoutBtn" type="button">+ New Layout</button><button id="deleteLayoutBtn" type="button">Delete Layout</button></div>
+        </div></details>
+        <div class="sc-display-actions"><button id="workspaceFullscreenBtn" data-workspace-fullscreen type="button" aria-pressed="false">Fullscreen</button><button id="fullscreenClassroomBtn" type="button" aria-pressed="false">Present</button></div>
+      </div>
+      <div class="sc-workspace-heading"><div class="sc-room-heading"><span class="sc-eyebrow">CLASSROOM WORKSPACE</span><p id="workspaceHint">Drag a table to move it. Select a seat to assign a student.</p></div>
+        <div class="sc-view-controls" role="group" aria-label="Workspace view">
+          <button id="zoomOut" type="button" aria-label="Zoom Out" title="Zoom out">−</button>
+          <button id="resetZoom" type="button" aria-label="Reset Zoom to 100%" title="Reset Zoom (100%)"><span id="zoomValue">100%</span></button>
+          <button id="zoomIn" type="button" aria-label="Zoom In" title="Zoom in">+</button>
+          <button id="fitRoom" type="button">Fit to Room</button>
+          <button id="panRoom" type="button" aria-pressed="false" title="Drag the room to pan instead of editing tables">Pan</button>
+        </div>
+        <div class="sc-room-actions"><button id="editTables" type="button" aria-pressed="false" aria-describedby="tableEditStatus">Edit Tables</button><button id="toggleStudentListBtn" type="button" aria-controls="studentListContainer" aria-expanded="true">Students</button></div>
+        <span id="viewStatus" class="sc-sr-only" role="status" aria-live="polite"></span>
+      </div>
+      <p id="tableEditStatus" class="sc-edit-status" role="status" aria-live="polite" hidden></p>
+      <div id="listAndChart">
+        <aside id="studentListContainer" aria-label="Student management">
+          <div class="sc-sidebar-title"><h2>Students</h2><span id="attendanceSummary" aria-live="polite"></span></div>
+          <details id="addStudentsPanel" class="sc-add-students"><summary>+ Add students</summary>
+            <div id="bulk-add-container">
+              <label for="bulk-add-textarea">Student names, one per line</label><textarea id="bulk-add-textarea" rows="4" placeholder="Alex Morgan&#10;Jordan Lee"></textarea>
+              <div id="bulk-group-row"><label for="bulkGroupSelect">Add to</label><select id="bulkGroupSelect"></select></div>
+              <button id="bulk-add-btn" type="button">Add Students</button>
+            </div>
+          </details>
+          <p class="sc-roster-hint">Checked = present · Use ⚙ for seating constraints.</p>
+          <div id="studentGroupControls"></div>
+          <ul id="studentList"></ul>
+        </aside>
+        <main id="workspaceViewport" class="sc-stage" aria-label="Seating workspace. Scroll to explore the room." tabindex="0">
+          <div id="workspaceZoomFrame"><div id="classroom" aria-label="Classroom seating chart"></div></div>
+        </main>
+      </div>
+      <footer class="sc-workspace-footer"><span>Saved in this browser · Download a backup to keep a copy.</span><span>Randomize shortcut <kbd>R</kbd></span></footer>
+    </fieldset>
+    <dialog id="seatingHelp" aria-labelledby="seatingHelpTitle">
+      <div class="sc-dialog-heading"><h2 id="seatingHelpTitle">Make room for everyone</h2><button id="closeSeatingHelp" type="button">Close</button></div>
+      <ol class="sc-help-steps">
+        <li><strong>Add your students.</strong> Open Students → Add students. Paste one name per line. Checked attendance boxes mean present; uncheck anyone who is away.</li>
+        <li><strong>Build the room.</strong> In Table mode, choose + Add Table, then Table settings to choose seats, columns, and color. With a mouse, drag the header or empty border to move a table; drag its bottom-right corner to resize. On a touch screen, choose Edit Tables, then drag Move or the bottom-right Resize handle with one finger. Use Done Editing to return to scrolling and seat selection. Settings → Position &amp; size lets you enter the same changes without dragging. For a grid, choose Grid, then Layout settings for rows, columns, and gaps. Use a seat's A button to mark an aisle.</li>
+        <li><strong>Assign or shuffle seats.</strong> Select a seat and enter a name, or focus it and press Enter. Choose Randomize to seat students who are present. You can also press R when you are not typing.</li>
+        <li><strong>Keep assignments in place.</strong> Open a student's ⚙ seating constraints. Choose Lock to Table or Lock to Seat, pick the location, then Save. In Grid mode, choose a row and column. “Blacklist Students” lists students to keep apart, using the existing table or neighboring-grid-seat rules.</li>
+        <li><strong>Find your way around.</strong> Use − and + to zoom, the percentage to return to 100%, and Fit to Room to see the room's contents. Zoom changes only your view. Scroll or swipe within the workspace, or turn on Pan and drag with a mouse. Turn Pan off to edit tables or select seats. With the workspace focused, +, −, and 0 adjust zoom; arrow keys scroll. The room automatically fits when you switch classes or layouts, resize the window, or show/hide Students. Zoom controls provide a temporary close-up for editing; Fit to Room returns to the complete arrangement.</li>
+        <li><strong>Save an arrangement.</strong> Open Layout settings → New Layout to name and save the room arrangement. Choose it from Layout later. Save Layout updates the selected arrangement; student assignments are saved with their class in this browser.</li>
+        <li><strong>Keep a backup.</strong> Open Backup &amp; Restore. Choose Backup Current Classroom Data for your latest saved changes. Under More backup options, Backup Classroom Data — Opening Safety Copy keeps only the records captured before this page opened. Keep the downloaded file private. Verify Backup File checks it without changing the classroom; Restore Backup lets you review and confirm changes. Backups are not saved to an online account.</li>
+        <li><strong>Choose your display.</strong> Fullscreen automatically fits all classroom tables and desks into the display. Press R to randomize and Escape to leave fullscreen. Present hides editing controls independently; Exit presentation returns to editing. You can use either or both, and your workspace zoom is kept. When fullscreen is off, Escape also leaves presentation.</li>
+      </ol>
+      <p>Students and settings panels close with Escape. Escape cancels an active table gesture without saving. Outside a gesture, Escape or Done Editing leaves Edit mode. Pan and Edit Tables are separate modes; switching between them ends the previous mode. Use the zoom buttons for room zoom; pinch-to-zoom editing is not added.</p>
+    </dialog>
+    <dialog id="tableColorDialog" class="sc-color-dialog" aria-labelledby="tableColorTitle" aria-describedby="tableColorHelp">
+      <div class="sc-dialog-heading"><h2 id="tableColorTitle">Table color</h2><button id="cancelTableColor" type="button">Cancel</button></div>
+      <p id="tableColorHelp">Choose a hue, then adjust saturation and brightness. Preview changes affect only this table; Apply saves them.</p>
+      <div class="sc-color-studio">
+        <div><div id="tableHueWheel" class="sc-hue-wheel" role="slider" tabindex="0" aria-label="Hue" aria-valuemin="0" aria-valuemax="359" aria-valuenow="0"><span class="sc-hue-handle" aria-hidden="true"></span></div><p class="sc-color-instruction">Drag around the ring, or use arrow keys.</p></div>
+        <div class="sc-color-adjustments"><label for="tableSaturation">Saturation <output id="saturationValue">0%</output></label><input id="tableSaturation" type="range" min="0" max="100" value="0"><label for="tableBrightness">Brightness <output id="brightnessValue">0%</output></label><input id="tableBrightness" type="range" min="0" max="100" value="0"><div id="tableColorPreview" class="sc-color-preview">Student name<small>Names stay readable automatically.</small></div></div>
+      </div>
+      <div id="tableColorPresets" class="sc-color-presets" role="group" aria-label="Preset table colors"></div>
+      <details class="sc-color-advanced"><summary>Hex color (optional)</summary><label for="tableColorHex">Hex color</label><input id="tableColorHex" type="text" maxlength="7" spellcheck="false" autocomplete="off" placeholder="#4388F5"></details>
+      <p id="tableColorError" role="alert" hidden></p>
+      <div class="sc-color-footer"><button id="defaultTableColor" type="button">Restore default</button><button id="applyTableColor" type="button">Apply color</button></div>
+    </dialog>
+    <p id="workspaceNotice" role="status" aria-live="polite" class="sc-notice" hidden></p>
+  </body>
+</html>

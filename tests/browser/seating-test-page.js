@@ -3,7 +3,7 @@
   'use strict';
   window.loadSyntheticSeatingPage=async function (frame) {
     if(location.origin!=='http://127.0.0.1:8873')throw Error('Dedicated synthetic test origin required');
-    const appURL=new URL('../../webpages/SeatingChart.html',document.baseURI);
+    const appURL=new URL('/seating-chart/',document.baseURI);
     // serve_seating_tests.py adds a revision URL to the adapter in this response.
     appURL.searchParams.set('regression',Date.now());
     await new Promise((resolve,reject)=>{
