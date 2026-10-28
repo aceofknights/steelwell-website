@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Feedback Survey</title>
-    <link rel="stylesheet" href="../../css/stylesheet_survey.css" />
+    <link rel="stylesheet" href="../../css/stylesheet_survey.css?v=4b" />
   </head>
 
   <body>
     <div class="container">
-      <h1>Feedback Survey</h1>
+      <h1>Feedback Survey Demo</h1>
+      <p class="survey-notice">This is a form demonstration, not a working contact form. Responses are not sent to Chris or saved. Please do not enter private information.</p>
+      <p class="survey-notice"><a href="../index.html">Return to ChrisWellsDev</a></p>
       <form id="surveyForm">
         <div class="question">
           <label for="userName">Your Name:</label>
@@ -29,7 +31,7 @@
 
         <!-- Question 2: Text Field -->
         <div class="question">
-          <label for="q2">2. What can be improve?</label>
+          <label for="q2">2. What could be improved?</label>
           <input type="text" id="q2" name="q2" />
         </div>
 
@@ -62,19 +64,19 @@
         </div>
 
         <div class="submit">
-          <button type="button" id="submitBtn">Submit</button>
+          <button type="button" id="submitBtn">Try demo</button>
         </div>
       </form>
 
       <!-- Error Message Container -->
-      <div id="errorMessage" class="error"></div>
+      <div id="errorMessage" class="error" role="alert"></div>
 
       <!-- Thank You Message Container -->
-      <div id="thankYouMessage" class="hidden">
-        <p>Thank you for your feedback, <span id="userName"></span>!</p>
+      <div id="thankYouMessage" class="hidden" role="status">
+        <p>Demo complete, <span id="submittedUserName"></span>. Nothing was sent or saved.</p>
       </div>
     </div>
 
-    <script src="../../javascript/script_survey.js"></script>
+    <script src="../../javascript/script_survey.js?v=4b"></script>
   </body>
 </html>

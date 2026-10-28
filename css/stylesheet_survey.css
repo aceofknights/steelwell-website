@@ -39,3 +39,5 @@ h1 {
 .hidden {
     display: none;
 }
+
+.survey-notice { margin: 20px; line-height: 1.5; color: #222; }

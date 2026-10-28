@@ -11,17 +11,17 @@
     {
       "url": "https://github.com/aceofknights/steelwell-website",
       "result": "Public repository verified with GitHub connector",
-      "checkedOn": "2026-10-27"
+      "checkedOn": "2026-10-28"
     },
     {
       "url": "https://github.com/aceofknights/auto_clicker",
       "result": "Public repository verified with GitHub connector",
-      "checkedOn": "2026-10-27"
+      "checkedOn": "2026-10-28"
     },
     {
       "url": "https://drive.google.com/file/d/12fa61cd5eAd7B0me2zSQD42rHKy55Mmr/view",
-      "result": "Google Drive viewer displays Capstone.apk and Download controls; binary not tested",
-      "checkedOn": "2026-10-27"
+      "result": "Signed-out Google Drive viewer displays Capstone.apk and Download controls; binary not installed or tested",
+      "checkedOn": "2026-10-28"
     }
   ],
   "projects": [
@@ -43,7 +43,9 @@
         "Create, name, color, move, and resize tables with one to eight seats.",
         "Configure grid rows, columns, spacing, and aisles.",
         "Randomize seating with seat locks, table locks, and student separation constraints.",
-        "Save shared layouts and use fullscreen classroom presentation."
+        "Save shared layouts and use fullscreen classroom presentation.",
+        "Zoom, Fit to Room, Pan, and explicit touch table editing without changing logical room coordinates.",
+        "Download current classroom backups, verify files without restoring, and review imports before confirming a restore."
       ],
       "links": [
         {
@@ -60,13 +62,23 @@
       "usage": [
         "Open the tool and choose or create a class.",
         "Paste names one per line, then configure tables or a grid.",
-        "Set attendance and placement options before randomizing seats."
+        "Set attendance and placement options before randomizing seats.",
+        "Save a layout for reuse, then download a current classroom backup after making changes."
       ],
       "notes": [
         "Saved data stays in the browser where it was created. A different browser or domain has separate data.",
-        "The existing tool opens at its original URL; this showcase does not read or write classroom data."
+        "The existing tool opens at its original URL; this showcase does not read or write classroom data.",
+        "Fullscreen shows the classroom; Present is a separate display mode. Press R to randomize when focus is outside text entry."
       ],
-      "preview": null
+      "preview": {
+        "src": "assets/previews/seating-chart.jpg",
+        "alt": "Seating Chart with three colored tables and 24 synthetic students in the classroom workspace.",
+        "caption": "Local classroom screenshot using synthetic student names only.",
+        "width": 1248,
+        "height": 1000
+      },
+      "status": "Browser tool",
+      "approach": "Room geometry and viewing scale are separate: zoom and Fit to Room change the view without changing saved table positions. Classroom records stay in this browser, with current backups, an opening safety copy, file verification, and confirmed restore available for data protection."
     },
     {
       "id": "hex-math",
@@ -106,9 +118,13 @@
       "notes": [],
       "preview": {
         "src": "assets/previews/hex-math.jpg",
-        "alt": "Hex Math interface with player scores, factor controls, and a board of multiplication products.",
-        "caption": "Screenshot of the existing browser game, captured locally without changing its rules."
-      }
+        "alt": "Hex Math factor controls and the complete board of multiplication products.",
+        "caption": "Local screenshot of the existing project.",
+        "width": 1233,
+        "height": 988
+      },
+      "status": "Two-player browser game",
+      "approach": "One factor change chooses a product automatically, so multiplication and board position are part of the same move. Winning lines are checked along the three axes of the hex grid."
     },
     {
       "id": "sort-the-numbers",
@@ -121,11 +137,12 @@
         "CSS",
         "JavaScript"
       ],
-      "overview": "A small browser game built around a simple sequence challenge: find the shuffled numbers and click them in order from one to five.",
+      "overview": "A short sequence game: find five shuffled numbers and select them in ascending order. Each correct selection advances the sequence; a mistake starts a fresh round.",
       "features": [
         "Shuffle five numbered cards at the start of each round.",
         "Mark correct selections as you progress.",
-        "Restart automatically after success or an incorrect selection."
+        "Restart automatically after success or an incorrect selection.",
+        "Use Tab to reach the cards and Enter or Space to select them."
       ],
       "links": [
         {
@@ -144,13 +161,17 @@
         "Dismiss the result message to continue with a freshly shuffled round."
       ],
       "notes": [
-        "The original game uses mouse-clickable cards and browser alerts. Its interactions are preserved in this milestone."
+        "Mouse, touch, and keyboard use the same buttons. Existing browser alerts announce the result before a new round starts."
       ],
       "preview": {
         "src": "assets/previews/sort-the-numbers.jpg",
-        "alt": "Sort the Numbers interface showing five shuffled numbered cards.",
-        "caption": "Screenshot of the existing browser game, captured locally without changing its rules."
-      }
+        "alt": "Sort the Numbers with five shuffled buttons and keyboard instructions.",
+        "caption": "Local screenshot of the existing project.",
+        "width": 1248,
+        "height": 1000
+      },
+      "status": "Browser game",
+      "approach": "The five shuffled cards share a single expected-number sequence. Native buttons let pointer and keyboard input use the same selection and reset rules."
     },
     {
       "id": "auto-clicker",
@@ -164,11 +185,11 @@
         "PyAutoGUI",
         "keyboard"
       ],
-      "overview": "A desktop auto-clicking project described in the development Blog. Its interface lets users configure repeated mouse clicks and a global hotkey.",
+      "overview": "Configure repeated desktop mouse clicks without manually repeating each click. The Python application provides interval, left/right button, and start/stop hotkey controls in a small Tkinter window.",
       "features": [
         "Configure the interval between clicks.",
         "Choose the mouse button to use.",
-        "Customize the start/stop hotkey, with F4 described as the default.",
+        "Choose a start/stop hotkey; F4 is the default.",
         "Run clicking on a separate thread so the interface remains responsive."
       ],
       "links": [
@@ -183,16 +204,24 @@
           "url": "webpages/blog.html#auto-clicker"
         }
       ],
-      "usage": [],
+      "usage": [
+        "Open View Source to inspect auto_clicker.py and its imports.",
+        "In the desktop application, set an interval in seconds, choose Left or Right, and use F4 or the configured hotkey to toggle clicking."
+      ],
       "notes": [
         "This is desktop software, not an application that runs inside this website.",
-        "The source repository is available. No separate executable download is advertised here."
+        "The source repository is available. No separate executable download is advertised here.",
+        "The public Python source was inspected for these controls and dependencies. Desktop execution and operating-system compatibility were not tested in this review."
       ],
       "preview": {
         "src": "assets/auto_clicker_pic.png",
         "alt": "Auto Clicker desktop window with interval, mouse-button, and hotkey controls.",
-        "caption": "Existing project screenshot from the development Blog."
-      }
+        "caption": "Existing project screenshot from the development Blog.",
+        "width": 281,
+        "height": 252
+      },
+      "status": "Source available",
+      "approach": "Tkinter handles the configuration window, PyAutoGUI generates clicks, and keyboard registers the global hotkey. A worker thread runs the click loop while a threading.Event signals it to stop."
     },
     {
       "id": "vacation-planner",
@@ -203,8 +232,8 @@
       "technologies": [],
       "overview": "A mobile application introduced in the Blog as the WGU capstone project. The original post provides an APK through Google Drive.",
       "features": [
-        "Vacation-planning mobile application.",
-        "APK shared through the existing Google Drive destination."
+        "The Blog identifies the mobile application as a vacation planner built for the WGU capstone.",
+        "The existing Google Drive viewer provides Capstone.apk; it is a download destination rather than a browser demo."
       ],
       "links": [
         {
@@ -225,7 +254,9 @@
         "The download destination was checked and displays Capstone.apk. The APK was not installed or tested.",
         "The repository does not include the mobile app’s source or screenshots, so no framework or additional features are claimed."
       ],
-      "preview": null
+      "preview": null,
+      "status": "APK available; not tested",
+      "approach": "The available project material is the original capstone Blog entry and its APK destination. The app has not been installed for this review; screenshots, detailed workflows, supported Android versions, and its technology stack are not documented here."
     },
     {
       "id": "hotdog-counter",
@@ -236,8 +267,8 @@
       "technologies": [],
       "overview": "The website hosts the privacy policy for the Hotdog Counter mobile application. The policy is the verified project material available in this repository.",
       "features": [
-        "Published privacy policy with an application data-use statement.",
-        "Contact email provided in the policy."
+        "The hosted policy describes the application’s data-use statement.",
+        "The policy provides a contact email for privacy questions."
       ],
       "links": [
         {
@@ -251,7 +282,9 @@
         "No application download, live demo, source repository, or screenshots are linked in the available project material.",
         "The original policy URL and its content remain unchanged."
       ],
-      "preview": null
+      "preview": null,
+      "status": "Privacy policy only",
+      "approach": "This entry documents the project material currently hosted here: its privacy policy. There is not enough verified application material to describe the counter workflow, technologies, or installation process."
     },
     {
       "id": "tennessee-guide",
@@ -291,16 +324,20 @@
         "The contact form is a coursework demonstration; it has no message-delivery backend."
       ],
       "preview": {
-        "src": "wgu-web-task/Task%202%20pages/assets/tn.png",
-        "alt": "Tennessee map illustration used on the original coursework homepage.",
-        "caption": "Original Tennessee coursework illustration; not a screenshot of the dashboard."
-      }
+        "src": "assets/previews/tennessee-guide.jpg",
+        "alt": "Original Tennessee coursework homepage with its orange navigation, state map, and facts.",
+        "caption": "Local screenshot of the existing project.",
+        "width": 1233,
+        "height": 988
+      },
+      "status": "Coursework demo",
+      "approach": "Separate state and city pages share the coursework navigation. The showcase provides context while keeping the original orange presentation and coursework URLs intact."
     },
     {
       "id": "feedback-survey",
       "title": "Feedback Survey Demo",
       "category": "Browser Tools",
-      "summary": "A client-side feedback form demonstrating required-answer validation and a thank-you message.",
+      "summary": "Try a client-side survey with required-answer validation and a personalized demo acknowledgment; nothing is sent or saved.",
       "showcase": "projects/feedback-survey.html",
       "technologies": [
         "HTML",
@@ -311,12 +348,12 @@
       "features": [
         "Multiple input types and required-answer validation.",
         "Inline validation messages.",
-        "Personalized thank-you state after valid answers."
+        "Personalized demo acknowledgment that explicitly says nothing was sent or saved."
       ],
       "links": [
         {
           "kind": "launch",
-          "label": "Launch Tool",
+          "label": "Try Form Demo",
           "url": "webpages/survey.html"
         },
         {
@@ -325,11 +362,22 @@
           "url": "https://github.com/aceofknights/steelwell-website"
         }
       ],
-      "usage": [],
+      "usage": [
+        "Use example answers rather than private information.",
+        "Choose Try demo to check the required answers and see the local acknowledgment."
+      ],
       "notes": [
         "This is a form demonstration. It does not transmit, email, or store submitted answers."
       ],
-      "preview": null
+      "preview": {
+        "src": "assets/previews/feedback-survey.jpg",
+        "alt": "Feedback Survey Demo showing the no-delivery notice and example form fields.",
+        "caption": "Local screenshot of the existing project.",
+        "width": 1248,
+        "height": 1000
+      },
+      "status": "Form demo; no delivery",
+      "approach": "Validation runs entirely in the browser. Required fields are checked before a personalized demo acknowledgment appears; the form explains that responses are neither delivered nor stored."
     },
     {
       "id": "bootstrap-cover",
@@ -364,7 +412,15 @@
       "notes": [
         "This historical page is retained at its existing URL. Its biography describes the time when it was created."
       ],
-      "preview": null
+      "preview": {
+        "src": "assets/previews/bootstrap-cover.jpg",
+        "alt": "Archived Bootstrap coursework About page with its portrait and original student biography.",
+        "caption": "Local screenshot of the existing project.",
+        "width": 1248,
+        "height": 1000
+      },
+      "status": "Archived coursework",
+      "approach": "The page adapts Bootstrap’s cover example with a portrait and a student biography. It is retained as an earlier coursework artifact; the biography is historical rather than a current profile."
     },
     {
       "id": "chriswellsdev",
@@ -401,7 +457,15 @@
       "notes": [
         "No runtime framework, backend, or build step is required to serve the checked-in pages."
       ],
-      "preview": null
+      "preview": {
+        "src": "assets/previews/chriswellsdev.jpg",
+        "alt": "ChrisWellsDev homepage with dashboard navigation, introduction, and project discovery links.",
+        "caption": "Local screenshot of the existing project.",
+        "width": 1233,
+        "height": 988
+      },
+      "status": "Static website",
+      "approach": "A shared CSS design system and a project manifest support checked-in HTML showcases. Core links are available without JavaScript, while the browser tools keep their own interaction code."
     }
   ]
 }

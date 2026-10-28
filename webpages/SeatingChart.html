@@ -35,16 +35,16 @@
       <h2 id="dataProtectionTitle">Keep a copy of your classroom</h2>
       <p>Classrooms normally stay in this browser. Backups download to your device; they are not saved to an online account.</p>
       <div class="data-actions">
-        <button id="backupClassroomData" type="button" disabled>Backup Classroom Data</button>
+        <button id="backupCurrentClassroomData" type="button" disabled>Backup Current Classroom Data</button>
         <button id="restoreClassroomData" type="button" disabled>Restore Backup</button>
       </div>
-      <p>Backup Classroom Data saves the opening safety copy. For later edits, use Backup Current Classroom Data under More backup options.</p>
+      <p>Backup Current Classroom Data includes your saved changes up to now. Download a new backup after editing your classroom.</p>
       <p id="dataProtectionStatus" role="status" aria-live="polite">Preparing your safety copy…</p>
       <p id="dataProtectionError" role="alert" hidden></p>
       <details>
         <summary>More backup options</summary>
-        <p>The opening safety copy preserves exactly what was saved before this page opened. To include changes made since then, download a current backup.</p>
-        <button id="backupCurrentClassroomData" type="button" disabled>Backup Current Classroom Data</button>
+        <p>The opening safety copy preserves exactly what was saved before this page opened. It does not include later edits. Use it to recover information from before this session; use Backup Current Classroom Data for your latest saved work.</p>
+        <button id="backupClassroomData" type="button" disabled>Backup Classroom Data — Opening Safety Copy</button>
         <button id="verifyClassroomBackup" type="button">Verify Backup File</button>
         <p>Verification checks a downloaded file without restoring it or changing your classroom.</p>
         <button id="backupRecoveryClassroomData" type="button" hidden>Download Pre-Restore Safety Copy</button>
@@ -129,7 +129,7 @@
         <li><strong>Keep assignments in place.</strong> Open a student's ⚙ seating constraints. Choose Lock to Table or Lock to Seat, pick the location, then Save. In Grid mode, choose a row and column. “Blacklist Students” lists students to keep apart, using the existing table or neighboring-grid-seat rules.</li>
         <li><strong>Find your way around.</strong> Use − and + to zoom, the percentage to return to 100%, and Fit to Room to see the room's contents. Zoom changes only your view. Scroll or swipe within the workspace, or turn on Pan and drag with a mouse. Turn Pan off to edit tables or select seats. With the workspace focused, +, −, and 0 adjust zoom; arrow keys scroll. The room automatically fits when you switch classes or layouts, resize the window, or show/hide Students. Zoom controls provide a temporary close-up for editing; Fit to Room returns to the complete arrangement.</li>
         <li><strong>Save an arrangement.</strong> Open Layout settings → New Layout to name and save the room arrangement. Choose it from Layout later. Save Layout updates the selected arrangement; student assignments are saved with their class in this browser.</li>
-        <li><strong>Keep a backup.</strong> Open Backup &amp; Restore. Backup Classroom Data keeps the opening safety copy. Under More backup options, choose Backup Current Classroom Data to include later changes. Keep the downloaded file private. Verify Backup File checks it without changing the classroom; Restore Backup lets you review and confirm changes. Backups are not saved to an online account.</li>
+        <li><strong>Keep a backup.</strong> Open Backup &amp; Restore. Choose Backup Current Classroom Data for your latest saved changes. Under More backup options, Backup Classroom Data — Opening Safety Copy keeps only the records captured before this page opened. Keep the downloaded file private. Verify Backup File checks it without changing the classroom; Restore Backup lets you review and confirm changes. Backups are not saved to an online account.</li>
         <li><strong>Choose your display.</strong> Fullscreen automatically fits all classroom tables and desks into the display. Press R to randomize and Escape to leave fullscreen. Present hides editing controls independently; Exit presentation returns to editing. You can use either or both, and your workspace zoom is kept. When fullscreen is off, Escape also leaves presentation.</li>
       </ol>
       <p>Students and settings panels close with Escape. Escape cancels an active table gesture without saving. Outside a gesture, Escape or Done Editing leaves Edit mode. Pan and Edit Tables are separate modes; switching between them ends the previous mode. Use the zoom buttons for room zoom; pinch-to-zoom editing is not added.</p>
